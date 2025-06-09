@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:54:34 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 23:26:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:49:55 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	pipex_start(t_pipesort *piped, t_shell *utils)
 		utils->j++;
 	path_comms(piped->content, utils, piped);
 	utils->j = 0;
+	//LIMPEZA AQUI
 	return (0);
 }
 

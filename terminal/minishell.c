@@ -6,11 +6,25 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 20:52:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:45:43 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/builtins.h"
+
+void	free_pipesort(t_pipesort *head)
+{
+	t_pipesort *tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		if (head->content)
+			free_dptr(head->content, 0); // libera o char **
+		free(head);
+		head = tmp;
+	}
+}
 
 void	helper_lines2(t_pipesort *piped, t_shell *utils)
 {
@@ -32,7 +46,7 @@ void	main2(t_shell *utils)
 
 	while (1)
 	{
-		piped = ft_calloc(2, sizeof(t_pipesort));
+		piped = ft_calloc(1, sizeof(t_pipesort));
 		utils->pipe_bridge = piped;
 		utils->index = 0;
 		signal_search(ROOT);
@@ -45,7 +59,7 @@ void	main2(t_shell *utils)
 		}
 		add_history(utils->input);
 		helper_lines2(piped, utils);
-		free(piped);
+		free_pipesort(piped);
 	}
 }
 
@@ -62,7 +76,7 @@ void	helper_lines(int argc, char **argv, t_shell *utils)
 
 	temp = bubble_sort(0, utils->envr, 0, argc);
 	utils->exp = temp;
-	free_dptr(temp, 0);
+	//free_dptr(temp, 0);
 	if (argc != 1 || argv[1])
 	{
 		printf("invalid args (no args should be used)\n");

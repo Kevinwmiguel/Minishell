@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 16:02:20 by thiago-camp       #+#    #+#             */
-/*   Updated: 2025/06/06 01:06:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:43:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	init_func(t_files *file, char **envp, t_pipesort *piped, int argc)
 
 	i = 0;
 	tmp = piped;
+	file->infile = -1;
+	file->outfile = -1;
 	file->paths = malloc(sizeof(char *) * 1);
 	file->envp = envp;
 	file->cmd_count = argc;

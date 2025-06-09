@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:37:03 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 23:31:43 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/09 21:27:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,7 @@ void	main3pipex(t_files *file, t_pipesort *piped, t_shell *utils)
 		px.i++;
 	}
 	//final_cleaner(utils);
+	//free(file->paths);
+	//free_dptr(utils->envr, 0);
 	//final_cleaner9(file);
 }

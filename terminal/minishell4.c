@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 01:44:46 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 20:54:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:28:10 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ int	scary_thing(t_pipesort	*piped, t_shell *utils)
 		piped_clone->prev = piped_clone2;
 		piped_clone2 = piped_clone2->next;
 	}
+	//free_dptr(piped_clone->content, 0);
 	return (1);
 }
