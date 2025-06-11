@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 02:38:08 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/11 02:41:39 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:02:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	helper_lines(int argc, char **argv, t_shell *utils)
 	if (argc != 1 || argv[1])
 	{
 		printf("invalid args (no args should be used)\n");
+		//limpeza
 		exit (1);
 	}
 	main2(utils);

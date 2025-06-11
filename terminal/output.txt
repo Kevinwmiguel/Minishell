@@ -1,14 +1,1 @@
-total 196
--rw-r--r-- 1 kwillian 2023_lisboa   2826 jun 11 13:30 commands.c
--rw-r--r-- 1 kwillian 2023_lisboa      9 jun 11 13:29 fileexp.txt
--rw-r--r-- 1 kwillian 2023_lisboa   2312 jun 11 13:30 Makefile
--rwxr-xr-x 1 kwillian 2023_lisboa 155304 jun 11 13:30 minishell
--rw-r--r-- 1 kwillian 2023_lisboa   1948 jun 11 13:29 minishell2.c
--rw-r--r-- 1 kwillian 2023_lisboa   2514 jun 11 13:29 minishell3.c
--rw-r--r-- 1 kwillian 2023_lisboa   2712 jun 11 13:30 minishell4.c
--rw-r--r-- 1 kwillian 2023_lisboa   1559 jun 11 13:30 minishell5.c
--rw-r--r-- 1 kwillian 2023_lisboa   2387 jun 11 13:30 minishell.c
--rw-r--r-- 1 kwillian 2023_lisboa      0 jun 11 13:43 output.txt
--rw-r--r-- 1 kwillian 2023_lisboa     12 jun 11 13:29 password.txt
--rw-r--r-- 1 kwillian 2023_lisboa     95 jun 11 13:29 read.supp
--rwxr-xr-x 1 kwillian 2023_lisboa     12 jun 11 13:29 teste.txt
+ola 
