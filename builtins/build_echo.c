@@ -6,91 +6,67 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:19:40 by thiago-camp       #+#    #+#             */
-/*   Updated: 2025/06/08 23:25:58 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 03:14:01 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/builtins.h"
 #include "../libft/libft.h"
 
-char *remove_after_redir_if_last(char *str)
+char	*remove_after_redir_if_last(t_shell *utils, \
+	int cut_pos, int last_pipe, int i)
 {
-	int i = 0;
-	int cut_pos = -1;
-	int last_pipe = -1;
-	char *new;
-
-	new = NULL;
-	while (str[i])
+	utils->new = NULL;
+	while (utils->tmp[i])
 	{
-		if (str[i] == '>' && str[i + 1] == '>')
+		if (utils->tmp[i] == '>' && utils->tmp[i + 1] == '>')
 		{
 			cut_pos = i;
 			i++;
 		}
-		else if (str[i] == '>' || str[i] == '<')
+		else if (utils->tmp[i] == '>' || utils->tmp[i] == '<')
 			cut_pos = i;
-		else if (str[i] == '|')
+		else if (utils->tmp[i] == '|')
 			last_pipe = i;
 		i++;
 	}
 	if (cut_pos != -1 && cut_pos > last_pipe)
 	{
-		new = malloc(cut_pos + 1);
-		if (!new)
+		utils->new = malloc(cut_pos + 1);
+		if (!utils->new)
 			return (NULL);
-		ft_strncpy(new, str, cut_pos);
-		new[cut_pos] = '\0';
-		return (new);
+		ft_strncpy(utils->new, utils->tmp, cut_pos);
+		utils->new[cut_pos] = '\0';
+		return (utils->new);
 	}
-	return (ft_strdup(str));
+	return (ft_strdup(utils->tmp));
 }
 
 void	process_and_print_output(char **final_reader, char *arr, t_shell *utils)
 {
 	char	*output;
-	char	*tmp;
+	int		i;
 
+	i = 0;
+	output = NULL;
 	utils->processed_output = NULL;
 	output = double_to_one(final_reader);
-	tmp = remove_before_last_echo(output);
-	utils->processed_output = trim_start(tmp);
-	free(tmp);
-	tmp = utils->processed_output;
-	utils->processed_output = remove_after_redir_if_last(tmp);
-	free(tmp);
+	utils->tmp = remove_before_last_echo(output);
+	free(output);
+	utils->third = remove_after_last_cat(utils->tmp);
+	free(utils->tmp);
+	utils->tmp = trim_start(utils->third);
+	free(utils->third);
+	utils->processed_output = remove_after_redir_if_last(utils, -1, -1, 0);
+	free(utils->tmp);
 	ft_putstr_fd(utils->processed_output, 1);
 	if (echo_flag(arr) == 0)
 		ft_putstr_fd("\n", 1);
+	while (final_reader && final_reader[i])
+		free(final_reader[i++]);
 	free(final_reader);
-	free(output);
 	free(utils->processed_output);
-}
-
-void	handle_quotes_echo(t_shell *utils)
-{
-	if (utils->arr[utils->i] == '"')
-	{
-		utils->i++;
-		utils->echo_pa = 1;
-		utils->x = in_between('"', utils->arr, utils->i);
-	}
-	else if (utils->arr[utils->i] == '\'')
-	{
-		utils->i++;
-		utils->echo_pa = 2;
-		utils->x = in_between('\'', utils->arr, utils->i);
-	}
-}
-
-void	handle_no_quotes_echo(t_shell *utils)
-{
-	utils->echo_pa = 0;
-	utils->x = 0;
-	while (utils->arr[utils->i + utils->x]
-		&& utils->arr[utils->i + utils->x] != '\''
-		&& utils->arr[utils->i + utils->x] != '"')
-		utils->x++;
+	utils->processed_output = NULL;
 }
 
 void	process_echo_segment(t_shell *utils)
@@ -123,5 +99,4 @@ void	build_echo(char *arr, t_shell *utils, int i, int j)
 	while (arr[utils->i])
 		process_echo_segment(utils);
 	process_and_print_output(utils->final_reader, arr, utils);
-	free_dptr(utils->final_reader, 0);
 }

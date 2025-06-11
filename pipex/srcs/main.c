@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 21:54:34 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 23:26:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:36:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	pipex(int argc, t_pipesort *piped, t_shell *utils, char *path)
 	piped->outfd = 0;
 	file = malloc(sizeof(t_files));
 	init_func(file, utils->envr, piped, argc);
+	free(file->paths);
 	file->paths = path;
 	head = piped;
 	while (piped->content)
@@ -39,6 +40,7 @@ void	pipex(int argc, t_pipesort *piped, t_shell *utils, char *path)
 	}
 	piped = head;
 	main3pipex(file, piped, utils);
-	free(head);
+	free(file->paths);
+	free(file->cmds);
 	free(file);
 }

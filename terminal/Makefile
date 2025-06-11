@@ -29,6 +29,7 @@ SRCS 	=	minishell.c\
 			../builtins/expansions2.c\
 			../signals/signals.c\
 			commands.c\
+			minishell5.c\
 			../libft/libft.a \
 			../pipex/srcs/aux.c ../pipex/srcs/aux2.c \
 			../pipex/srcs/checkers.c ../pipex/srcs/children.c \
@@ -42,6 +43,7 @@ SRCS 	=	minishell.c\
 			minishell2.c minishell3.c minishell4.c\
 			../builtins/build_echo2.c ../builtins/extra_frees.c\
 			../builtins/env_to_echo.c ../builtins/aux2.c\
+			../builtins/quotes_dealer.c ../builtins/build_echo3.c
 #../pipex/srcs/paths.c
 Color_Off='\033[0m'       # Text Reset
 

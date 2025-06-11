@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 22:05:30 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/06 01:28:04 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:49:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,28 @@ int	final_reader_size(char *str)
 char	*remove_before_last_echo(char *str)
 {
 	char	*last_echo;
+	char	*after_echo;
 	char	*result;
 
-	last_echo = ft_strrstr(str, " echo ");
+	last_echo = ft_strrstr(str, " echo");
 	if (!last_echo)
 		return (ft_strdup(str));
+	after_echo = last_echo + 5;
+	while (*after_echo == ' ' || *after_echo == '\t')
+		after_echo++;
 	result = ft_strdup(last_echo + 5);
+	return (result);
+}
+
+char	*remove_after_last_cat(char *str)
+{
+	char	*last_cat;
+	char	*result;
+
+	last_cat = ft_strrstr(str, " cat");
+	if (!last_cat)
+		return (ft_strdup(str));
+	result = ft_substr(str, 0, last_cat - str);
 	return (result);
 }
 

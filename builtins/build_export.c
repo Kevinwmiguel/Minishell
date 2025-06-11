@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:33:10 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/03 00:31:30 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:42:50 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ char	**dptr_dup(char	**dptr)
 
 char	**build_export(int argc, char **argv, t_shell *utils)
 {
-	static int	x;
-
 	utils->export_j = 1;
 	if (argc == 1)
 	{
@@ -91,9 +89,7 @@ char	**build_export(int argc, char **argv, t_shell *utils)
 			utils->export_j++;
 		}
 	}
-	if (x == 1)
-		free_dptr(utils->envr, 0);
-	x = 1;
+	free_dptr(utils->envr);
 	utils->envr = dptr_dup(utils->exp);
 	return (utils->exp);
 }

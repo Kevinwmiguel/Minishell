@@ -6,24 +6,33 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 20:52:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:38:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/builtins.h"
 
-void	helper_lines2(t_pipesort *piped, t_shell *utils)
+void	free_pipesort(t_pipesort *head)
 {
-	if (quotes_verify(utils->input) == 0)
+	t_pipesort	*tmp;
+
+	while (head)
 	{
-		if (pipe_verify(utils->input) == 0)
-		{
-			utils->command = pipping_commands(utils->input);
-			if (scary_thing(piped, utils) == 1)
-				pipex_start(piped, utils);
-			free_dptr(utils->command, 0);
-		}
+		tmp = head->next;
+		if (head->content)
+			free_dptr(head->content);
+		free(head);
+		head = tmp;
 	}
+}
+
+void	strip_input_quotes(t_shell *utils)
+{
+	char	*clean;
+
+	clean = remove_quotes(utils->input);
+	free(utils->input);
+	utils->input = clean;
 }
 
 void	main2(t_shell *utils)
@@ -32,7 +41,7 @@ void	main2(t_shell *utils)
 
 	while (1)
 	{
-		piped = ft_calloc(2, sizeof(t_pipesort));
+		piped = ft_calloc(1, sizeof(t_pipesort));
 		utils->pipe_bridge = piped;
 		utils->index = 0;
 		signal_search(ROOT);
@@ -45,7 +54,7 @@ void	main2(t_shell *utils)
 		}
 		add_history(utils->input);
 		helper_lines2(piped, utils);
-		free(piped);
+		free_pipesort(piped);
 	}
 }
 
@@ -54,21 +63,6 @@ void	utils_init(t_shell *utils, char **env)
 	utils->export = ft_calloc(1, sizeof(t_builtvars));
 	utils->j = 0;
 	utils->envr = dptr_dup(env);
-}
-
-void	helper_lines(int argc, char **argv, t_shell *utils)
-{
-	char	**temp;
-
-	temp = bubble_sort(0, utils->envr, 0, argc);
-	utils->exp = temp;
-	free_dptr(temp, 0);
-	if (argc != 1 || argv[1])
-	{
-		printf("invalid args (no args should be used)\n");
-		exit (1);
-	}
-	main2(utils);
 }
 
 int	main(int argc, char **argv, char **env)

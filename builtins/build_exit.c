@@ -6,26 +6,26 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:57:29 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/08 20:59:27 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:13:04 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/builtins.h"
 
-void	free_dptr(char **clc, int i)
+void	free_dptr(char **dptr)
 {
-	if (clc)
+	int	i;
+
+	i = 0;
+	if (!dptr)
 		return ;
-	if (clc)
+	while (dptr[i])
 	{
-		while (clc[i])
-		{
-			free(clc[i]);
-			clc[i] = NULL;
-			i++;
-		}
-		free(clc);
+		free(dptr[i]);
+		i++;
 	}
+	if (dptr)
+		free(dptr);
 }
 
 void	ft_free(void **pointer)
@@ -39,20 +39,30 @@ void	ft_free(void **pointer)
 
 void	final_cleaner(t_shell *utils)
 {
-	free_dptr(utils->builtins, 0);
-	free_dptr(utils->exp, 0);
-	free_dptr(utils->command, 0);
-	free_dptr(utils->envr, 0);
-	free(utils->export);
-	free(utils->input);
-	free(utils->echo_breed);
-	free(utils->splitex);
-	free(utils);
+	if (utils->builtins)
+		free(utils->builtins);
+	if (utils->exp)
+		free_dptr(utils->exp);
+	if (utils->command)
+		free_dptr(utils->command);
+	if (utils->envr)
+		free_dptr(utils->envr);
+	if (utils->export)
+		free(utils->export);
+	if (utils->input)
+		free(utils->input);
+	if (utils->echo_breed)
+		free(utils->echo_breed);
+	if (utils->splitex)
+		free(utils->splitex);
+	if (utils->right_path)
+		free_dptr(utils->right_path);
+	if (utils)
+		free(utils);
 }
 
-void	clear_little_things(char **argv, t_shell *utils)
+void	clear_little_things(t_shell *utils)
 {
-	free_dptr(argv, 0);
 	final_cleaner(utils);
 	exit (0);
 }
@@ -65,14 +75,14 @@ void	build_exit(char **argv, t_shell *utils)
 	i = 0;
 	status = 0;
 	if (!argv[1])
-		clear_little_things(argv, utils);
-	if (!argv[2])
+		clear_little_things(utils);
+	else if (!argv[2])
 	{
 		while (ft_isdigit(argv[1][i]) == 1)
 			i++;
 		if (argv[1][i] != '\0')
 		{
-			free_dptr(argv, 0);
+			final_cleaner(utils);
 			exit (2);
 		}
 		else

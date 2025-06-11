@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:58:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/03 00:33:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:41:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ int	quotes_verify(char *argv)
 	return (0);
 }
 
-int	pipe_verify(char *argv)
+int	pipe_verify(char *argv, int x)
 {
 	int	j;
-	int	x;
 
 	j = -1;
 	while (argv[++j])
@@ -55,6 +54,8 @@ int	pipe_verify(char *argv)
 		if (argv[j] == '|')
 		{
 			j++;
+			if (!argv[j])
+				return (ft_putendl_fd("wrong pipes", 1), -1);
 			while (argv[j] && argv[j] != '|')
 			{
 				if (argv[j] != ' ')
@@ -63,6 +64,7 @@ int	pipe_verify(char *argv)
 			}
 			if (x == 0)
 				return (ft_putendl_fd("wrong pipes", 1), -1);
+			j--;
 		}
 	}
 	return (0);

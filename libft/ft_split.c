@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:11:00 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/06 01:06:03 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:39:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,14 @@ char	**ft_split(char *str, char c)
 {
 	char	**matrix;
 
-	matrix = (char **)malloc(sizeof (char *) * (word_count(str, c) + 1));
+	matrix = (char **)malloc(sizeof(char *) * (word_count(str, c) + 1));
 	if (!matrix)
 		return (NULL);
-	matrix = fill_matrix(matrix, str, c);
+	if (!fill_matrix(matrix, str, c))
+	{
+		free(matrix);
+		return (NULL);
+	}
 	return (matrix);
 }
 
