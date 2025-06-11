@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/08 21:10:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 03:13:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_shell
 	int				y;
 	int				x;
 	int				echo_pa;
+	int				count_hp;
 	char			*str;
 	char			**final_reader;
 	char			*o_que_quiser;
@@ -153,6 +154,9 @@ typedef struct s_shell
 	char			*output_ex;
 	char			dollar;
 	int				count_var;
+	char			*tmp;
+	char			*third;
+	char			*new;
 }		t_shell;
 
 typedef struct s_cd
@@ -181,6 +185,8 @@ typedef struct datafile
 	char	*paths;
 }	t_files;
 
+void	strip_input_quotes(t_shell *utils);
+void	free_triple_ptr(char ***ptr);
 void	wyw_start(t_shell *utils);
 char	*expand_pid(char *str, int j, t_shell *utils);
 int		pid_dollar(char *str, int j);
@@ -251,7 +257,13 @@ void	main2(t_shell *utils);
 int		echo_flag(char *argv);
 int		flag_count(char *argv);
 int		final_reader_size(char *str);
+char	*remove_after_last_cat(char *str);
 char	*remove_before_last_echo(char *str);
+
+char	*remove_quotes(const char *str);
+char	*malloc_no_quotes(const char *str);
+void	copy_without_quotes(char *dest, const char *src);
+int		count_without_quotes(const char *str, int i);
 
 /////////////
 
@@ -338,10 +350,12 @@ bool	is_there_pipe(char *str);
 char	**pipping_commands(char *input);
 char	**pipping_commands2(char *str, int x);
 int		size_before_pipe(char *str);
-int		pipe_verify(char *argv);
+int		pipe_verify(char *argv, int x);
 
 //Expansion Related
 
+void	handle_no_quotes_echo(t_shell *utils);
+void	handle_quotes_echo(t_shell *utils);
 char	*expansions(char *argv, t_shell *utils, int pa);
 char	*ft_strjoinn(char *s1, char *s2);
 int		is_there_a_dollar(char *str);
@@ -350,7 +364,7 @@ int		varlen(char *str, int k);
 
 //EXIT
 void	final_cleaner(t_shell *utils);
-void	free_dptr(char **clc, int i);
+void	free_dptr(char **clc);
 void	ft_free(void **pointer);
 
 //COMMANDS
@@ -367,6 +381,7 @@ void	input_fixer(char *input);
 //tokenizar a string, e depois usar o split para ...
 //outros
 
+void	free_pipesort(t_pipesort *head);
 void	input_fixer(char *input);
 size_t	len_dp(char **s);
 char	*double_to_one(char **dptr);

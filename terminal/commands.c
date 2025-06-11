@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 14:12:32 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/09 22:44:31 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:37:07 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	run_child_process(char **argv, t_shell *utils, t_pipesort *piped)
 		utils->resolved_path = ft_substr(argv[0], 2, ft_strlen(argv[0]) - 2);
 	else
 	{
+		free(utils->right_path);
 		utils->right_path = ft_split(PATH, ':');
 		while (utils->right_path[++j])
 		{
@@ -72,7 +73,6 @@ void	handle_special_builtins(char **argv, t_shell *utils, t_pipesort *piped)
 		if (ret == 7)
 		{
 			build_exit(utils->command, utils);
-			//final_cleaner(utils);
 			exit(1);
 		}
 	}

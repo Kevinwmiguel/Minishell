@@ -6,20 +6,26 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:57:29 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/09 22:50:02 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:13:04 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/builtins.h"
 
-void	free_dptr(char **dptr, int i)
+void	free_dptr(char **dptr)
 {
+	int	i;
 
+	i = 0;
 	if (!dptr)
 		return ;
 	while (dptr[i])
-		free(dptr[i++]);
-	free(dptr);
+	{
+		free(dptr[i]);
+		i++;
+	}
+	if (dptr)
+		free(dptr);
 }
 
 void	ft_free(void **pointer)
@@ -36,11 +42,11 @@ void	final_cleaner(t_shell *utils)
 	if (utils->builtins)
 		free(utils->builtins);
 	if (utils->exp)
-		free_dptr(utils->exp, 0);
+		free_dptr(utils->exp);
 	if (utils->command)
-		free_dptr(utils->command, 0);
+		free_dptr(utils->command);
 	if (utils->envr)
-		free_dptr(utils->envr, 0);
+		free_dptr(utils->envr);
 	if (utils->export)
 		free(utils->export);
 	if (utils->input)
@@ -50,7 +56,7 @@ void	final_cleaner(t_shell *utils)
 	if (utils->splitex)
 		free(utils->splitex);
 	if (utils->right_path)
-		free_dptr(utils->right_path, 0);
+		free_dptr(utils->right_path);
 	if (utils)
 		free(utils);
 }

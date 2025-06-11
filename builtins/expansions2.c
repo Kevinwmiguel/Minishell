@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:03:27 by joanda-s          #+#    #+#             */
-/*   Updated: 2025/06/05 20:23:54 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:11:53 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ char	*expansions(char *argv, t_shell *utils, int pa)
 	utils->count_m = 0;
 	utils->count_h = 0;
 	if (pa == 2)
-		return (free_dptr(utils->splitex, 0), ft_strdup(argv));
+		return (free_dptr(utils->splitex), ft_strdup(argv));
 	ex_splitex(utils, i);
 	finish_expansion(utils);
-	free_dptr(utils->splitex, 0);
+	free_dptr(utils->splitex);
 	return (utils->output_ex);
 }

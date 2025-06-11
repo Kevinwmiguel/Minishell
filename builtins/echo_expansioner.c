@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:38:35 by thiago-camp       #+#    #+#             */
-/*   Updated: 2025/06/09 18:54:16 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:41:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**pipping_commands2(char *str, int x)
 {
 	char	**rtn;
 
-	(void)x; // já que você não usa `x`, para evitar warning
+	(void)x;
 	rtn = ft_split(str, '|');
 	return (rtn);
 }

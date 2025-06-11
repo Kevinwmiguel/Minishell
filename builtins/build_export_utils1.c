@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 15:56:04 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/09 18:13:29 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:47:00 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ char	**bubble_sort(int j, char **mlc, int flag, int argc)
 		copy = exp_copy(mlc);
 	else
 		copy = exp_copy2(mlc, argc);
-	// if (mlc && x == 1)
-	// 	free_dptr(mlc, 0);
 	x = 1;
 	while (copy[j])
 	{

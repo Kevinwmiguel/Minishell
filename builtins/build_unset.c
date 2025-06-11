@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:24:33 by thiago-camp       #+#    #+#             */
-/*   Updated: 2025/06/04 12:18:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:11:47 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**build_unset(int argc, char **argv, char **exp, int i)
 			if (unset_argv_checker(exp[i], argv) == 0)
 				copy[++j] = ft_strdup(exp[i]);
 		}
-		free_dptr(exp, 0);
+		free_dptr(exp);
 		exp = copy;
 	}
 	return (exp);

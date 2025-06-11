@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 16:12:42 by thguimar          #+#    #+#             */
-/*   Updated: 2025/06/03 01:34:54 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:47:34 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	export_hha(char **argv, t_builtvars *export, int j, int flag)
 {
-	while (argv[j][export->l - 1] != '=')
+	while (export->l < (int)ft_strlen(argv[j]) && argv[j][export->l] != '=')
 	{
 		export->mlc[export->m][export->l] = argv[j][export->l];
 		export->l++;
@@ -63,7 +63,10 @@ void	export_helper_helper(t_builtvars *export, char **argv, int j)
 	while (argv[j][export->l])
 	{
 		if (argv[j][export->l] != '"')
+		{
 			export->mlc[export->m][export->n] = argv[j][export->l];
+			export->n++;
+		}
 		export->n++;
 		export->l++;
 	}

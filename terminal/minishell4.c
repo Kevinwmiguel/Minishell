@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 01:44:46 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/09 22:28:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:27:57 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 void	exec_builtin(int flag, char **command, char **env, t_shell *utils)
 {
-	int		x;
 	int		y;
 
 	utils->echo_breed = NULL;
 	y = len_dp(command);
-	x = where_is_echox(command);
-	if (x != -1)
+	utils->count_hp = where_is_echox(command);
+	if (utils->count_hp != -1)
 		utils->echo_breed = double_to_one(utils->command);
 	if (utils->input)
 		input_fixer(utils->input);
-	if (flag == 1 && x != -1)
+	if (flag == 1 && utils->count_hp != -1)
 		build_echo(utils->echo_breed + 5, utils, 0, -1);
 	else if (flag == 2)
 		build_cd(y, command, env, utils);
@@ -79,6 +78,6 @@ int	scary_thing(t_pipesort	*piped, t_shell *utils)
 		piped_clone->prev = piped_clone2;
 		piped_clone2 = piped_clone2->next;
 	}
-	//free_dptr(piped_clone->content, 0);
+	free_dptr(piped_clone->content);
 	return (1);
 }

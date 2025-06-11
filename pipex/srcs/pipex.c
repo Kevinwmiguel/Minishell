@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:37:03 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/09 21:27:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:18:01 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,11 @@ void	parent_process(t_pipexinfo *px, t_pipesort **piped)
 		close(px->fd[1]);
 		px->fd_in = px->fd[0];
 	}
+	if ((*piped)->heredoc_fd > 0)
+	{
+		close((*piped)->heredoc_fd);
+		(*piped)->heredoc_fd = -1;
+	}
 	waitpid(px->pid, NULL, 0);
 	*piped = (*piped)->next;
 }
@@ -120,11 +125,9 @@ void	main3pipex(t_files *file, t_pipesort *piped, t_shell *utils)
 			child_p(file, piped, utils,
 				(t_fdinfo){px.fd_in, px.fd[0], px.fd[1], px.i, px.pipe_counts});
 		else
+		{
 			parent_process(&px, &piped);
+		}
 		px.i++;
 	}
-	//final_cleaner(utils);
-	//free(file->paths);
-	//free_dptr(utils->envr, 0);
-	//final_cleaner9(file);
 }

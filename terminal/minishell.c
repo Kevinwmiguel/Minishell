@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/09 22:45:43 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/11 02:38:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,25 @@
 
 void	free_pipesort(t_pipesort *head)
 {
-	t_pipesort *tmp;
+	t_pipesort	*tmp;
 
 	while (head)
 	{
 		tmp = head->next;
 		if (head->content)
-			free_dptr(head->content, 0); // libera o char **
+			free_dptr(head->content);
 		free(head);
 		head = tmp;
 	}
 }
 
-void	helper_lines2(t_pipesort *piped, t_shell *utils)
+void	strip_input_quotes(t_shell *utils)
 {
-	if (quotes_verify(utils->input) == 0)
-	{
-		if (pipe_verify(utils->input) == 0)
-		{
-			utils->command = pipping_commands(utils->input);
-			if (scary_thing(piped, utils) == 1)
-				pipex_start(piped, utils);
-			free_dptr(utils->command, 0);
-		}
-	}
+	char	*clean;
+
+	clean = remove_quotes(utils->input);
+	free(utils->input);
+	utils->input = clean;
 }
 
 void	main2(t_shell *utils)
@@ -68,21 +63,6 @@ void	utils_init(t_shell *utils, char **env)
 	utils->export = ft_calloc(1, sizeof(t_builtvars));
 	utils->j = 0;
 	utils->envr = dptr_dup(env);
-}
-
-void	helper_lines(int argc, char **argv, t_shell *utils)
-{
-	char	**temp;
-
-	temp = bubble_sort(0, utils->envr, 0, argc);
-	utils->exp = temp;
-	//free_dptr(temp, 0);
-	if (argc != 1 || argv[1])
-	{
-		printf("invalid args (no args should be used)\n");
-		exit (1);
-	}
-	main2(utils);
 }
 
 int	main(int argc, char **argv, char **env)
