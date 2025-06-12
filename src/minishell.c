@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void exit_shell(t_shell *shell)
 {
 	(void) shell;
@@ -92,5 +91,6 @@ int	main(int argc, char **argv, char **env)
 	init(&shell, env);
 	// ex(&shell);
 	run(&shell);
+	rl_clear_history();
 	return (0);
 }
