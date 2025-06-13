@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+t_cmd *create_cmd(t_shell *data, t_token *token)
+{
+    t_cmd *cmd;
+
+    cmd = malloc(sizeof(t_cmd));
+    if(cmd == NULL)
+        return(NULL);
+    cmd->args = get_cmd(token);
+    cmd->next = NULL;
+    return(cmd);
+}
+
+void add_cmd(t_cmd *list_cmd, t_cmd *new_cmd)
+{
+    while(list_cmd && list_cmd->next != NULL)
+        list_cmd = list_cmd->next;
+    list_cmd->next = new_cmd;
+}
+
 int process_shell_input(t_shell *data, char *str)
 {
     char *str_parse;
