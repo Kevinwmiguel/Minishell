@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-t_signal	g_signal;
 
 void exit_shell(t_shell *shell)
 {

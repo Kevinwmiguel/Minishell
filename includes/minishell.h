@@ -37,41 +37,14 @@
 #define ARG 7
 #define DOLLAR 8
 
-// // typedef struct s_expansion
-// // {
-// // 	int		i;
-// // 	int		j;
-// // 	int		k;
-// // 	int		l;
-// // 	int		x;
-// // 	int		dollar;
-// // 	char	**split;
-// // 	char	*oq1;
-// // 	char	*oq2;
-// // 	char	*oq3;
-// // 	char	*oq4;
-// // 	char	*oq5;
-// // 	char	*output;
-// // 	char	*pid_str;
-// // }	t_exp;
+typedef struct s_signal
+{
+	bool heredoc;
+	pid_t pid;
+} t_signal;
 
-// typedef struct s_pipexinfo
-// {
-// 	int		fd[2];
-// 	int		fd_in;
-// 	int		i;
-// 	int		pipe_counts;
-// 	pid_t	pid;
-// }	t_pipexinfo;
+extern t_signal g_signal;
 
-// typedef struct s_fdinfo
-// {
-// 	int	fd_in;
-// 	int	fd_read;
-// 	int	fd_write;
-// 	int	i;
-// 	int	pipe_count;
-// }	t_fdinfo;
 typedef struct s_red
 {
 	char		args[2];
@@ -99,27 +72,19 @@ typedef struct s_cmd
 	char	**args;
 	t_red	*redirect;
 	struct s_cmd *next;
-}		t_cmd;
+} t_cmd;
 
 typedef struct s_shell
 {
 	t_token *begin;
-	t_env *env;
+	t_env *env_list;
 	t_signal signal;
 	char			**env;
 	char **test;
-	struct t_cmd 			*cmd;
 	bool end;
 	int				exit_code;
-	t_token			*begin;
-}		t_shell;
-
-typedef struct s_signal
-{
-	bool heredoc;
-	pid_t pid;
-} t_signal;
-
+	t_cmd 	*cmd;
+} t_shell;
 
 void print_cmd(t_cmd *cmd);
 int		process_shell_input(t_shell *data, char *str);
@@ -135,10 +100,22 @@ void handle_sigint(int code);
 void handle_sigsegv(int code);
 void handle_sigabrt(int code);
 
-bool creat_token_list(t_shell *data, char *str);
+bool create_token_list(t_shell *data, char *str);
 void free_token_list(t_shell *data);
 void get_token_string(t_token *token, char **line);
 void get_type(t_token *token);
 bool handle_quote_char (char c, bool *is_single_quote, bool *is_double_quote);
+void add_cmd(t_cmd *list_cmd, t_cmd *new_cmd);
+t_cmd *create_cmd(t_shell *data, t_token *token);
+
+char **get_cmd(t_token *token);
+int create_tokenlist(t_shell *data, char *str);
+void free_cmd(t_cmd **cmd);
+bool special_char( char *str);
+bool is_space(char c);
+void skip_space(char **line);
+char *get_special_char(char **str);
+
+
 
 #endif

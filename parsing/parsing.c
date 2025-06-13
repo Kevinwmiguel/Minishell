@@ -3,7 +3,7 @@
 t_cmd *create_cmd(t_shell *data, t_token *token)
 {
     t_cmd *cmd;
-
+    (void)data;
     cmd = malloc(sizeof(t_cmd));
     if(cmd == NULL)
         return(NULL);

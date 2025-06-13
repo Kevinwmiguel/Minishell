@@ -1,5 +1,8 @@
 #include "minishell.h"
 
+
+t_signal g_signal = {false, 0};
+
 void handle_sigint(int code)
 {
     (void)code;

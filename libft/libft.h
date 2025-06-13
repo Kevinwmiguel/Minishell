@@ -71,6 +71,7 @@ char		*ft_strrchr(const char *str, int c);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strdup(const char *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
+int			ft_strcmp(char *s1, char *s2);
 //t_list
 t_list		*ft_lstnew(void *content);
 t_list		*ft_lstlast(t_list *lst);

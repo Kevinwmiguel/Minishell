@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+static t_token *ft_last_token(t_token *token_list)
+{
+    while(token_list && token_list->next)
+        token_list = token_list->next;
+    return (token_list);
+}
+
 static bool add_token(t_shell *data, char **str)
 {
     t_token *last_token;
@@ -28,12 +35,6 @@ static bool add_token(t_shell *data, char **str)
     return(true);
 }
 
-static t_token *last_token(t_token *token_list)
-{
-    while(token_list && token_list->next)
-        token_list = token_list->next;
-    return (token_list);
-}
 
 void free_token_list(t_shell *data)
 {

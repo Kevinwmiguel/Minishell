@@ -23,7 +23,7 @@ static char *get_expand_value(t_shell *data, char *get_search)
     expand_value = NULL;
     if(get_search)
     {
-        expand_value = my_getenv(data, get_search);
+        expand_value = my_get_env(data, get_search);
         if(!expand_value)
             expand_value = ft_strdup("");
         free(get_search);

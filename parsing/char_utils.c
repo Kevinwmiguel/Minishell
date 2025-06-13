@@ -2,7 +2,7 @@
 
 bool is_space(char c)
 {
-    if( c && (c >= 9 && c <= 13 ) || c == ' ')
+    if( c && (c == ' ' || (c >= 9 && c <= 13 )))
         return(true);
     return(false);
 }
