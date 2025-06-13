@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 22:31:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/13 23:15:53 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,17 @@ void ex(t_shell *shell)
 	begin->args = ft_calloc(3, sizeof(char *));
 	next->args = ft_calloc(3, sizeof(char *));
 
-	begin->args[0] = ft_strdup("ls");
-	begin->args[1] = ft_strdup("-la"); // caso deseje adicionar
-	next->args[0] = get_path("exit", shell->env);
+	char *tmp = NULL;
+
+	begin->args[0] = ft_strdup("export");
+	tmp = begin->args[0];
+	begin->args[0] = get_path(begin->args[0], shell->env);
+	free(tmp);
+	//begin->args[1] = ft_strdup("-la"); // caso deseje adicionar
+	
+	next->args[0] = ft_strdup("exit");
 	begin->next = next;
 	shell->cmd = begin;
-
 	print_cmd(begin);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 22:32:02 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/13 23:10:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,18 @@ void	builtins_dealer(t_shell *shell)
 			exec_comm(shell->cmd->args, shell);
 	}
 	else
-		build_pwd(shell);
+		build_exit(shell);
 	shell->count++;
 }
 
 void	execute_all_cmds(t_shell *shell)
 {
-	while (shell->cmd)
+	t_cmd	*hold;
+
+	hold = shell->cmd;
+	while (hold)
 	{
 		builtins_dealer(shell);
-		shell->cmd = shell->cmd->next;
+		hold = hold->next;
 	}
 }
