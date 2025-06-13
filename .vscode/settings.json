@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "builtins.h": "c"
+        "builtins.h": "c",
+        "minishell.h": "c",
+        "cstdlib": "c",
+        "cmath": "c"
     }
 }

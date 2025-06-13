@@ -1,0 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build_unset.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 00:36:45 by kwillian          #+#    #+#             */
+/*   Updated: 2025/06/13 02:30:48 by kwillian         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/utils.h"
+
+void	free_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		free(env[i++]);
+	free(env);
+}
+
+int	should_skip(char *env_entry, char **args)
+{
+	int		i;
+	int		len;
+
+	i = 1;
+	while (args[i])
+	{
+		len = ft_strlen(args[i]);
+		if (ft_strncmp(env_entry, args[i], len) == 0
+			&& env_entry[len] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	**copy_env_without_vars(char **old_env, char **args)
+{
+	char	**new_env;
+	int		i;
+	int		j;
+
+	new_env = ft_calloc(mlc_size(0, old_env) + 1, sizeof(char *));
+	if (!new_env)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (old_env[++i])
+	{
+		if (!should_skip(old_env[i], args))
+			new_env[j++] = ft_strdup(old_env[i]);
+	}
+	new_env[j] = NULL;
+	return (new_env);
+}
+
+void	build_unset(t_shell *shell)
+{
+	char	**new_env;
+
+	if (!shell->cmd || !shell->cmd->args[1])
+		return ;
+	new_env = copy_env_without_vars(shell->env, shell->cmd->args);
+	if (!new_env)
+		return ;
+	free_env(shell->env);
+	shell->env = new_env;
+}

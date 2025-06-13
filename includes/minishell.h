@@ -6,17 +6,16 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/11 15:15:20 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:32:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include <dirent.h>
 # include <stdbool.h>
 # include "../libft/libft.h"
-# include "utils.h"
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -26,25 +25,6 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <signal.h>
-
-
-// // typedef struct s_expansion
-// // {
-// // 	int		i;
-// // 	int		j;
-// // 	int		k;
-// // 	int		l;
-// // 	int		x;
-// // 	int		dollar;
-// // 	char	**split;
-// // 	char	*oq1;
-// // 	char	*oq2;
-// // 	char	*oq3;
-// // 	char	*oq4;
-// // 	char	*oq5;
-// // 	char	*output;
-// // 	char	*pid_str;
-// // }	t_exp;
 
 // typedef struct s_pipexinfo
 // {
@@ -63,28 +43,48 @@
 // 	int	i;
 // 	int	pipe_count;
 // }	t_fdinfo;
+
+typedef enum e_signal_type
+{
+	ROOT,
+	CHILD,
+	HEREDOC,
+	IGNORE
+}	t_sig_t;
+
+typedef struct s_pipesort
+{
+	int	outfd; //output file
+	int	infd; // input file
+	int	heredoc; //here_doc file :) I hate that
+}	t_pipesort;
+
 typedef struct s_red
 {
-	char		args[2];
-	struct s_red *next;
-}		t_red;
+	char				args[2]; // Ex: ">", ">>", "<"
+	t_pipesort			*pipe; //structure of pipes... I dont know if I trully will need that
+	struct s_red		*next; // to multi redirections
+}	t_red;
 
 
 typedef struct s_cmd
 {
-	char	**args;
-	t_red	*redirect;
-	struct s_cmd *next;
-}		t_cmd;
+	char			**args; // Array strings: ["ls", "-l", NULL]
+	t_red			*redirect; // pointer to redirect list
+	struct s_cmd	*next; // next cmd (pipe: `ls | wc`)
+}	t_cmd;
 
 
 typedef struct s_shell
 {
-	char			**env;
-	t_cmd 			*cmd; 
-}		t_shell;
+	char	**env; // Var to env
+	char	**exp; // Var to exp
+	int		count;
+	int		is_child;
+	t_cmd	*cmd; // cmds list to be execute
+}	t_shell;
 
 
-void print_cmd(t_cmd *cmd);
+void	print_cmd(t_cmd *cmd);
 
 #endif
