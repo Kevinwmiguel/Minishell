@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_signal	g_signal;
+
 void exit_shell(t_shell *shell)
 {
 	(void) shell;
@@ -28,11 +30,10 @@ int	run(t_shell *shell)
 		if (!input)
 			return (exit_shell(shell), 0);
 		add_history(input);
-		if(ft_strlen(input) != 0 && parse(shell, input))
+		if(ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{
-			shell->cmd = init_cmd(shell, shell->begin);
-			exec(shell);
-			free_token_lst(shell);
+			shell->cmd = parse_cmd(shell, shell->begin);
+			print_cmd(shell->cmd);
 		}
 		free(input);
 	}
