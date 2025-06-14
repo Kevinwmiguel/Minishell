@@ -47,7 +47,7 @@ extern t_signal g_signal;
 
 typedef struct s_red
 {
-	char		args[2];
+	char		*args;
 	int type;
 	struct s_red *next;
 }		t_red;
@@ -87,6 +87,9 @@ typedef struct s_shell
 } t_shell;
 
 void print_cmd(t_cmd *cmd);
+void print_redirects(t_red *red);
+void debug_tokens(t_token *token);
+
 int		process_shell_input(t_shell *data, char *str);
 t_cmd *parse_cmd(t_shell *data, t_token *token);
 
@@ -105,17 +108,17 @@ void free_token_list(t_shell *data);
 void get_token_string(t_token *token, char **line);
 void get_type(t_token *token);
 bool handle_quote_char (char c, bool *is_single_quote, bool *is_double_quote);
-void add_cmd(t_cmd *list_cmd, t_cmd *new_cmd);
+void add_cmd(t_cmd **list_cmd, t_cmd *new_cmd);
 t_cmd *create_cmd(t_shell *data, t_token *token);
 
 char **get_cmd(t_token *token);
-int create_tokenlist(t_shell *data, char *str);
 void free_cmd(t_cmd **cmd);
 bool special_char( char *str);
 bool is_space(char c);
 void skip_space(char **line);
 char *get_special_char(char **str);
-
+void get_redirection(t_cmd *cmd, t_token *token);
+void free_redirections(t_red *redir);
 
 
 #endif

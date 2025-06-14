@@ -50,7 +50,7 @@ void free_token_list(t_shell *data)
     }
 }
 
-bool creat_token_list(t_shell *data, char *str)
+bool create_token_list(t_shell *data, char *str)
 {
     data->begin = NULL;
     while(*str)

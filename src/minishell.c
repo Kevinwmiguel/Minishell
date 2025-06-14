@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void exit_shell(t_shell *shell)
 {
 	(void) shell;
@@ -44,18 +43,6 @@ static void	init(t_shell *shell, char **env)
 
 	shell->env = dptr_dup(env);
 }
-
-void print_cmd(t_cmd *cmd)
-{
-	if (!cmd) return;
-	printf("======================\n");
-	int i = 0;
-	while (cmd->args[i])
-		printf("%s\n", cmd->args[i++]);
-	printf("redirect: %i\n", cmd->redirect != NULL);
-	print_cmd(cmd->next);
-}
-
 
 char *get_path(char *cmd)
 {
