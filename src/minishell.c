@@ -12,23 +12,23 @@
 
 #include "minishell.h"
 
-void exit_shell(t_shell *shell)
+void	exit_shell(t_shell *shell)
 {
-	(void) shell;
+	(void)shell;
 	printf("exit_shell\n");
 }
 
 int	run(t_shell *shell)
 {
-	char *input;
-	
+	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell: ");
 		if (!input)
 			return (exit_shell(shell), 0);
 		add_history(input);
-		if(ft_strlen(input) != 0 && process_shell_input(shell, input))
+		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{
 			shell->cmd = parse_cmd(shell, shell->begin);
 			print_cmd(shell->cmd);
@@ -40,32 +40,31 @@ int	run(t_shell *shell)
 
 static void	init(t_shell *shell, char **env)
 {
-
 	shell->env = dptr_dup(env);
 }
 
-char *get_path(char *cmd)
+char	*get_path(char *cmd)
 {
 	return (cmd);
 }
-void ex(t_shell	*shell){
+void	ex(t_shell *shell)
+{
+	char	**cmd1;
+	char	**cmd2;
+	t_cmd	*next;
+	t_cmd	*begin;
 
-	char **cmd1 = ft_calloc(sizeof(char *), 3);
-
+	cmd1 = ft_calloc(sizeof(char *), 3);
 	cmd1[0] = get_path(ft_strdup("ls"));
 	cmd1[1] = ft_strdup("-la");
-
-	char **cmd2 = ft_calloc(sizeof(char *), 3);
-
-	*cmd2 =  get_path(ft_strdup("wc"));
-
-	t_cmd *next = ft_calloc(sizeof(t_cmd), 1);
+	cmd2 = ft_calloc(sizeof(char *), 3);
+	*cmd2 = get_path(ft_strdup("wc"));
+	next = ft_calloc(sizeof(t_cmd), 1);
 	next->args = cmd2;
-	t_cmd *begin = ft_calloc(sizeof(t_cmd), 1);
-	begin->args=cmd1;	
-	begin->next=next;
+	begin = ft_calloc(sizeof(t_cmd), 1);
+	begin->args = cmd1;
+	begin->next = next;
 	shell->cmd = begin;
-
 	print_cmd(begin);
 }
 
@@ -73,8 +72,8 @@ int	main(int argc, char **argv, char **env)
 {
 	static t_shell	shell;
 
-	(void) argc;
-	(void) argv;
+	(void)argc;
+	(void)argv;
 	init(&shell, env);
 	// ex(&shell);
 	run(&shell);

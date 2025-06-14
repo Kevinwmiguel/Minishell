@@ -14,6 +14,6 @@
 # define UTILS_H
 
 int		mlc_size(int j, char **mlc);
-char	**dptr_dup(char	**dptr);
+char	**dptr_dup(char **dptr);
 
 #endif
