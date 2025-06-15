@@ -31,7 +31,9 @@ int	run(t_shell *shell)
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{
 			shell->cmd = parse_cmd(shell, shell->begin);
-			print_cmd(shell->cmd);
+			if (shell->cmd && is_builtin(shell->cmd->args[0]))
+				exec_builtin(shell->cmd, shell);
+			//print_cmd(shell->cmd);
 		}
 		free(input);
 	}
@@ -74,6 +76,11 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGSEGV, &handle_sigsegv);
+	signal(SIGABRT, &handle_sigabrt);
+
 	init(&shell, env);
 	// ex(&shell);
 	run(&shell);

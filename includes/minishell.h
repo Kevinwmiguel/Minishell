@@ -23,6 +23,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -77,7 +78,6 @@ typedef struct s_shell
 	t_env			*env_list;
 	t_signal		signal;
 	char			**env;
-	char			**test;
 	bool			end;
 	int				exit_code;
 	t_cmd			*cmd;
@@ -120,5 +120,11 @@ void				free_redirections(t_red *redir);
 void				print_cmd(t_cmd *cmd);
 void				print_redirects(t_red *red);
 void				debug_tokens(t_token *token);
+
+int exec_builtin(t_cmd *cmd, t_shell *shell);
+bool is_builtin(char *cmd);
+int built_pwd(void);
+int built_env (char **env);
+int	built_cd(char **args);
 
 #endif
