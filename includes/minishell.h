@@ -6,7 +6,7 @@
 /*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/16 11:23:15 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/06/16 14:03:55 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "utils.h"
 # include <dirent.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -37,14 +37,13 @@
 # define ARG 7
 # define DOLLAR 8
 
-
 typedef struct s_signal
 {
 	bool			heredoc;
 	pid_t			pid;
 }					t_signal;
 
-extern t_signal g_signal;
+extern t_signal		g_signal;
 
 typedef struct s_red
 {
@@ -118,19 +117,19 @@ void				handle_sigabrt(int code);
 
 void				free_cmd(t_cmd **cmd);
 void				free_redirections(t_red *redir);
-void 				free_str(char **str);
+void				free_str(char **str);
 
 void				print_cmd(t_cmd *cmd);
 void				print_redirects(t_red *red);
 void				debug_tokens(t_token *token);
 
-int exec_builtin(t_cmd *cmd, t_shell *shell);
-bool is_builtin(char *cmd);
-int built_pwd(void);
-int built_env (char **env);
-int	built_cd(char **args);
-int built_env (char **env);
-int built_pwd(void);
-int	built_cd(char **args);
+int					exec_builtin(t_cmd *cmd, t_shell *shell);
+bool				is_builtin(char *cmd);
+int					built_pwd(void);
+int					built_env(char **env);
+int					built_cd(char **args);
+int					built_env(char **env);
+int					built_pwd(void);
+int					built_cd(char **args);
 
 #endif
