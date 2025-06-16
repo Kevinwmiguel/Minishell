@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:38:46 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:38:46 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:38:46 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/06/16 13:58:55 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ bool	handle_quote_char(char c, bool *is_single_quote, bool *is_double_quote)
 		(*is_single_quote) = true;
 		return (true);
 	}
-	else if (c == '\"' && !(*is_single_quote) && !(is_double_quote))
+	else if (c == '\"' && !(*is_single_quote) && !(*is_double_quote))
 	{
 		(*is_double_quote) = true;
 		return (true);
 	}
-	else if (c == '\'' && (*is_single_quote) && !(is_double_quote))
+	else if (c == '\'' && (*is_single_quote) && !(*is_double_quote))
 	{
 		(*is_single_quote) = false;
 		return (true);
 	}
-	else if (c == '\"' && (*is_single_quote) && !(is_double_quote))
+	else if (c == '\"' && (*is_double_quote) && !(*is_single_quote))
 	{
 		(*is_double_quote) = false;
 		return (true);
