@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:37:48 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:37:48 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:37:48 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/06/16 11:23:01 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,19 @@ void	free_cmd(t_cmd **cmds)
 		*cmds = tmp;
 	}
 }
+
+void free_str(char **str)
+{
+	int i;
+
+	i = 0;
+	if (!str)
+		return;
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
