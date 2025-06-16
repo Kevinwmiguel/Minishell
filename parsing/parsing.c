@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:38:08 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/06/16 12:17:20 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	process_shell_input(t_shell *data, char *str)
 		free(str_parse);
 		return (0);
 	}
-	debug_tokens(data->begin);
+	//debug_tokens(data->begin);
 	free(str_parse);
 	return (1);
 }
