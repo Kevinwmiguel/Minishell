@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/11 15:18:02 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:24:23 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 void	exit_shell(t_shell *shell)
 {
 	(void)shell;
+	if (shell->begin)
+		free_token_list(shell);
+	if (shell->cmd)
+		free_cmd(&shell->cmd);
+	if(shell->env)
+		free_str(shell->env);
+	rl_clear_history();
 	printf("exit_shell\n");
 }
 
