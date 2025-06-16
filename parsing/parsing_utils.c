@@ -6,7 +6,7 @@
 /*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:37:57 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/16 14:32:09 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/06/16 14:34:55 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	verify_closed_quote(char *str)
 		else if (str[i] == '\"' && !is_single_quote && !is_double_quote)
 			is_double_quote = true;
 		else if (str[i] == '\'' && is_single_quote && !is_double_quote)
-					is_single_quote = false;
+			is_single_quote = false;
 		else if (str[i] == '\"' && is_double_quote && !is_single_quote)
 			is_double_quote = false;
 		i++;
