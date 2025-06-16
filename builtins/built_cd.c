@@ -9,7 +9,7 @@ int	built_cd(char **args)
 		path = getenv("HOME");
 		if (!path)
 		{
-			fprintf(stderr, "cd: HOME not set\n");
+			ft_putendl_fd("cd: HOME not set", 2);
 			return (1);
 		}
 	}
@@ -18,14 +18,13 @@ int	built_cd(char **args)
 		path = getenv("OLDPWD");
 		if (!path)
 		{
-			fprintf(stderr, "cd: OLDPWD not set\n");
+			ft_putendl_fd("cd: OLDPWD not set", 2);
 			return (1);
 		}
 		printf("%s\n", path);
 	}
 	else
 		path = args[1];
-
 	if (chdir(path) != 0)
 	{
 		perror("cd");
