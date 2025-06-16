@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:38:31 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:38:31 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:38:31 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/06/16 14:07:06 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_signal	g_signal;
+t_signal g_signal = {false, 0};
 
 void	handle_sigint(int code)
 {
