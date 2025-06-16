@@ -13,7 +13,6 @@ LIBFT = $(LIBFT_PATH)/libft.a
 SRCS = $(wildcard src/*.c src/utils/*.c parsing/*.c exec/*.c builtins/*.c)
 
 Color_Off='\033[0m'       # Text Reset
-
 IGreen='\033[0;92m'       # Green
 IYellow='\033[0;93m'      # Yellow
 ICyan='\033[0;96m'        # Cyan
