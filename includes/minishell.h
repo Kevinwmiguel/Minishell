@@ -126,5 +126,8 @@ bool is_builtin(char *cmd);
 int built_pwd(void);
 int built_env (char **env);
 int	built_cd(char **args);
+int built_env (char **env);
+int built_pwd(void);
+int	built_cd(char **args);
 
 #endif
