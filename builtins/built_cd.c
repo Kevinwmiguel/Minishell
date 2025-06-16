@@ -1,14 +1,9 @@
 #include "builtin.h"
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 int	built_cd(char **args)
 {
 	char	*path;
 
-	// If no argument, go to HOME
 	if (!args[1])
 	{
 		path = getenv("HOME");
@@ -18,7 +13,7 @@ int	built_cd(char **args)
 			return (1);
 		}
 	}
-	else if (args[1][0] == '-' && args[1][1] == '\0') // cd -
+	else if (args[1][0] == '-' && args[1][1] == '\0')
 	{
 		path = getenv("OLDPWD");
 		if (!path)
@@ -26,17 +21,15 @@ int	built_cd(char **args)
 			fprintf(stderr, "cd: OLDPWD not set\n");
 			return (1);
 		}
-		printf("%s\n", path); // Print OLDPWD path like Bash does
+		printf("%s\n", path);
 	}
 	else
-		path = args[1]; // cd path
+		path = args[1];
 
 	if (chdir(path) != 0)
 	{
-		perror("cd"); // Print error if directory doesn't exist
+		perror("cd");
 		return (1);
 	}
-
-	// Optional: update PWD and OLDPWD in your shell environment
 	return (0);
 }
