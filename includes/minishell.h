@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/11 15:15:20 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:23:15 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@
 # define ARG 7
 # define DOLLAR 8
 
+
 typedef struct s_signal
 {
 	bool			heredoc;
 	pid_t			pid;
 }					t_signal;
+
+extern t_signal g_signal;
 
 typedef struct s_red
 {
@@ -75,7 +78,6 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	t_token			*begin;
-	t_env			*env_list;
 	t_signal		signal;
 	char			**env;
 	bool			end;
@@ -116,6 +118,7 @@ void				handle_sigabrt(int code);
 
 void				free_cmd(t_cmd **cmd);
 void				free_redirections(t_red *redir);
+void 				free_str(char **str);
 
 void				print_cmd(t_cmd *cmd);
 void				print_redirects(t_red *red);
