@@ -6,7 +6,7 @@
 /*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/16 11:24:23 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/06/16 12:15:35 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,13 @@ int	run(t_shell *shell)
 			shell->cmd = parse_cmd(shell, shell->begin);
 			if (shell->cmd && is_builtin(shell->cmd->args[0]))
 				exec_builtin(shell->cmd, shell);
-			//print_cmd(shell->cmd);
+			print_cmd(shell->cmd);
+			free_token_list(shell);
+			free_cmd(&shell->cmd);
+				shell->begin = NULL;
 		}
-		free(input);
+		if(input)
+			free(input);
 	}
 	return (1);
 }
