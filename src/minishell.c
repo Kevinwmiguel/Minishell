@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/15 21:14:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:26:58 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	free_split(char **split)
 // 	while (red)
 // 	{
 // 		tmp = red->next;
-// 		if (red->pipe)
-// 			free(red->pipe);
+// 		if (red->piped)
+// 			free(red->piped);
 // 		free(red);
 // 		red = tmp;
 // 	}
@@ -87,18 +87,58 @@ int	run(t_shell *shell)
 		signal_search(ROOT);
 		input = readline("minishell: ");
 		if (!input)
-			return (exit_shell(shell), 0);
+		{
+			final_cleaner(shell);
+			exit(1);
+		}
 		add_history(input);
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{
 			shell->cmd = parse_cmd(shell, shell->begin);
-			//print_cmd(shell->cmd);
 		}
-		//ex(shell);
 		execute_all_cmds(shell);
 		free(input);
 	}
 	return (1);
+}
+
+void	update_shlvl(t_shell *shell)
+{
+	char	*lvl_str;
+	char	*new_lvl;
+	int		i;
+	int		current_lvl;
+
+	current_lvl = 0;
+	i = 0;
+	while (shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], "SHLVL=", 6) == 0)
+		{
+			current_lvl = ft_atoi(shell->env[i] + 6);
+			break ;
+		}
+		i++;
+	}
+	current_lvl++;
+	lvl_str = ft_itoa(current_lvl);
+	new_lvl = ft_strjoin("SHLVL=", lvl_str);
+	free(lvl_str);
+
+	if (shell->env[i])
+	{
+		free(shell->env[i]);
+		shell->env[i] = new_lvl;
+	}
+	else
+	{
+		i = 0;
+		while (shell->env[i])
+			i++;
+		shell->env = realloc(shell->env, sizeof(char *) * (i + 2));
+		shell->env[i] = new_lvl;
+		shell->env[i + 1] = NULL;
+	}
 }
 
 void init(t_shell *shell, char **env)
@@ -107,64 +147,34 @@ void init(t_shell *shell, char **env)
 	shell->exp = dptr_dup(env);
 	if (!shell->env)
 	{
-		// Trate erro, se quiser
-		// Por exemplo: print e exit
 		perror("Failed to duplicate env");
 		exit(EXIT_FAILURE);
 	}
-	shell->count = 1;
+	update_shlvl(shell);
+	shell->count = 0;
 }
 
 void	print_cmd(t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	if (!cmd)
 		return ;
 	printf("======================\n");
-	int i = 0;
 	while (cmd->args[i])
 		printf("%s\n", cmd->args[i++]);
 	printf("redirect: %i\n", cmd->redirect != NULL);
 	print_cmd(cmd->next);
 }
 
-void ex(t_shell *shell)
-{
-	t_cmd *begin = ft_calloc(1, sizeof(t_cmd));
-	t_cmd *next = ft_calloc(1, sizeof(t_cmd));
-	t_cmd *next2 = ft_calloc(1, sizeof(t_cmd));
-	char *tmp = NULL;
-
-
-	begin->args = ft_calloc(3, sizeof(char *));
-	next->args = ft_calloc(3, sizeof(char *));
-	next2->args = ft_calloc(3, sizeof(char *));
-
-
-	begin->args[0] = ft_strdup("export");
-	tmp = begin->args[0];
-	begin->args[0] = get_path(begin->args[0], shell->env);
-	free(tmp);
-	tmp = NULL;
-	//begin->args[1] = ft_strdup("-la"); // caso deseje adicionar
-
-	next->args[0] = ft_strdup("ls");
-	tmp = next->args[0];
-	next->args[0] = get_path(next->args[0], shell->env);
-	free(tmp);
-
-	next2->args[0] = ft_strdup("exit");
-
-	begin->next = next;
-	next->next = next2;
-	shell->cmd = begin;
-	print_cmd(begin);
-}
-
 int	main(int argc, char **argv, char **env)
 {
-	t_shell	*shell;
-	//int	i = 0;
+	t_shell		*shell;
+	t_signal	signal;
 
+	signal = (t_signal){};
+	handle_sigint(0, &signal);
 	(void) argc;
 	(void) argv;
 
@@ -177,7 +187,6 @@ int	main(int argc, char **argv, char **env)
 	shell->env = NULL;
 	shell->exp = NULL;
 	init(shell, env);
-	//checarSHLVL
 	run(shell);
 	return (0);
 }

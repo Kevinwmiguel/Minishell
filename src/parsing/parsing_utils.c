@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:37:57 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:37:57 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:37:57 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/06/17 11:35:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	verify_closed_quote(char *str)
 	int		i;
 	bool	is_single_quote;
 	bool	is_double_quote;
-
 	i = 0;
 	is_single_quote = false;
 	is_double_quote = false;
@@ -54,9 +53,9 @@ int	verify_closed_quote(char *str)
 			is_single_quote = true;
 		else if (str[i] == '\"' && !is_single_quote && !is_double_quote)
 			is_double_quote = true;
-		else if (str[i] == '\'' && is_single_quote && is_double_quote)
+		else if (str[i] == '\'' && is_single_quote && !is_double_quote)
 			is_single_quote = false;
-		else if (str[i] == '\"' && is_double_quote && is_single_quote)
+		else if (str[i] == '\"' && is_double_quote && !is_single_quote)
 			is_double_quote = false;
 		i++;
 	}

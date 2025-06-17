@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/15 20:51:20 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:15:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 # include "minishell.h"
 
 //UTILS
-void	builtins_dealer(t_shell *shell);
+void	builtins_dealer(t_shell *shell, t_pipexinfo *info);
 void	free_dptr(char **dptr);
 void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
-void	fork_comms(char **argv, t_shell *shell);
+void	fork_comms(char **argv, t_shell *shell, t_pipexinfo *info);
 void	free_split(char **split);
+int		here_doc(char *limiter);
 
 //alocation
 int		mlc_size(int j, char **mlc);
@@ -41,13 +42,14 @@ void	build_cd(t_shell *shell);
 
 //PWD
 void	build_pwd(t_shell *shell);
+void	update_pwd(t_shell *shell);
 
 //ENV
 
 void	build_env(t_shell *shell);
 
 //EXPORT
-char    **build_export(char **env);
+char	**build_export(char **env);
 
 //UNSET
 void	build_unset(t_shell *shell);

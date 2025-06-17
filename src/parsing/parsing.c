@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/15 20:56:43 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:19:21 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int	process_shell_input(t_shell *data, char *str)
 		return (0);
 	if (verify_closed_quote(str))
 	{
-		printf("Error: Unclosed quote.\n");
-		fflush(stdout);
+		write(1, "Error: Unclosed quote.\n", 24);
 		return (0);
 	}
 	str_parse = expand_str(data, str);

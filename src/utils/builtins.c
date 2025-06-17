@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/15 18:07:58 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:04:35 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,24 @@ void	handle_export(t_shell *shell)
 	}
 }
 
+void	handle_normal_builtins(char **argv, t_shell *shell)
+{
+	int	ret;
 
-void	builtins_dealer(t_shell *shell)
+	ret = builtins(argv[0]);
+	if (ret != 0)
+	{
+		if (ret == 1)
+			build_echo(shell, argv);
+		if (ret == 3)
+			build_pwd(shell);
+		if (ret == 6)
+		{
+			build_env(shell);
+		}
+	}
+}
+void	builtins_dealer(t_shell *shell, t_pipexinfo *info)
 {
 	if (shell->count == 1)
 	{
@@ -79,22 +95,34 @@ void	builtins_dealer(t_shell *shell)
 				(ft_strncmp(shell->cmd->args[0], "unset", 5) == 0) || \
 				(ft_strncmp(shell->cmd->args[0], "exit", 4) == 0))
 			handle_special_builtins(shell->cmd->args, shell);
+		if (builtins(shell->cmd->args[0]) > 0)
+			handle_normal_builtins(shell->cmd->args, shell);
 		else
-			fork_comms(shell->cmd->args, shell);
+			fork_comms(shell->cmd->args, shell, info);
 	}
 	else
-		build_exit(shell);
-	shell->count++;
+		fork_comms(shell->cmd->args, shell, info);
 }
 
 void	execute_all_cmds(t_shell *shell)
 {
-	t_cmd	*hold;
+	t_cmd		*hold;
+	t_pipexinfo	info;
+	t_cmd		*hold2;
 
+	info.fd_in = STDIN_FILENO;
 	hold = shell->cmd;
+	hold2 = shell->cmd;
+	shell->count = 0;
 	while (hold)
 	{
-		builtins_dealer(shell);
+		shell->count++;
+		hold = hold->next;
+	}
+	hold = hold2;
+	while (hold)
+	{
+		builtins_dealer(shell, &info);
 		hold = hold->next;
 	}
 }

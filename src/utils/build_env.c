@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 02:19:59 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/17 22:17:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,13 @@ void	write_exp_to_env(t_shell *utils, int j, int i)
 void	build_env(t_shell *shell)
 {
 	int	j;
-	int	fd;
 
 	j = 0;
-	fd = STDOUT_FILENO;
-	if (shell->cmd && shell->cmd->redirect && shell->cmd->redirect->pipe)
-		fd = shell->cmd->redirect->pipe->outfd;
-
 	while (shell->env && shell->env[j])
 	{
-		ft_putstr_fd(shell->env[j], fd);
-		ft_putstr_fd("\n", fd);
+		ft_putstr_fd(shell->env[j], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		j++;
 	}
-	write_exp_to_env(shell, fd, mlc_size(0, shell->exp) - 1);
+	write_exp_to_env(shell, STDOUT_FILENO, mlc_size(0, shell->exp) - 1);
 }

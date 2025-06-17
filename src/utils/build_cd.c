@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:11:16 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 13:40:26 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:15:08 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,7 @@ void	build_cd(t_shell *shell)
 	if (chdir(path) != 0)
 		perror("minishell: cd");
 	else
-	{
-		build_pwd(shell);
-		// Aqui você poderia atualizar PWD e OLDPWD
-		// Exemplo: update_pwd(shell);
-	}
+		update_pwd(shell);
 	if (shell->cmd->args[1])
 		free(path);
 }

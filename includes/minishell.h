@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/15 20:53:26 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:04:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,26 @@ typedef struct s_signal
 	pid_t			pid;
 }					t_signal;
 
+typedef struct s_pipexinfo
+{
+	int		fd[2];      // pipe atual (se houver)
+	int		fd_in;      // entrada vinda do comando anterior (ou STDIN_FILENO)
+	int		fd_out;     // se for o último comando e tiver redirecionamento para arquivo
+	int		i;          // índice (opcional)
+	pid_t	pid;
+}	t_pipexinfo;
+
 typedef struct s_pipesort
 {
 	int	outfd; //output file
 	int	infd; // input file
 	int	heredoc; //here_doc file :) I hate that
-}	t_pipesort;
+}	t_pipes;
 
 typedef struct s_red
 {
 	char				*args; // Ex: ">", ">>", "<"
-	t_pipesort			*pipe; //structure of pipes... I dont know if I trully will need that
+	t_pipes				*piped; //structure of pipes... I dont know if I trully will need that
 	struct s_red		*next; // to multi redirections
 	int					type;
 }	t_red;
@@ -104,12 +113,12 @@ typedef struct s_cmd
 	struct s_cmd	*next; // next cmd (pipe: `ls | wc`)
 }	t_cmd;
 
-
 typedef struct s_shell
 {
 	t_token			*begin;
 	t_env			*env_list;
 	t_signal		signal;
+	t_pipes			*piped;
 	char	**env; // Var to env
 	char	**exp; // Var to exp
 	char			**test;
@@ -146,7 +155,7 @@ bool	special_char(char *str);
 bool	is_space(char c);
 void	skip_space(char **line);
 char	*get_special_char(char **str);
-void	handle_sigint(int code);
+void	handle_sigint(int code, t_signal*);
 void	handle_sigsegv(int code);
 void	handle_sigabrt(int code);
 void	free_cmd(t_cmd **cmd);

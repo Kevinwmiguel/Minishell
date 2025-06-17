@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/16 00:36:59 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/18 00:12:19 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,39 +80,83 @@ char	**pick_path(char **envp)
 	return (path);
 }
 
-void	run_child(t_shell *shell, char **argv)
+void	builtins_analyzer(t_shell *shell, int flag)
 {
-	
-	int fd[2];
-
-	if (pipe(fd) == -1)
-		exit(1);
-	//ENTRADA
-	// if (shell->cmd->redirect->pipe->infd > 0)
-	// 	dup2(fd[0], STDIN_FILENO);
-	// //SAIDA
-	// if (shell->cmd->redirect->pipe->outfd > 0)
-	// 	dup2(fd[1], STDOUT_FILENO);
-	// //CLOSES
-	// if (shell->cmd->redirect->pipe->outfd > 0)
-	// 	close(shell->cmd->redirect->pipe->outfd);
-	// if (shell->cmd->redirect->pipe->infd > 0)
-	// 	close(shell->cmd->redirect->pipe->infd);
-	// char	*temp;
-
-	// temp = shell->cmd->args[0];
-	// shell->cmd->args[0] = get_path(temp, shell->env);
-	// free(temp);
-	// executor(shell);
-	// exit(1);
-	printf("args do numero da expansao %s\n\n", shell->cmd->args[1]);
-	char *fullpath = get_path(shell->cmd->args[0], shell->env);
-	execve(fullpath, argv, shell->env);
-	perror("execve: ");
-	exit(1);
+	(void)shell;
+	if (flag == 1)
+		build_echo(shell, shell->cmd->args);
+	if (flag == 2)
+		build_cd(shell);
+	if (flag == 3)
+		build_pwd(shell);
+	if (flag == 4)
+		build_export(shell->exp);
+	if (flag == 5)
+		build_unset(shell);
+	if (flag == 6)
+		build_env(shell);
+	if (flag == 7)
+		build_exit(shell);
 }
 
-void	fork_comms(char **argv, t_shell *shell)
+void	executor(t_shell *shell, char **argv)
+{
+	int		flag;
+	char	*fullpath;
+
+	if (!argv || !argv[0])
+		exit(1);
+	flag = builtins(shell->cmd->args[0]);
+	if (flag > 0)
+	{
+		builtins_analyzer(shell, flag);
+		exit(1);
+	}
+	else
+	{
+		fullpath = get_path(shell->cmd->args[0], shell->env);
+		execve(fullpath, argv, shell->env);
+		perror("execve: ");
+		exit(1);
+	}
+}
+
+void	run_child(t_shell *shell, char **argv, t_pipexinfo *info)
+{
+	t_red	*redir;
+
+	redir = shell->cmd->redirect;
+
+	if (redir && redir->piped)
+	{
+		if (redir->piped->heredoc > 0)
+			dup2(redir->piped->heredoc, STDIN_FILENO);
+		else if (redir->piped->infd > 0)
+			dup2(redir->piped->infd, STDIN_FILENO);
+		else if (info->fd_in != STDIN_FILENO)
+			dup2(info->fd_in, STDIN_FILENO);
+	}
+	else if (info->fd_in != STDIN_FILENO)
+		dup2(info->fd_in, STDIN_FILENO);
+	if (redir && redir->piped)
+	{
+		if (redir->piped->outfd > 0)
+			dup2(redir->piped->outfd, STDOUT_FILENO);
+		else if (info->fd[1] > 0)
+			dup2(info->fd[1], STDOUT_FILENO);
+	}
+	else if (info->fd[1] > 0)
+		dup2(info->fd[1], STDOUT_FILENO);
+	if (info->fd[0] > 0)
+		close(info->fd[0]);
+	if (info->fd[1] > 0)
+		close(info->fd[1]);
+	if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
+		close(info->fd_in);
+	executor(shell, argv);
+}
+
+void	fork_comms(char **argv, t_shell *shell, t_pipexinfo *info)
 {
 	int	processor;
 
@@ -120,45 +164,12 @@ void	fork_comms(char **argv, t_shell *shell)
 	if (processor == 0)
 	{
 		signal_search(CHILD);
-		run_child(shell, argv);
+		run_child(shell, argv, info);
 	}
 	else
 	{
 		waitpid(processor, NULL, 0);
-		build_exit(shell);
+		//build_exit(shell);
 	}
 }
 
-// void	exec_comm(char **argv, t_shell *shell)
-// {
-// 	char	*fullpath;
-// 	int		flag;
-// 	char	**paths;
-// 	char	*tmp;
-
-	
-// 	if (!argv || !argv[0])
-// 		exit(1);
-// 	paths = pick_path(shell->env);
-// 	tmp = NULL;
-//     printf("envp 0 %s\n", shell->env[0]);
-// 	flag = builtins(argv[0]);
-// 	fullpath = checker_path(shell, paths, tmp);
-
-//     printf("fullpath %s\n", fullpath);
-//     exit(1);
-// 	free_split(paths);
-// 	if (!fullpath && flag == 0)
-// 		exit(1);
-// 	if (flag > 0)
-// 	{
-// 		builtins_dealer(shell);
-// 		exit(0);
-// 	}
-// 	else
-// 	{
-// 		execve(fullpath, argv, shell->env);
-// 		exit(1);
-// 	}
-	
-// }
