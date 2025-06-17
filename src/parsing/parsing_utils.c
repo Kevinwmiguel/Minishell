@@ -29,11 +29,11 @@ char	*my_get_env(t_shell *data, char *var_name)
 
 	i = 0;
 	len = ft_strlen(var_name);
-	while (data->test[i])
+	while (data->env[i])
 	{
-		if (ft_strncmp(var_name, data->test[i], len) == 0
-			&& len_env(data->test[i]) == len)
-			return (ft_strdup(data->test[i] + ft_strlen(var_name) + 1));
+		if (ft_strncmp(var_name, data->env[i], len) == 0
+			&& len_env(data->env[i]) == len)
+			return (ft_strdup(data->env[i] + ft_strlen(var_name) + 1));
 		i++;
 	}
 	return (NULL);
