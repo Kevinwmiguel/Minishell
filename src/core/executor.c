@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 22:42:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/16 00:36:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,31 @@ void	run_child(t_shell *shell, char **argv)
 	if (pipe(fd) == -1)
 		exit(1);
 	//ENTRADA
-	if (shell->cmd->redirect->pipe->infd > 0)
-		dup2(fd[0], STDIN_FILENO);
-	//SAIDA
-	if (shell->cmd->redirect->pipe->outfd > 0)
-		dup2(fd[1], STDOUT_FILENO);
-	//CLOSES
-	if (shell->cmd->redirect->pipe->outfd > 0)
-		close(shell->cmd->redirect->pipe->outfd);
-	if (shell->cmd->redirect->pipe->infd > 0)
-		close(shell->cmd->redirect->pipe->infd);
+	// if (shell->cmd->redirect->pipe->infd > 0)
+	// 	dup2(fd[0], STDIN_FILENO);
+	// //SAIDA
+	// if (shell->cmd->redirect->pipe->outfd > 0)
+	// 	dup2(fd[1], STDOUT_FILENO);
+	// //CLOSES
+	// if (shell->cmd->redirect->pipe->outfd > 0)
+	// 	close(shell->cmd->redirect->pipe->outfd);
+	// if (shell->cmd->redirect->pipe->infd > 0)
+	// 	close(shell->cmd->redirect->pipe->infd);
+	// char	*temp;
+
+	// temp = shell->cmd->args[0];
+	// shell->cmd->args[0] = get_path(temp, shell->env);
+	// free(temp);
+	// executor(shell);
+	// exit(1);
+	printf("args do numero da expansao %s\n\n", shell->cmd->args[1]);
 	char *fullpath = get_path(shell->cmd->args[0], shell->env);
-	printf("fullpath %s\n", fullpath);
 	execve(fullpath, argv, shell->env);
 	perror("execve: ");
 	exit(1);
 }
 
-void	exec_comm(char **argv, t_shell *shell)
+void	fork_comms(char **argv, t_shell *shell)
 {
 	int	processor;
 

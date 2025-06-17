@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 23:15:53 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/15 21:14:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ void	free_split(char **split)
 	free(split);
 }
 
-void	free_redirections(t_red *red)
-{
-	t_red	*tmp;
+// void	free_redirections(t_red *red)
+// {
+// 	t_red	*tmp;
 
-	while (red)
-	{
-		tmp = red->next;
-		if (red->pipe)
-			free(red->pipe);
-		free(red);
-		red = tmp;
-	}
-}
+// 	while (red)
+// 	{
+// 		tmp = red->next;
+// 		if (red->pipe)
+// 			free(red->pipe);
+// 		free(red);
+// 		red = tmp;
+// 	}
+// }
 
 void	free_cmds(t_cmd *cmd)
 {
@@ -89,7 +89,12 @@ int	run(t_shell *shell)
 		if (!input)
 			return (exit_shell(shell), 0);
 		add_history(input);
-		ex(shell);
+		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
+		{
+			shell->cmd = parse_cmd(shell, shell->begin);
+			//print_cmd(shell->cmd);
+		}
+		//ex(shell);
 		execute_all_cmds(shell);
 		free(input);
 	}
@@ -126,20 +131,31 @@ void ex(t_shell *shell)
 {
 	t_cmd *begin = ft_calloc(1, sizeof(t_cmd));
 	t_cmd *next = ft_calloc(1, sizeof(t_cmd));
+	t_cmd *next2 = ft_calloc(1, sizeof(t_cmd));
+	char *tmp = NULL;
+
 
 	begin->args = ft_calloc(3, sizeof(char *));
 	next->args = ft_calloc(3, sizeof(char *));
+	next2->args = ft_calloc(3, sizeof(char *));
 
-	char *tmp = NULL;
 
 	begin->args[0] = ft_strdup("export");
 	tmp = begin->args[0];
 	begin->args[0] = get_path(begin->args[0], shell->env);
 	free(tmp);
+	tmp = NULL;
 	//begin->args[1] = ft_strdup("-la"); // caso deseje adicionar
-	
-	next->args[0] = ft_strdup("exit");
+
+	next->args[0] = ft_strdup("ls");
+	tmp = next->args[0];
+	next->args[0] = get_path(next->args[0], shell->env);
+	free(tmp);
+
+	next2->args[0] = ft_strdup("exit");
+
 	begin->next = next;
+	next->next = next2;
 	shell->cmd = begin;
 	print_cmd(begin);
 }

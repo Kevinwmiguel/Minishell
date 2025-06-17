@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 21:41:58 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:51:20 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_dptr(char **dptr);
 void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
-void	exec_comm(char **argv, t_shell *shell);
+void	fork_comms(char **argv, t_shell *shell);
 void	free_split(char **split);
 
 //alocation

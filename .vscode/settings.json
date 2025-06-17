@@ -3,6 +3,7 @@
         "builtins.h": "c",
         "minishell.h": "c",
         "cstdlib": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "unistd.h": "c"
     }
 }

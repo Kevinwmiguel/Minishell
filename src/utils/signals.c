@@ -6,11 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:42:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 02:31:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:46:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../includes/utils.h"
 
 void	here_signal(int signal, siginfo_t *info, void *context)
 {
@@ -27,7 +27,8 @@ void	signal_search2(t_sig_t t)
 {
 	static struct sigaction	sa;
 
-	if (t == HEREDOC)
+	(void)t;
+	if (HEREDOC)
 	{
 		sa.sa_sigaction = here_signal;
 		sa.sa_flags = SA_SIGINFO;

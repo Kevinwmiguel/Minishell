@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 23:10:25 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/15 18:07:58 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	builtins_dealer(t_shell *shell)
 				(ft_strncmp(shell->cmd->args[0], "exit", 4) == 0))
 			handle_special_builtins(shell->cmd->args, shell);
 		else
-			exec_comm(shell->cmd->args, shell);
+			fork_comms(shell->cmd->args, shell);
 	}
 	else
 		build_exit(shell);

@@ -10,7 +10,10 @@ OBJECTS= $(SRC:sources/%.c=%.o)
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)/libft.a
 
-SRCS 	=	src/*.c src/utils/*.c src/core/*.c
+SRCS 	=	src/*.c \
+			src/utils/*.c \
+			src/core/*.c \
+			src/parsing/*.c
 
 Color_Off='\033[0m'       # Text Reset
 
