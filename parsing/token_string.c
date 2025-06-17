@@ -6,7 +6,7 @@
 /*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:46 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/17 10:10:23 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/06/17 10:13:20 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ bool	handle_quote_char(char c, bool *is_single_quote, bool *is_double_quote)
 {
 	if (c == '\'' && !*is_single_quote && !*is_double_quote)
 	{
-		(*is_single_quote) = true;
+		*is_single_quote = true;
 		return (true);
 	}
 	else if (c == '\"' && !*is_single_quote && !*is_double_quote)
 	{
-		(*is_double_quote) = true;
+		*is_double_quote = true;
 		return (true);
 	}
 	else if (c == '\'' && *is_single_quote && !*is_double_quote)
 	{
-		(*is_single_quote) = false;
+		*is_single_quote = false;
 		return (true);
 	}
 	else if (c == '\"' && *is_double_quote && !*is_single_quote)
 	{
-		(*is_double_quote) = false;
+		*is_double_quote = false;
 		return (true);
 	}
 	return (false);
