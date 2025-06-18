@@ -50,7 +50,7 @@ void	get_type(t_token *token)
 	else if (ft_strncmp(token->str, ">>", 2) == 0)
 		token->type = APPEND;
 	else if (ft_strncmp(token->str, "|", 1) == 0)
-		token->type = CMD;
+		token->type = PIPE;
 	else
 		token->type = ARG;
 }
