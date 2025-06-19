@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:11:16 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:15:08 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:15:06 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ char	*get_home(t_shell *shell)
 
 void	build_cd(t_shell *shell)
 {
-	char	*path = NULL;
+	char	*path;
 	char	*home;
 
+	path = NULL;
 	if (!shell->cmd->args[1] || shell->cmd->args[1][0] == '\0')
 	{
 		home = get_home(shell);

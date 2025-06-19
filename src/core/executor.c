@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:12:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:16:37 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	builtins_analyzer(t_shell *shell, int flag)
 	if (flag == 3)
 		build_pwd(shell);
 	if (flag == 4)
-		build_export(shell->exp);
+		build_export(shell);
 	if (flag == 5)
 		build_unset(shell);
 	if (flag == 6)
@@ -123,36 +123,30 @@ void	executor(t_shell *shell, char **argv)
 
 void	run_child(t_shell *shell, char **argv, t_pipexinfo *info)
 {
-	t_red	*redir;
+	t_red	*redir = shell->cmd->redirect;
 
-	redir = shell->cmd->redirect;
-
-	if (redir && redir->piped)
-	{
-		if (redir->piped->heredoc > 0)
-			dup2(redir->piped->heredoc, STDIN_FILENO);
-		else if (redir->piped->infd > 0)
-			dup2(redir->piped->infd, STDIN_FILENO);
-		else if (info->fd_in != STDIN_FILENO)
-			dup2(info->fd_in, STDIN_FILENO);
-	}
-	else if (info->fd_in != STDIN_FILENO)
+	// ---------- STDIN ----------
+	if (redir && redir->heredoc >= 0)
+		dup2(redir->heredoc, STDIN_FILENO);
+	else if (redir && redir && redir->infd >= 0)
+		dup2(redir->infd, STDIN_FILENO);
+	else if (info->fd_in >= 0 && info->fd_in != STDIN_FILENO)
 		dup2(info->fd_in, STDIN_FILENO);
-	if (redir && redir->piped)
-	{
-		if (redir->piped->outfd > 0)
-			dup2(redir->piped->outfd, STDOUT_FILENO);
-		else if (info->fd[1] > 0)
-			dup2(info->fd[1], STDOUT_FILENO);
-	}
-	else if (info->fd[1] > 0)
+
+	// ---------- STDOUT ----------
+	if (redir && redir && redir->outfd >= 0)
+		dup2(redir->outfd, STDOUT_FILENO);
+	else if (info->fd[1] >= 0)
 		dup2(info->fd[1], STDOUT_FILENO);
+
+	// ---------- FECHAMENTO DOS DESNECESSÁRIOS ----------
 	if (info->fd[0] > 0)
 		close(info->fd[0]);
 	if (info->fd[1] > 0)
 		close(info->fd[1]);
 	if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		close(info->fd_in);
+
 	executor(shell, argv);
 }
 
@@ -166,10 +160,67 @@ void	fork_comms(char **argv, t_shell *shell, t_pipexinfo *info)
 		signal_search(CHILD);
 		run_child(shell, argv, info);
 	}
+	else if (processor > 0)
+	{
+		// Aqui SIM devemos esperar o processo SE estamos executando isoladamente (caso count == 1)
+		waitpid(processor, NULL, 0);
+	}
 	else
 	{
-		waitpid(processor, NULL, 0);
-		//build_exit(shell);
+		perror("fork");
+		exit(EXIT_FAILURE);
 	}
 }
 
+static void	fork_loop(t_shell *shell, t_pipexinfo *info)
+{
+	t_cmd	*cmd;
+
+	cmd = shell->cmd;
+	while (cmd)
+	{
+		shell->cmd = cmd;
+		if (cmd->next && pipe(info->fd) == -1)
+			exit(1);
+		if (!cmd->next)
+		{
+			info->fd[0] = -1;
+			info->fd[1] = -1;
+		}
+		info->pid = fork();
+		if (info->pid == 0)
+		{
+			if (info->fd[1] != -1)
+				close(info->fd[0]);
+			run_child(shell, cmd->args, info);
+		}
+		if (info->fd[1] != -1)
+			close(info->fd[1]);
+		if (info->fd_in != STDIN_FILENO)
+			close(info->fd_in);
+		info->fd_in = info->fd[0];
+		cmd = cmd->next;
+	}
+	while (wait(NULL) != -1)
+		;
+}
+
+void	execute_all_cmds(t_shell *shell)
+{
+	t_pipexinfo	info;
+	t_cmd		*cmd;
+
+	info.fd_in = STDIN_FILENO;
+	shell->count = 0;
+	cmd = shell->cmd;
+	while (cmd)
+	{
+		shell->count++;
+		if (cmd->redirect)
+			fixing_cmd_red(cmd);
+		cmd = cmd->next;
+	}
+	if (shell->count == 1)
+		return (builtins_dealer(shell, &info));
+	fork_loop(shell, &info);
+}

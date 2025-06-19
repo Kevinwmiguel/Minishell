@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:15:40 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:15:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
 void	fork_comms(char **argv, t_shell *shell, t_pipexinfo *info);
 void	free_split(char **split);
+void	run_child(t_shell *shell, char **argv, t_pipexinfo *info);
 int		here_doc(char *limiter);
+void	handle_redirection_left_input(t_cmd *cmd);
+
+//PIPES
+void	fixing_cmd_red(t_cmd *cmd);
 
 //alocation
 int		mlc_size(int j, char **mlc);
@@ -49,7 +54,8 @@ void	update_pwd(t_shell *shell);
 void	build_env(t_shell *shell);
 
 //EXPORT
-char	**build_export(char **env);
+char	**build_export(t_shell *shell);
+void	handle_export(t_shell *shell);
 
 //UNSET
 void	build_unset(t_shell *shell);

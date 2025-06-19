@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:04:35 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:12:31 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,6 @@ void	handle_special_builtins(char **argv, t_shell *shell)
 	}
 }
 
-void	handle_export(t_shell *shell)
-{
-	int		i;
-
-	i = 0;
-	free_dptr(shell->exp);
-	shell->exp = build_export(shell->env);
-	if (!shell->exp)
-		return ;
-	while (shell->exp[i])
-	{
-		write(1, shell->exp[i], ft_strlen(shell->exp[i]));
-		write(1, "\n", 1);
-		i++;
-	}
-}
-
 void	handle_normal_builtins(char **argv, t_shell *shell)
 {
 	int	ret;
@@ -84,45 +67,29 @@ void	handle_normal_builtins(char **argv, t_shell *shell)
 		}
 	}
 }
+
 void	builtins_dealer(t_shell *shell, t_pipexinfo *info)
 {
 	if (shell->count == 1)
 	{
 		if (ft_strncmp(shell->cmd->args[0], "export", 6) == 0 && \
 			shell->cmd->redirect == NULL)
+		{
 			handle_export(shell);
+			return ;
+		}
 		else if ((ft_strncmp(shell->cmd->args[0], "cd", 2) == 0) || \
 				(ft_strncmp(shell->cmd->args[0], "unset", 5) == 0) || \
 				(ft_strncmp(shell->cmd->args[0], "exit", 4) == 0))
+		{
 			handle_special_builtins(shell->cmd->args, shell);
+			return ;
+		}
 		if (builtins(shell->cmd->args[0]) > 0)
+		{
 			handle_normal_builtins(shell->cmd->args, shell);
-		else
-			fork_comms(shell->cmd->args, shell, info);
+			return ;
+		}
 	}
-	else
-		fork_comms(shell->cmd->args, shell, info);
-}
-
-void	execute_all_cmds(t_shell *shell)
-{
-	t_cmd		*hold;
-	t_pipexinfo	info;
-	t_cmd		*hold2;
-
-	info.fd_in = STDIN_FILENO;
-	hold = shell->cmd;
-	hold2 = shell->cmd;
-	shell->count = 0;
-	while (hold)
-	{
-		shell->count++;
-		hold = hold->next;
-	}
-	hold = hold2;
-	while (hold)
-	{
-		builtins_dealer(shell, &info);
-		hold = hold->next;
-	}
+	fork_comms(shell->cmd->args, shell, info);
 }

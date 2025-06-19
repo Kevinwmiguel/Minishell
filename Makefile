@@ -13,7 +13,9 @@ LIBFT = $(LIBFT_PATH)/libft.a
 SRCS 	=	src/*.c \
 			src/utils/*.c \
 			src/core/*.c \
-			src/parsing/*.c
+			src/parsing/*.c \
+			src/builtins/*.c \
+			src/pipes/pipex.c
 
 Color_Off='\033[0m'       # Text Reset
 

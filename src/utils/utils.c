@@ -1,17 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/19 19:13:18 by kwillian          #+#    #+#             */
+/*   Updated: 2025/06/19 19:13:19 by kwillian         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void free_dptr(char **dptr)
+void	free_dptr(char **dptr)
 {
-    int i = 0;
-    if (!dptr)
-        return;
-    while (dptr[i])
-    {
-        free(dptr[i]);
-        i++;
-    }
-    free(dptr);
+	int	i;
+
+	i = 0;
+	if (!dptr)
+		return ;
+	while (dptr[i])
+	{
+		free(dptr[i]);
+		i++;
+	}
+	free(dptr);
 }
 
 int	mlc_size(int j, char **mlc)
@@ -23,7 +36,9 @@ int	mlc_size(int j, char **mlc)
 
 static int	count_strings(char **arr)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!arr)
 		return (0);
 	while (arr[i])
@@ -50,7 +65,6 @@ char	**dptr_dup(char **arr)
 		copy[i] = strdup(arr[i]);
 		if (!copy[i])
 		{
-			// Limpa tudo em caso de falha
 			while (--i >= 0)
 				free(copy[i]);
 			free(copy);

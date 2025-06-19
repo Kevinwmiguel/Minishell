@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:58:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:26:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:16:38 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ void	build_echo(t_shell *shell, char **args)
 	i = 1;
 	nl = 1;
 	fd = STDOUT_FILENO;
-	// Se há redirecionamento de saída, usamos o outfd correspondente
-	if (shell->cmd && shell->cmd->redirect && shell->cmd->redirect->piped)
-		fd = shell->cmd->redirect->piped->outfd;
+	if (shell->cmd && shell->cmd->redirect->outfd)
+		fd = shell->cmd->redirect->outfd;
 	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		nl = 0;

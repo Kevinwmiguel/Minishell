@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:42:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/15 20:46:45 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:10:02 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,34 @@ void	root_signal(int signal, siginfo_t *info, void *context)
 	}
 }
 
+static void	set_signal_root(struct sigaction *sa)
+{
+	sa->sa_sigaction = root_signal;
+	sa->sa_flags = SA_SIGINFO;
+	if (sigemptyset(&sa->sa_mask) != 0)
+		return ;
+	sigaction(SIGINT, sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	set_signal_child(struct sigaction *sa)
+{
+	sa->sa_handler = SIG_DFL;
+	sa->sa_flags = 0;
+	if (sigemptyset(&sa->sa_mask) != 0)
+		return ;
+	sigaction(SIGINT, sa, NULL);
+	sigaction(SIGQUIT, sa, NULL);
+}
+
 void	signal_search(t_sig_t t)
 {
 	static struct sigaction	sa;
 
 	if (t == ROOT)
-	{
-		sa.sa_sigaction = root_signal;
-		sa.sa_flags = SA_SIGINFO;
-		if (sigemptyset(&sa.sa_mask) != 0)
-			return ;
-		sigaction(SIGINT, &sa, NULL);
-		signal(SIGQUIT, SIG_IGN);
-	}
+		set_signal_root(&sa);
 	else if (t == CHILD)
-	{
-		sa.sa_handler = SIG_DFL;
-		sa.sa_flags = 0;
-		if (sigemptyset(&sa.sa_mask) != 0)
-			return ;
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
-	}
+		set_signal_child(&sa);
 	else if (t == IGNORE)
 	{
 		signal(SIGINT, SIG_IGN);

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:04:45 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:26:19 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,25 @@ typedef struct s_pipexinfo
 	int		fd_out;     // se for o último comando e tiver redirecionamento para arquivo
 	int		i;          // índice (opcional)
 	pid_t	pid;
+	int		pipe_counts;
 }	t_pipexinfo;
 
-typedef struct s_pipesort
-{
-	int	outfd; //output file
-	int	infd; // input file
-	int	heredoc; //here_doc file :) I hate that
-}	t_pipes;
+// typedef struct s_pipesort
+// {
+// 	int	outfd; //output file
+// 	int	infd; // input file
+// 	int	heredoc; //here_doc file :) I hate that
+// }	t_pipes;
 
 typedef struct s_red
 {
 	char				*args; // Ex: ">", ">>", "<"
-	t_pipes				*piped; //structure of pipes... I dont know if I trully will need that
+	//t_pipes				*piped; //structure of pipes... I dont know if I trully will need that
 	struct s_red		*next; // to multi redirections
 	int					type;
+	int	outfd; //output file
+	int	infd; // input file
+	int	heredoc;
 }	t_red;
 
 typedef struct s_token
@@ -118,7 +122,6 @@ typedef struct s_shell
 	t_token			*begin;
 	t_env			*env_list;
 	t_signal		signal;
-	t_pipes			*piped;
 	char	**env; // Var to env
 	char	**exp; // Var to exp
 	char			**test;

@@ -6,12 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/17 22:19:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:53:13 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "utils.h"
+#include "../../includes/utils.h"
 
 // pid_t pid;
 
@@ -27,46 +26,149 @@
 // 	waitpid(pid, NULL, 0); // Aguarda o filho
 // }
 
-int	find_double_right_index(t_pipesort *piped)
+void	fixing_cmd_red(t_cmd *cmd)
+{
+	handle_redirection_left_input(cmd);
+	//handle_redirection_right_input(cmd->redirect->piped);
+}
+
+int	find_input_file_index(char **content, int i)
+{
+	while (content[i])
+	{
+		printf("content atual %s \n ", content[1]);
+		if (ft_strncmp(content[i], "<", 1) == 0)
+		{
+			if (content[i + 1])
+				return (i + 1);
+			else
+				return (-1);
+		}
+		i++;
+	}
+	return (-1);
+}
+
+void	remove_last_redir_pair(t_cmd *cmd, int index)
+{
+	int	j;
+
+	j = index;
+	while (cmd->args[j + 2])
+	{
+		cmd->args[j] = cmd->args[j + 2];
+		j++;
+	}
+	cmd->args[j] = NULL;
+	cmd->args[j + 1] = NULL;
+}
+
+void	remove_redir_pair(t_cmd *cmd, int index)
+{
+	int	j;
+
+	j = index;
+	while (cmd->args[j + 2])
+	{
+		cmd->args[j] = cmd->args[j + 2];
+		j++;
+	}
+	cmd->args[j] = NULL;
+	cmd->args[j + 1] = NULL;
+}
+
+void	create_empty_output_file(char *type, char *filename)
+{
+	int	fd;
+
+	if (ft_strncmp(type, ">>", 2) == 0)
+		fd = open(filename, O_WRONLY | O_CREAT, 0644);
+	else
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		exit(1);
+	}
+	close(fd);
+}
+
+int	find_next_double_left_index(t_cmd *cmd, int start)
+{
+	int	i;
+
+	i = start;
+	while (cmd->args[i])
+	{
+		if (ft_strncmp(cmd->args[i], "<<", 3) == 0 && \
+			ft_strlen(cmd->args[i]) == 2)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	remove_all_output_redirs(t_cmd *cmd, int last_index)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		if ((i != last_index) && \
+			(ft_strncmp(cmd->args[i], ">", 2) == 0 || \
+			ft_strncmp(cmd->args[i], ">>", 3) == 0) && \
+				cmd->args[i + 1])
+		{
+			create_empty_output_file(cmd->args[i], cmd->args[i + 1]);
+			remove_redir_pair(cmd, i);
+			continue ;
+		}
+		i++;
+	}
+	remove_last_redir_pair(cmd, last_index);
+}
+
+int	find_double_right_index(t_cmd *cmd)
 {
 	int			i;
-	t_pipesort	*temp;
+	t_cmd	*temp;
 
-	temp = piped;
-	if (!temp->content)
+	temp = cmd;
+	if (!temp->args)
 		return (-1);
 	i = 0;
-	while (temp->content[i])
+	while (temp->args[i])
 	{
 		i++;
-		if (ft_strncmp(temp->content[i], ">>", 2) == 0 && \
-			ft_strlen(temp->content[i]) == 2)
+		if (ft_strncmp(temp->args[i], ">>", 2) == 0 && \
+			ft_strlen(temp->args[i]) == 2)
 			return (i);
 	}
 	return (-1);
 }
 
-void	open_last_output_file(t_pipesort *piped, \
+void	open_last_output_file(t_cmd *cmd, \
 	int last_index, char *redir_type)
 {
 	if (ft_strncmp(redir_type, ">>", 2) == 0)
 	{
-		piped->outfd = open(piped->content[last_index + 1], \
+		cmd->redirect->outfd = open(cmd->args[last_index + 1], \
 			O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	else
 	{
-		piped->outfd = open(piped->content[last_index + 1], \
+		cmd->redirect->outfd = open(cmd->args[last_index + 1], \
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}
-	if (piped->outfd < 0)
+	if (cmd->redirect->outfd < 0)
 	{
 		perror("open");
 		exit(1);
 	}
 }
 
-void	find_last_output_redir(t_pipesort *piped, \
+void	find_last_output_redir(t_cmd *cmd, \
 	int *last_index, char **redir_type)
 {
 	int	i;
@@ -74,34 +176,34 @@ void	find_last_output_redir(t_pipesort *piped, \
 	i = 0;
 	*last_index = -1;
 	*redir_type = NULL;
-	while (piped->content[i])
+	while (cmd->args[i])
 	{
-		if ((ft_strncmp(piped->content[i], ">", 2) == 0 || \
-			ft_strncmp(piped->content[i], ">>", 3) == 0) && \
-			piped->content[i + 1])
+		if ((ft_strncmp(cmd->args[i], ">", 2) == 0 || \
+			ft_strncmp(cmd->args[i], ">>", 3) == 0) && \
+			cmd->args[i + 1])
 		{
 			*last_index = i;
-			*redir_type = piped->content[i];
+			*redir_type = cmd->args[i];
 		}
 		i++;
 	}
 }
 
-void	handle_redirection_right_input(t_pipesort *piped)
+void	handle_redirection_right_input(t_cmd *cmd)
 {
 	int		last_index;
 	char	*redir_type;
 
-	if (!piped || !piped->content)
+	if (!cmd || !cmd->args)
 		return ;
-	find_last_output_redir(piped, &last_index, &redir_type);
+	find_last_output_redir(cmd, &last_index, &redir_type);
 	if (last_index == -1)
 		return ;
-	open_last_output_file(piped, last_index, redir_type);
-	remove_all_output_redirs(piped, last_index);
+	open_last_output_file(cmd, last_index, redir_type);
+	remove_all_output_redirs(cmd, last_index);
 }
 
-void	remove_all_double_left_tokens(t_pipesort *piped)
+void	remove_all_double_left_tokens(t_cmd *cmd)
 {
 	int	i;
 	int	j;
@@ -109,18 +211,18 @@ void	remove_all_double_left_tokens(t_pipesort *piped)
 
 	k = 0;
 	i = 0;
-	while (piped->content[i])
+	while (cmd->args[i])
 	{
-		if (ft_strncmp(piped->content[i], "<<", 3) == 0)
+		if (ft_strncmp(cmd->args[i], "<<", 3) == 0)
 		{
 			j = i;
-			while (piped->content[j + 2])
+			while (cmd->args[j + 2])
 			{
-				piped->content[j] = piped->content[j + 2];
+				cmd->args[j] = cmd->args[j + 2];
 				j++;
 			}
-			piped->content[j] = NULL;
-			piped->content[j + 1] = NULL;
+			cmd->args[j] = NULL;
+			cmd->args[j + 1] = NULL;
 			continue ;
 		}
 		i++;
@@ -128,77 +230,77 @@ void	remove_all_double_left_tokens(t_pipesort *piped)
 	}
 }
 
-void	remove_one_left_tokens(t_pipesort *piped, int file_idx)
+void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 {
 	int	i;
 
 	i = file_idx - 1;
-	while (piped->content[i + 1])
+	while (cmd->args[i + 1])
 	{
-		piped->content[i] = piped->content[i + 1];
+		cmd->args[i] = cmd->args[i + 1];
 		i++;
 	}
-	piped->content[i] = NULL;
+	cmd->args[i] = NULL;
 }
 
-void	handle_double_left(t_pipesort *piped)
+void	handle_double_left(t_cmd *cmd)
 {
 	int	idx;
 	int	idx_limiter;
 
 	idx = 0;
-	while ((find_next_double_left_index(piped, idx)) != -1)
+	while ((find_next_double_left_index(cmd, idx)) != -1)
 	{
-		idx = find_next_double_left_index(piped, idx);
+		idx = find_next_double_left_index(cmd, idx);
 		idx_limiter = idx + 1;
-		if (!piped->content[idx_limiter])
+		if (!cmd->args[idx_limiter])
 		{
 			write(2, "Limite ausente para heredoc\n", 29);
 			exit(1);
 		}
-		piped->heredoc_fd = here_doc(piped->content[idx_limiter]);
+		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter]);
 		idx = idx_limiter;
 	}
-	remove_all_double_left_tokens(piped);
+	remove_all_double_left_tokens(cmd);
 }
 
-void	handle_single_left(t_pipesort *piped)
+void	handle_single_left(t_cmd *cmd)
 {
 	int	file_index;
 
-	file_index = find_input_file_index(piped->content, 0);
+	file_index = find_input_file_index(cmd->args, 0);
 	if (file_index == -1)
 	{
 		write(2, "Arquivo não fornecido para redirecionamento\n", 45);
 		exit(1);
 	}
-	piped->infd = open(piped->content[file_index], O_RDONLY);
-	if (piped->infd < 0)
+	cmd->redirect->infd = open(cmd->args[file_index], O_RDONLY);
+	if (cmd->redirect->infd < 0)
 	{
 		perror("open");
 		exit(1);
 	}
-	remove_one_left_tokens(piped, file_index);
+	remove_one_left_tokens(cmd, file_index);
 }
 
-void	handle_redirection_left_input(t_pipesort *piped)
+void	handle_redirection_left_input(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
-	if (!piped || !piped->content || !piped->redirection_type)
-		return ;
-	while (piped->content[i])
+	// if (!cmd || cmd->args)
+	// 	return ;
+	while (cmd->args[i])
 	{
-		if (ft_strncmp(piped->content[i], "<<", 3) == 0)
+		if (cmd->redirect->type == HEREDOC)
 		{
-			handle_double_left(piped);
+			handle_double_left(cmd);
 			i = 0;
 			continue ;
 		}
-		else if (ft_strncmp(piped->content[i], "<", 2) == 0)
+		else if (cmd->redirect->type == INPUT)
 		{
-			handle_single_left(piped);
+			handle_single_left(cmd);
 			i = 0;
 			continue ;
 		}
@@ -206,30 +308,30 @@ void	handle_redirection_left_input(t_pipesort *piped)
 	}
 }
 
-char	*checker_path(t_shell *shell, char **paths, char *tmp)
-{
-	char	*fullpath;
-	int		i;
+// char	*checker_path(t_shell *shell, char **paths, char *tmp)
+// {
+// 	char	*fullpath;
+// 	int		i;
 
-	i = 0;
-	fullpath = NULL;
-	if (shell->cmd->args[0][0] == '.' || shell->cmd->args[0][0] == '/')
-	{
-		if (access(shell->cmd->args[0], X_OK) == 0)
-			return (ft_strdup(shell->cmd->args[0]));
-		else
-			return (NULL);
-	}
-	while (paths && paths[i])
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		fullpath = ft_strjoin(tmp, shell->cmd->args[0]);
-		free(tmp);
-		if (access(fullpath, X_OK) == 0)
-			break ;
-		free(fullpath);
-		fullpath = NULL;
-		i++;
-	}
-	return (fullpath);
-}
+// 	i = 0;
+// 	fullpath = NULL;
+// 	if (shell->cmd->args[0][0] == '.' || shell->cmd->args[0][0] == '/')
+// 	{
+// 		if (access(shell->cmd->args[0], X_OK) == 0)
+// 			return (ft_strdup(shell->cmd->args[0]));
+// 		else
+// 			return (NULL);
+// 	}
+// 	while (paths && paths[i])
+// 	{
+// 		tmp = ft_strjoin(paths[i], "/");
+// 		fullpath = ft_strjoin(tmp, shell->cmd->args[0]);
+// 		free(tmp);
+// 		if (access(fullpath, X_OK) == 0)
+// 			break ;
+// 		free(fullpath);
+// 		fullpath = NULL;
+// 		i++;
+// 	}
+// 	return (fullpath);
+// }

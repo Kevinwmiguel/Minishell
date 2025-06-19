@@ -6,28 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/18 00:26:58 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:49:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
-
-void ex(t_shell	*shell);
-
-void	free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
 
 // void	free_redirections(t_red *red)
 // {
@@ -42,41 +25,6 @@ void	free_split(char **split)
 // 		red = tmp;
 // 	}
 // }
-
-void	free_cmds(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	while (cmd)
-	{
-		tmp = cmd->next;
-		if (cmd->args)
-			free_split(cmd->args);
-		if (cmd->redirect)
-			free_redirections(cmd->redirect);
-		free(cmd);
-		cmd = tmp;
-	}
-}
-
-void	final_cleaner(t_shell *shell)
-{
-	if (!shell)
-		return ;
-	if (shell->cmd)
-		free_cmds(shell->cmd);
-	if (shell->env)
-		free_split(shell->env);
-	if (shell->exp)
-		free_split(shell->exp);
-	free(shell);
-}
-
-void	exit_shell(t_shell *shell)
-{
-	(void) shell;
-	printf("exit_shell\n");
-}
 
 int	run(t_shell *shell)
 {
@@ -102,30 +50,37 @@ int	run(t_shell *shell)
 	return (1);
 }
 
-void	update_shlvl(t_shell *shell)
+static int	get_shlvl_index(t_shell *shell, int *current_lvl)
 {
-	char	*lvl_str;
-	char	*new_lvl;
-	int		i;
-	int		current_lvl;
+	int	i;
 
-	current_lvl = 0;
 	i = 0;
+	*current_lvl = 0;
 	while (shell->env[i])
 	{
 		if (ft_strncmp(shell->env[i], "SHLVL=", 6) == 0)
 		{
-			current_lvl = ft_atoi(shell->env[i] + 6);
-			break ;
+			*current_lvl = ft_atoi(shell->env[i] + 6);
+			return (i);
 		}
 		i++;
 	}
+	return (-1);
+}
+
+void	update_shlvl(t_shell *shell)
+{
+	int		i;
+	int		current_lvl;
+	char	*lvl_str;
+	char	*new_lvl;
+
+	i = get_shlvl_index(shell, &current_lvl);
 	current_lvl++;
 	lvl_str = ft_itoa(current_lvl);
 	new_lvl = ft_strjoin("SHLVL=", lvl_str);
 	free(lvl_str);
-
-	if (shell->env[i])
+	if (i >= 0)
 	{
 		free(shell->env[i]);
 		shell->env[i] = new_lvl;
@@ -141,31 +96,20 @@ void	update_shlvl(t_shell *shell)
 	}
 }
 
-void init(t_shell *shell, char **env)
+void	init(t_shell *shell, char **env)
 {
+	shell->env = NULL;
+	shell->exp = NULL;
 	shell->env = dptr_dup(env);
-	shell->exp = dptr_dup(env);
+	//shell->exp = dptr_dup(env);
 	if (!shell->env)
 	{
 		perror("Failed to duplicate env");
 		exit(EXIT_FAILURE);
 	}
 	update_shlvl(shell);
+	shell->exp = build_export(shell);
 	shell->count = 0;
-}
-
-void	print_cmd(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (!cmd)
-		return ;
-	printf("======================\n");
-	while (cmd->args[i])
-		printf("%s\n", cmd->args[i++]);
-	printf("redirect: %i\n", cmd->redirect != NULL);
-	print_cmd(cmd->next);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -177,15 +121,12 @@ int	main(int argc, char **argv, char **env)
 	handle_sigint(0, &signal);
 	(void) argc;
 	(void) argv;
-
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 	{
 		perror("malloc failed");
-		return 1;
+		return (1);
 	}
-	shell->env = NULL;
-	shell->exp = NULL;
 	init(shell, env);
 	run(shell);
 	return (0);
