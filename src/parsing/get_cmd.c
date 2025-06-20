@@ -17,12 +17,9 @@ static int	count_cmd_args(t_token *token)
 	int	count;
 
 	count = 0;
-	while (token && token->type != PIPE && token->type != INPUT
-		&& token->type != HEREDOC && token->type != TRUNC
-		&& token->type != APPEND)
+	while (token && token->type != PIPE)
 	{
-		if (token->type == CMD || token->type == ARG)
-			count++;
+		count++;
 		token = token->next;
 	}
 	return (count);
@@ -33,12 +30,9 @@ static void	fill_cmd_args(char **cmd_args, t_token *token)
 	int	i;
 
 	i = 0;
-	while (token && token->type != PIPE && token->type != INPUT
-		&& token->type != HEREDOC && token->type != TRUNC
-		&& token->type != APPEND)
+	while (token && token->type != PIPE)
 	{
-		if (token->type == CMD || token->type == ARG)
-			cmd_args[i++] = ft_strdup(token->str);
+		cmd_args[i++] = ft_strdup(token->str);
 		token = token->next;
 	}
 	cmd_args[i] = NULL;
