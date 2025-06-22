@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 17:26:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:26:19 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,6 @@ void	free_redirections(t_red *redir);
 void	print_cmd(t_cmd *cmd);
 void	print_redirects(t_red *red);
 void	debug_tokens(t_token *token);
+void	free_cmds(t_cmd *cmd);
 
 #endif

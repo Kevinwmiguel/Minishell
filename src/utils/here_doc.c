@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/17 21:53:27 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:29:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ int	here_doc(char *limiter)
 		exit(1);
 	while (1)
 	{
-		write(1, "heredoc> ", 9);
-		line = readline(STDIN_FILENO);
+		//write(1, "heredoc> ", 9);
+		line = readline("heredoc>");
+		line = ft_strjoin(line, "\n");
+
 		if (!line)
 			break ;
 		if (ft_strlen(line) == ft_strlen(limiter) + 1 && \

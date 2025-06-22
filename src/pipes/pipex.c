@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 18:53:13 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:21:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 void	fixing_cmd_red(t_cmd *cmd)
 {
 	handle_redirection_left_input(cmd);
-	//handle_redirection_right_input(cmd->redirect->piped);
+	handle_redirection_right_input(cmd);
 }
 
 int	find_input_file_index(char **content, int i)
@@ -292,13 +292,13 @@ void	handle_redirection_left_input(t_cmd *cmd)
 	// 	return ;
 	while (cmd->args[i])
 	{
-		if (cmd->redirect->type == HEREDOC)
+		if (ft_strncmp(cmd->args[i], "<<", 3) == 0)
 		{
 			handle_double_left(cmd);
 			i = 0;
 			continue ;
 		}
-		else if (cmd->redirect->type == INPUT)
+		else if (ft_strncmp(cmd->args[i], "<", 2) == 0)
 		{
 			handle_single_left(cmd);
 			i = 0;

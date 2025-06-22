@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 20:15:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:24:50 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	free_split(char **split);
 void	run_child(t_shell *shell, char **argv, t_pipexinfo *info);
 int		here_doc(char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd);
+void	handle_redirection_right_input(t_cmd *cmd);
 
 //PIPES
 void	fixing_cmd_red(t_cmd *cmd);
