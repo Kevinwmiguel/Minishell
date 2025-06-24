@@ -1,2 +1,0 @@
-/home/kevin/Minishell
-/home/kevin/Minishell
