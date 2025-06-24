@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:58:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:16:38 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:36:07 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ void	build_echo(t_shell *shell, char **args)
 	int	nl;
 	int	fd;
 
+	(void)shell;
 	i = 1;
 	nl = 1;
 	fd = STDOUT_FILENO;
-	if (shell->cmd && shell->cmd->redirect->outfd)
-		fd = shell->cmd->redirect->outfd;
 	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		nl = 0;

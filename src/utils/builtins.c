@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 21:12:31 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:36:24 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,6 @@ void	builtins_dealer(t_shell *shell, t_pipexinfo *info)
 				(ft_strncmp(shell->cmd->args[0], "exit", 4) == 0))
 		{
 			handle_special_builtins(shell->cmd->args, shell);
-			return ;
-		}
-		if (builtins(shell->cmd->args[0]) > 0)
-		{
-			handle_normal_builtins(shell->cmd->args, shell);
 			return ;
 		}
 	}
