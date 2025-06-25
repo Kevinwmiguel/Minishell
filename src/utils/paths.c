@@ -6,31 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:05:28 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:08:28 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:40:35 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*joined;
-
-	joined = NULL;
-	joined = ft_strjoin(s1, s2);
-	free(s1);
-	return (joined);
-}
-
-void	ft_free_split(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
 
 static char	*find_in_path(char **paths, char *cmd, char *fallback)
 {
@@ -76,4 +56,72 @@ char	*get_path(char *cmd, char **env)
 	if (!paths)
 		return (fullpath);
 	return (find_in_path(paths, cmd, fullpath));
+}
+
+char	*checker_path(t_shell *shell, char **paths, char *tmp)
+{
+	char	*fullpath;
+	int		i;
+
+	i = 0;
+	fullpath = NULL;
+	if (shell->cmd->args[0][0] == '.' || shell->cmd->args[0][0] == '/')
+	{
+		if (access(shell->cmd->args[0], X_OK) == 0)
+			return (ft_strdup(shell->cmd->args[0]));
+		else
+			return (NULL);
+	}
+	while (paths && paths[i])
+	{
+		tmp = ft_strjoin(paths[i], "/");
+		fullpath = ft_strjoin(tmp, shell->cmd->args[0]);
+		free(tmp);
+		if (access(fullpath, X_OK) == 0)
+			break ;
+		free(fullpath);
+		fullpath = NULL;
+		i++;
+	}
+	return (fullpath);
+}
+
+void	path_cleaner(char **paths)
+{
+	int	i;
+
+	i = 0;
+	while (paths && paths[i])
+	{
+		if (i == 0)
+			free(paths[i] - 5);
+		else
+			free(paths[i]);
+		i++;
+	}
+	if (paths)
+		free(paths);
+}
+
+char	**pick_path(char **envp)
+{
+	char	**path;
+	int		index;
+
+	index = 0;
+	path = NULL;
+	while (envp && envp[index])
+	{
+		if (ft_strncmp(envp[index], "PATH=", 5) == 0)
+		{
+			path = ft_split(envp[index], ':');
+			if (!path)
+				path_cleaner(path);
+			else
+				path[0] = path[0] + 5;
+			break ;
+		}
+		index++;
+	}
+	return (path);
 }

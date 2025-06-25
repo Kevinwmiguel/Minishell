@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/22 20:24:50 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:44:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "minishell.h"
 
 //UTILS
+char    *special_cleaner(const char *s1, const char *s2, t_shell *shell);
 void	builtins_dealer(t_shell *shell, t_pipexinfo *info);
 void	free_dptr(char **dptr);
 void	execute_all_cmds(t_shell *shell);
@@ -28,6 +29,9 @@ int		here_doc(char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd);
 void	handle_redirection_right_input(t_cmd *cmd);
 
+//builtins
+void	builtins_analyzer(t_shell *shell, int flag);
+
 //PIPES
 void	fixing_cmd_red(t_cmd *cmd);
 
@@ -37,6 +41,7 @@ char	**dptr_dup(char	**dptr);
 
 //Cleaner
 void	final_cleaner(t_shell *shell);
+void	ft_free_split(char **arr);
 
 //ECHO
 

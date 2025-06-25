@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/22 20:26:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:49:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@
 # define CMD 6
 # define ARG 7
 # define DOLLAR 8
+
+typedef struct	t_cleaner
+{
+	char				*listc;
+	char				**matrix;
+	struct t_cleaner	*next;	
+}	t_clist;
 
 typedef enum e_signal_type
 {
@@ -129,6 +136,7 @@ typedef struct s_shell
 	bool			end;
 	int				exit_code;
 	int		is_child;
+	t_clist			*list;
 	t_cmd	*cmd; // cmds list to be execute
 }	t_shell;
 

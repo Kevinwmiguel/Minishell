@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/22 20:21:59 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:23:23 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,7 @@ void	handle_redirection_left_input(t_cmd *cmd)
 	{
 		if (ft_strncmp(cmd->args[i], "<<", 3) == 0)
 		{
+			cmd->redirect->heredoc = 0;
 			handle_double_left(cmd);
 			i = 0;
 			continue ;

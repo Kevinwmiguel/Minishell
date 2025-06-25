@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:48:20 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:04:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:38:47 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,24 @@ void	final_cleaner(t_shell *shell)
 	if (shell->exp)
 		free_split(shell->exp);
 	free(shell);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*joined;
+
+	joined = NULL;
+	joined = ft_strjoin(s1, s2);
+	free(s1);
+	return (joined);
+}
+
+void	ft_free_split(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }

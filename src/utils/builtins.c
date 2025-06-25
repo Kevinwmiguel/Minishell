@@ -6,11 +6,30 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/24 17:36:24 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 00:42:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	builtins_analyzer(t_shell *shell, int flag)
+{
+	(void)shell;
+	if (flag == 1)
+		build_echo(shell, shell->cmd->args);
+	if (flag == 2)
+		build_cd(shell);
+	if (flag == 3)
+		build_pwd(shell);
+	if (flag == 4)
+		build_export(shell);
+	if (flag == 5)
+		build_unset(shell);
+	if (flag == 6)
+		build_env(shell);
+	if (flag == 7)
+		build_exit(shell);
+}
 
 int	builtins(char *str)
 {
