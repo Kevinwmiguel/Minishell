@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:45 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/13 02:30:48 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:48:34 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,5 @@ void	build_unset(t_shell *shell)
 		return ;
 	free_env(shell->env);
 	shell->env = new_env;
+	shell->exp = build_export(shell);
 }

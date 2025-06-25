@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:37:57 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/17 11:35:22 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/24 23:53:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	verify_closed_quote(char *str)
 	int		i;
 	bool	is_single_quote;
 	bool	is_double_quote;
+
 	i = 0;
 	is_single_quote = false;
 	is_double_quote = false;

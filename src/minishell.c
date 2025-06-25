@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/22 20:28:53 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:05:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ int	run(t_shell *shell)
 			continue ;
 		add_history(input);
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
-		{
 			shell->cmd = parse_cmd(shell, shell->begin);
-		}
 		execute_all_cmds(shell);
 		free_cmds(shell->cmd);
 		free(input);
@@ -104,7 +102,6 @@ void	init(t_shell *shell, char **env)
 	shell->env = NULL;
 	shell->exp = NULL;
 	shell->env = dptr_dup(env);
-	//shell->exp = dptr_dup(env);
 	if (!shell->env)
 	{
 		perror("Failed to duplicate env");

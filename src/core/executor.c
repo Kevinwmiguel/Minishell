@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/24 17:57:54 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:09:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,36 +123,25 @@ void	executor(t_shell *shell, char **argv)
 
 void	run_child(t_shell *shell, char **argv, t_pipexinfo *info)
 {
-	t_red	*redir = shell->cmd->redirect;
+	t_red	*redir;
 
-	// printf("valores heredoc %d \n\n", redir->heredoc);
-	// printf("valores fd[0] %d \n\n", info->fd[0]);
-	// printf("valores fd[1] %d \n\n", info->fd[1]);
-	// printf("valores fd_in %d\n\n", info->fd_in);
-	// printf("valores outfd %d \n\n", redir->outfd);
-	// exit(1);
-	// ---------- STDIN ----------
+	redir = shell->cmd->redirect;
 	if (redir && redir->heredoc > 0)
 		dup2(redir->heredoc, STDIN_FILENO);
-	else if (redir && redir && redir->infd > 0)
+	else if (redir && redir->infd > 0)
 		dup2(redir->infd, STDIN_FILENO);
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		dup2(info->fd_in, STDIN_FILENO);
-
-	// ---------- STDOUT ----------
 	if (redir && redir->outfd > 0)
 		dup2(redir->outfd, STDOUT_FILENO);
 	else if (info->fd[1] > 0)
 		dup2(info->fd[1], STDOUT_FILENO);
-
-	// ---------- FECHAMENTO DOS DESNECESSÁRIOS ----------
 	if (info->fd[0] > 0)
 		close(info->fd[0]);
 	if (info->fd[1] > 0)
 		close(info->fd[1]);
 	if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		close(info->fd_in);
-
 	executor(shell, argv);
 }
 
@@ -216,6 +205,7 @@ void	execute_all_cmds(t_shell *shell)
 	t_pipexinfo	info;
 	t_cmd		*cmd;
 
+	ft_bzero(&info, sizeof(t_pipexinfo));
 	info.fd_in = STDIN_FILENO;
 	shell->count = 0;
 	cmd = shell->cmd;
