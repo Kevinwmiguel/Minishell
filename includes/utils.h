@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:44:22 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/26 16:45:35 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_dptr(char **dptr);
 void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
-void	fork_comms(char **argv, t_shell *shell, t_pipexinfo *info);
+void	run_child(char **argv, t_shell *shell, t_pipexinfo *info);
+void	run_children(t_shell *shell, char **argv, t_pipexinfo *info);
 void	free_split(char **split);
-void	run_child(t_shell *shell, char **argv, t_pipexinfo *info);
 int		here_doc(char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd);
 void	handle_redirection_right_input(t_cmd *cmd);

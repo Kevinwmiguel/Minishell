@@ -15,7 +15,7 @@ SRCS 	=	src/*.c \
 			src/core/*.c \
 			src/parsing/*.c \
 			src/builtins/*.c \
-			src/pipes/pipex.c
+			src/pipes/*.c
 
 Color_Off='\033[0m'       # Text Reset
 
