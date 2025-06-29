@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:45 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/25 18:48:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:04:23 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	**copy_env_without_vars(char **old_env, char **args)
 void	build_unset(t_shell *shell)
 {
 	char	**new_env;
+	char	**new_exp;
+	char	**merged;
 
 	if (!shell->cmd || !shell->cmd->args[1])
 		return ;
@@ -70,5 +72,13 @@ void	build_unset(t_shell *shell)
 		return ;
 	free_env(shell->env);
 	shell->env = new_env;
-	shell->exp = build_export(shell);
+	new_exp = build_export(shell);
+	if (!new_exp)
+		return ;
+	merged = merge_exp_lists(shell->exp, new_exp, shell->env);
+	free_dptr(new_exp);
+	if (!merged)
+		return ;
+	free_dptr(shell->exp);
+	shell->exp = merged;
 }

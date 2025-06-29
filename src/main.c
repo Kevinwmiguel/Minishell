@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   special_cleaner.c                                  :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 19:02:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:09:34 by kwillian         ###   ########.fr       */
+/*   Created: 2025/06/29 22:08:41 by kwillian          #+#    #+#             */
+/*   Updated: 2025/06/29 22:09:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../includes/utils.h"
 
-char    *special_cleaner(const char *s1, const char *s2, t_shell *shell)
+int	main(int argc, char **argv, char **env)
 {
-	char		*tmp;
+	t_shell		*shell;
+	t_signal	signal;
 
-	tmp = NULL;
-	tmp = ft_strjoin(s1, s2);
-	if (!tmp)
-		return (NULL);
-	shell->list->listc = tmp;
-	shell->list = shell->list->next;
-	return (tmp);
+	signal = (t_signal){};
+	handle_sigint(0, &signal);
+	(void) argc;
+	(void) argv;
+	shell = malloc(sizeof(t_shell));
+	if (!shell)
+	{
+		perror("malloc failed");
+		return (1);
+	}
+	init(shell, env);
+	run(shell);
+	return (0);
 }

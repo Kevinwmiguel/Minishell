@@ -6,11 +6,22 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:39:32 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:01:21 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	here_signal(int signal, siginfo_t *info, void *context)
+{
+	(void)info;
+	(void)context;
+	if (signal == SIGINT)
+	{
+		printf("\n");
+		exit(130);
+	}
+}
 
 int	here_doc(char *limiter)
 {
@@ -23,7 +34,6 @@ int	here_doc(char *limiter)
 	{
 		line = readline("heredoc>");
 		line = ft_strjoin(line, "\n");
-
 		if (!line)
 			break ;
 		if (ft_strlen(line) == ft_strlen(limiter) + 1 && \

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 16:46:15 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:02:58 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@
 # include <unistd.h>
 # include <signal.h>
 
-
-// typedef struct s_pipexinfo
-// {
-// 	int		fd[2];
-// 	int		fd_in;
-// 	int		i;
-// 	int		pipe_counts;
-// 	pid_t	pid;
-// }	t_pipexinfo;
-
-// typedef struct s_fdinfo
-// {
-// 	int	fd_in;
-// 	int	fd_read;
-// 	int	fd_write;
-// 	int	i;
-// 	int	pipe_count;
-// }	t_fdinfo;
-
 # define INPUT 1
 # define HEREDOC 2
 # define TRUNC 3
@@ -54,7 +35,7 @@
 # define ARG 7
 # define DOLLAR 8
 
-typedef struct	t_cleaner
+typedef struct t_cleaner
 {
 	char				*listc;
 	char				**matrix;
@@ -76,30 +57,22 @@ typedef struct s_signal
 
 typedef struct s_pipexinfo
 {
-	int		fd[2];      // pipe atual (se houver)
-	int		fd_in;      // entrada vinda do comando anterior (ou STDIN_FILENO)
-	int		fd_out;     // se for o último comando e tiver redirecionamento para arquivo
-	int		i;          // índice (opcional)
+	int		fd[2];
+	int		fd_in;
+	int		fd_out;
+	int		i;
 	pid_t	pid;
 	int		pipe_counts;
 }	t_pipexinfo;
 
-// typedef struct s_pipesort
-// {
-// 	int	outfd; //output file
-// 	int	infd; // input file
-// 	int	heredoc; //here_doc file :) I hate that
-// }	t_pipes;
-
 typedef struct s_red
 {
-	char				*args; // Ex: ">", ">>", "<"
-	//t_pipes				*piped; //structure of pipes... I dont know if I trully will need that
-	struct s_red		*next; // to multi redirections
+	char				*args;
+	struct s_red		*next;
 	int					type;
-	int	outfd; //output file
-	int	infd; // input file
-	int	heredoc;
+	int					outfd;
+	int					infd;
+	int					heredoc;
 }	t_red;
 
 typedef struct s_token
@@ -129,17 +102,17 @@ typedef struct s_shell
 	t_token			*begin;
 	t_env			*env_list;
 	t_signal		signal;
-	char	**env; // Var to env
-	char	**exp; // Var to exp
+	char			**env;
+	char			**exp;
+	char			**exp_list;
 	char			**test;
-	int		count;
+	int				count;
 	bool			end;
 	int				exit_code;
-	int		is_child;
+	int				is_child;
 	t_clist			*list;
-	t_cmd	*cmd; // cmds list to be execute
+	t_cmd			*cmd;
 }	t_shell;
-
 
 void	print_cmd(t_cmd *cmd);
 
@@ -167,7 +140,7 @@ bool	special_char(char *str);
 bool	is_space(char c);
 void	skip_space(char **line);
 char	*get_special_char(char **str);
-void	handle_sigint(int code, t_signal*);
+void	handle_sigint(int code, t_signal *signal);
 void	handle_sigsegv(int code);
 void	handle_sigabrt(int code);
 void	free_cmd(t_cmd **cmd);

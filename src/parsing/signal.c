@@ -6,13 +6,13 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:31 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/17 18:58:21 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:14:48 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_signal g_signal = {false, 0};
+//t_signal g_signal = {false, 0};
 
 void	handle_sigint(int code, t_signal *signal)
 {

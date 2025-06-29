@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:59:57 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:22:03 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 21:47:18 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,11 @@ void	update_pwd(t_shell *shell)
 void	build_pwd(t_shell *shell)
 {
 	char	cwd[4096];
-	int		fd;
 
-	fd = STDOUT_FILENO;
-	if (shell->cmd && shell->cmd->redirect)
-		fd = shell->cmd->redirect->outfd;
 	(void)shell;
 	if (getcwd(cwd, 4096))
 	{
-		ft_putstr_fd(cwd, fd);
-		ft_putstr_fd("\n", fd);
+		ft_putstr_fd(cwd, 1);
+		ft_putstr_fd("\n", 1);
 	}
 }

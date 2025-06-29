@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:48:20 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:38:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:19:57 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,15 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	return (joined);
 }
 
-void	ft_free_split(char **arr)
+char	*special_cleaner(const char *s1, const char *s2, t_shell *shell)
 {
-	int	i;
+	char		*tmp;
 
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	tmp = NULL;
+	tmp = ft_strjoin(s1, s2);
+	if (!tmp)
+		return (NULL);
+	shell->list->listc = tmp;
+	shell->list = shell->list->next;
+	return (tmp);
 }

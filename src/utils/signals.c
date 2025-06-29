@@ -6,22 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:42:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:10:02 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:01:07 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
-
-void	here_signal(int signal, siginfo_t *info, void *context)
-{
-	(void)info;
-	(void)context;
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		exit(130);
-	}
-}
 
 void	signal_search2(t_sig_t t)
 {

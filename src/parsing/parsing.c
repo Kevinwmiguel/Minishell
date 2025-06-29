@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/19 18:02:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:09:41 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ t_cmd	*create_cmd(t_shell *data, t_token *token)
 
 	(void)data;
 	cmd = malloc(sizeof(t_cmd));
-	if (cmd == NULL)
+	if (!cmd)
 		return (NULL);
 	cmd->args = get_cmd(token);
 	cmd->next = NULL;
+	cmd->redirect = NULL;
 	get_redirection(cmd, token);
 	return (cmd);
 }
@@ -45,7 +46,6 @@ int	process_shell_input(t_shell *data, char *str)
 		free(str_parse);
 		return (0);
 	}
-	//debug_tokens(data->begin);
 	free(str_parse);
 	return (1);
 }

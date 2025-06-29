@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:05:28 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:40:35 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 21:59:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static char	*find_in_path(char **paths, char *cmd, char *fallback)
 		free(dir);
 		if (access(candidate, X_OK) == 0)
 		{
-			ft_free_split(paths);
+			free_split(paths);
 			free(fallback);
 			return (candidate);
 		}
 		free(candidate);
 		i++;
 	}
-	ft_free_split(paths);
+	free_split(paths);
 	return (fallback);
 }
 

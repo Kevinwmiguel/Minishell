@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:20 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/16 11:08:30 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/06/29 23:09:30 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static bool	add_token(t_shell *data, char **str)
 void	free_token_list(t_shell *data)
 {
 	t_token	*token;
-	t_token *next;
+	t_token	*next;
 
 	token = data->begin;
 	while (token)

@@ -1,42 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_exit.c                                       :+:      :+:    :+:   */
+/*   index.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:04:11 by kwillian         ###   ########.fr       */
+/*   Created: 2025/06/28 20:26:46 by kwillian          #+#    #+#             */
+/*   Updated: 2025/06/29 21:49:04 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	build_exit(t_shell *shell)
+int	find_input_file_index(char **content, int i)
 {
-	char	**args;
-	int		status;
-	int		i;
-
-	args = shell->cmd->args;
-	status = 0;
-	i = 0;
-	if (!args[1])
+	while (content[i])
 	{
-		final_cleaner(shell);
-		exit(0);
-	}
-	while (args[1][i])
-	{
-		if (!ft_isdigit(args[1][i]))
+		if (ft_strncmp(content[i], "<", 1) == 0)
 		{
-			ft_putendl_fd("numeric argument required", STDERR_FILENO);
-			final_cleaner(shell);
-			exit(2);
+			if (content[i + 1])
+				return (i + 1);
+			else
+				return (-1);
 		}
 		i++;
 	}
-	status = ft_atoi(args[1]);
-	final_cleaner(shell);
-	exit(status);
+	return (-1);
+}
+
+int	find_next_double_left_index(t_cmd *cmd, int start)
+{
+	int	i;
+
+	i = start;
+	while (cmd->args[i])
+	{
+		if (ft_strncmp(cmd->args[i], "<<", 3) == 0 && \
+			ft_strlen(cmd->args[i]) == 2)
+			return (i);
+		i++;
+	}
+	return (-1);
 }

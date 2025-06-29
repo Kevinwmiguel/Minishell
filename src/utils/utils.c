@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:13:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:13:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/29 21:28:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	count_strings(char **arr)
 	return (i);
 }
 
-// Duplica um array de strings, tratando NULL e falha de malloc
 char	**dptr_dup(char **arr)
 {
 	char	**copy;
@@ -74,4 +73,14 @@ char	**dptr_dup(char **arr)
 	}
 	copy[len] = NULL;
 	return (copy);
+}
+
+int	dptr_len(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr && ptr[i])
+		i++;
+	return (i);
 }
