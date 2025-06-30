@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/28 20:28:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 00:32:44 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ void	remove_last_redir_pair(t_cmd *cmd, int index)
 	cmd->args[j + 1] = NULL;
 }
 
-void	remove_redir_pair(t_cmd *cmd, int index)
+void	remove_redir_pair(t_cmd *cmd, int i)
 {
 	int	j;
 
-	j = index;
+	free(cmd->args[i]);
+	free(cmd->args[i + 1]);
+	j = i;
 	while (cmd->args[j + 2])
 	{
 		cmd->args[j] = cmd->args[j + 2];

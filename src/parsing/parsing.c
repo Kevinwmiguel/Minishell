@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/06/29 23:09:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:14:21 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_cmd	*create_cmd(t_shell *data, t_token *token)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	cmd->args = NULL;
 	cmd->args = get_cmd(token);
 	cmd->next = NULL;
 	cmd->redirect = NULL;

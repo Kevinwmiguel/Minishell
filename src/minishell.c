@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:19:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:03:34 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 int	run(t_shell *shell)
 {
 	char	*input;
+	t_cmd	*head;
 
 	while (1)
 	{
@@ -43,10 +44,14 @@ int	run(t_shell *shell)
 			continue ;
 		add_history(input);
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
+		{
 			shell->cmd = parse_cmd(shell, shell->begin);
-		execute_all_cmds(shell);
-		close_redirections(shell->cmd);
-		free_cmds(shell->cmd);
+			head = shell->cmd;
+			execute_all_cmds(shell);
+			close_redirections(head);
+			free_token_list(shell);
+			free_cmds(head);
+		}
 		free_token_list(shell);
 		free(input);
 	}

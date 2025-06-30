@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:04:11 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:32:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	build_exit(t_shell *shell)
 	i = 0;
 	if (!args[1])
 	{
+		free_token_list(shell);
 		final_cleaner(shell);
 		exit(0);
 	}
@@ -31,12 +32,14 @@ void	build_exit(t_shell *shell)
 		if (!ft_isdigit(args[1][i]))
 		{
 			ft_putendl_fd("numeric argument required", STDERR_FILENO);
+			free_token_list(shell);
 			final_cleaner(shell);
 			exit(2);
 		}
 		i++;
 	}
 	status = ft_atoi(args[1]);
+	free_token_list(shell);
 	final_cleaner(shell);
 	exit(status);
 }
