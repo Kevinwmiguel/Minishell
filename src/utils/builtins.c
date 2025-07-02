@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 16:44:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:16:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	handle_special_builtins(char **argv, t_shell *shell)
 {
 	int	ret;
 
+	(void)argv;
 	ret = builtins(argv[0]);
 	if (ret != 0)
 	{
@@ -87,7 +88,7 @@ void	handle_normal_builtins(char **argv, t_shell *shell)
 	}
 }
 
-void	builtins_dealer(t_shell *shell, t_pipexinfo *info)
+void	builtins_dealer(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 {
 	if (shell->count == 1)
 	{
@@ -101,9 +102,9 @@ void	builtins_dealer(t_shell *shell, t_pipexinfo *info)
 				(ft_strncmp(shell->cmd->args[0], "unset", 5) == 0) || \
 				(ft_strncmp(shell->cmd->args[0], "exit", 4) == 0))
 		{
-			handle_special_builtins(shell->cmd->args, shell);
+			handle_special_builtins(clean->args, shell);
 			return ;
 		}
 	}
-	run_child(shell->cmd->args, shell, info);
+	run_child(clean->args, shell, info);
 }

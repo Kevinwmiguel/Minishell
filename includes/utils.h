@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:07:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 21:33:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include "minishell.h"
+# include "../get_next_line/get_next_line.h"
 
 //MINISHELL
 void	init(t_shell *shell, char **env);
@@ -22,9 +23,15 @@ int		run(t_shell *shell);
 //CLOSES
 void	close_redirections(t_cmd *cmd);
 
+//GETNEXTLINE
+char	*get_next_line(int fd);
+
 //UTILS
+void	free_cmdr(t_cmd_r *cmd);
+void prepare_all_output_files(t_cmd *cmd);
+void	import_args_to_clean(t_cmd *cmd, t_cmd_r *clean);
 char	*special_cleaner(const char *s1, const char *s2, t_shell *shell);
-void	builtins_dealer(t_shell *shell, t_pipexinfo *info);
+void	builtins_dealer(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean);
 void	free_dptr(char **dptr);
 void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
@@ -45,14 +52,14 @@ int		is_valid_identifier(char *str);
 void	builtins_analyzer(t_shell *shell, int flag);
 
 //PIPES
-void	fixing_cmd_red(t_cmd *cmd);
+void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean);
 void	find_last_output_redir(t_cmd *cmd, \
 	int *last_index, char **redir_type);
 void	open_last_output_file(t_cmd *cmd, \
 	int last_index, char *redir_type);
 void	remove_last_redir_pair(t_cmd *cmd, int index);
 void	remove_redir_pair(t_cmd *cmd, int index);
-void	create_empty_output_file(char *type, char *filename);
+int		create_empty_output_file(char *type, char *filename);
 int		find_input_file_index(char **content, int i);
 int		find_next_double_left_index(t_cmd *cmd, int start);
 

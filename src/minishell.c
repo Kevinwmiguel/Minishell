@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/30 23:03:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:27:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	init(t_shell *shell, char **env)
 	shell->env = NULL;
 	shell->exp = NULL;
 	shell->cmd = NULL;
+	shell->cmd_ready = NULL;
 	shell->env = dptr_dup(env);
 	if (!shell->env)
 	{

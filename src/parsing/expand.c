@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       #+#  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-14 15:37:35 by jmehmy            #+#    #+#             */
-/*   Updated: 2025-06-14 15:37:35 by jmehmy           ###   ########.fr       */
+/*   Created: 2025/06/14 15:37:35 by jmehmy            #+#    #+#             */
+/*   Updated: 2025/07/01 11:34:01 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	*expand_result(t_shell *data, char **line, bool is_double_quote)
 	}
 	else if (*str == '$')
 	{
-		expand_value = ft_itoa(data->signal.pid);
+		expand_value = ft_getpid();
 		str++;
 	}
 	else

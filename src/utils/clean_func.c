@@ -6,11 +6,34 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:48:20 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/30 22:32:39 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 21:03:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	free_cmdr(t_cmd_r *list)
+{
+	t_cmd_r *tmp;
+	int i;
+
+	while (list)
+	{
+		tmp = list->next;
+		if (list->args)
+		{
+			i = 0;
+			while (list->args[i])
+			{
+				free(list->args[i]);
+				i++;
+			}
+			free(list->args);
+		}
+		free(list);
+		list = tmp;
+	}
+}
 
 void	free_split(char **split)
 {
@@ -53,6 +76,8 @@ void	final_cleaner(t_shell *shell)
 		free_split(shell->env);
 	if (shell->exp)
 		free_split(shell->exp);
+	if (shell->cmd_ready)
+		free_cmdr(shell->cmd_ready);
 	free(shell);
 }
 

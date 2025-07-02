@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/28 19:00:10 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/02 01:24:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	run_children(t_shell *shell, char **argv, t_pipexinfo *info)
 	if (redir && redir->heredoc > 0)
 		dup2(redir->heredoc, STDIN_FILENO);
 	else if (redir && redir->infd > 0)
+	{
 		dup2(redir->infd, STDIN_FILENO);
+		close(redir->infd);
+	}
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		dup2(info->fd_in, STDIN_FILENO);
 	if (redir && redir->outfd > 0)

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:28:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 21:31:06 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 11:29:18 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,27 @@ char	**dptr_dup_replace(char **env, char *new_entry, int index)
 	}
 	copy[i] = NULL;
 	return (copy);
+}
+
+char	*ft_getpid(void)
+{
+	char		*pid;
+	int			fd;
+	char		**temp;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (!fd)
+		return (NULL);
+	pid = get_next_line(fd);
+	if (!pid)
+		return (NULL); 
+	temp = ft_split(pid, ' ');
+	free(pid);
+	if (!temp)
+		return (NULL);
+	pid = ft_strdup(temp[0]);
+	free_split(temp);
+	if (!pid)
+		return (NULL);
+	return (pid);
 }

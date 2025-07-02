@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:02:58 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:09:18 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ typedef struct s_cmd
 	struct s_cmd	*next; // next cmd (pipe: `ls | wc`)
 }	t_cmd;
 
+typedef struct s_cmd_r
+{
+	char	**args;
+	struct s_cmd_r *next;
+}	t_cmd_r;
+
 typedef struct s_shell
 {
 	t_token			*begin;
@@ -112,12 +118,14 @@ typedef struct s_shell
 	int				is_child;
 	t_clist			*list;
 	t_cmd			*cmd;
+	t_cmd_r		*cmd_ready;
 }	t_shell;
 
 void	print_cmd(t_cmd *cmd);
 
 // JAS VERSION
 
+char	*ft_getpid(void);
 void	executor(t_shell *shell, char **argv);
 int		process_shell_input(t_shell *data, char *str);
 t_cmd	*parse_cmd(t_shell *data, t_token *token);
