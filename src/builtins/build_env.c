@@ -6,11 +6,25 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 01:30:59 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:09:11 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+int	ft_strcmp_ignore_quotes(char *s1, char *s2)
+{
+	int	i;
+
+	if (cmp_names(s1, s2) != 0)
+		return (1);
+	i = 0;
+	while (s1[i] && s1[i] != '=')
+		i++;
+	if (!s1[i] || !s2[i])
+		return (1);
+	return (cmp_values(s1 + i + 1, s2 + i + 1));
+}
 
 int	ft_strcmp2(char *s1, char *s2)
 {
@@ -24,26 +38,26 @@ int	ft_strcmp2(char *s1, char *s2)
 	return (*s1 - *s2);
 }
 
-int	compare_exp_env(t_shell *utils, int i, int j)
+int	compare_exp_env(t_shell *shell, int i, int j)
 {
-	while (utils->env[i])
+	while (shell->env[i])
 	{
-		if (ft_strcmp2(utils->exp[j], utils->env[i]) == 0)
+		if (ft_strcmp_ignore_quotes(shell->exp[j] + 11, shell->env[i]) == 0)
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-void	write_exp_to_env(t_shell *utils, int j, int i)
+void	write_exp_to_env(t_shell *shell, int j, int i)
 {
 	while (j > -1)
 	{
-		while (utils->exp[j][i])
+		while (shell->exp[j][i])
 		{
-			if (utils->exp[j][i] == '=' && compare_exp_env(utils, 0, j) == 1)
+			if (shell->exp[j][i] == '=' && compare_exp_env(shell, 0, j) == 1)
 			{
-				ft_putstr_fd(utils->exp[j], 1);
+				ft_putstr_fd(shell->exp[j] + 11, 1);
 				ft_putstr_fd("\n", 1);
 				break ;
 			}

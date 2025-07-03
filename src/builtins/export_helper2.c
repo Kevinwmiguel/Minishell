@@ -6,11 +6,21 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 13:10:05 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:08:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+char	*strjoin_free(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
 
 int	find_in_env(char **env, const char *key)
 {
@@ -32,42 +42,6 @@ int	find_in_env(char **env, const char *key)
 	}
 	return (0);
 }
-
-// static char	**merge_exp_lists(char **old_exp, char **new_exp, char **env)
-// {
-// 	int		i;
-// 	char	**merged;
-// 	int		count;
-
-// 	i = 0;
-// 	count = mlc_size(0, old_exp) + mlc_size(0, new_exp);
-// 	merged = ft_calloc(count + 1, sizeof(char *));
-// 	if (!merged)
-// 		return (NULL);
-// 	count = 0;
-// 	while (new_exp && new_exp[i])
-// 	{
-// 		merged[count] = ft_strdup(new_exp[i]);
-// 		if (!merged[count])
-// 			return (free_split(merged), NULL);
-// 		count++;
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (old_exp && old_exp[i])
-// 	{
-// 		if (!ft_strchr(old_exp[i], '=') && !find_in_env(env, old_exp[i]))
-// 		{
-// 			merged[count] = ft_strdup(old_exp[i]);
-// 			if (!merged[count])
-// 				return (free_split(merged), NULL);
-// 			count++;
-// 		}
-// 		i++;
-// 	}
-// 	merged[count] = NULL;
-// 	return (merged);
-// }
 
 static void	update_env_var(t_shell *shell, char *arg)
 {

@@ -6,17 +6,17 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 15:41:22 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:20:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	builtins_analyzer(t_shell *shell, int flag)
+void	builtins_analyzer(t_shell *shell, int flag, char **args)
 {
 	(void)shell;
 	if (flag == 1)
-		build_echo(shell, shell->cmd->args);
+		build_echo(shell, args);
 	if (flag == 2)
 		build_cd(shell);
 	if (flag == 3)

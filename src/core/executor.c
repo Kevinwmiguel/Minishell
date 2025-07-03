@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:41:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:21:14 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	executor(t_shell *shell, char **argv)
 		if (!ft_strncmp(argv[0], "export", 7) && shell->count > 1 && !argv[1])
 			export_print(shell->exp);
 		else
-			builtins_analyzer(shell, flag);
+			builtins_analyzer(shell, flag, argv);
 		exit(1);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:44:15 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:21:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*strjoin_free(char *s1, char *s2);
 int		is_valid_identifier(char *str);
 
 //builtins
-void	builtins_analyzer(t_shell *shell, int flag);
+void	builtins_analyzer(t_shell *shell, int flag, char **argv);
 
 //PIPES
 void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean);
@@ -83,7 +83,6 @@ void	export_print(char **argv);
 void	build_echo(t_shell *shell, char **args);
 
 //CD
-
 void	build_cd(t_shell *shell);
 
 //PWD
@@ -95,6 +94,8 @@ void	update_pwd(t_shell *shell);
 void	build_env(t_shell *shell);
 void	update_shlvl(t_shell *shell);
 char	**add_or_replace_env(char **env, char *new_entry);
+int		cmp_values(char *v1, char *v2);
+int		cmp_names(char *s1, char *s2);
 
 //EXPORT
 char	**build_export(t_shell *shell);

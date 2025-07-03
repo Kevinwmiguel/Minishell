@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:35:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 21:37:23 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:09:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,38 @@ int	is_valid_identifier(char *str)
 	return (1);
 }
 
-char	*strjoin_free(char *s1, char *s2)
+int	cmp_names(char *s1, char *s2)
 {
-	char	*res;
+	int	i;
 
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] != '=' && s2[i] != '=')
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	if (s1[i] != '=' || s2[i] != '=')
+		return (s1[i] - s2[i]);
+	return (0);
+}
+
+int	cmp_values(char *v1, char *v2)
+{
+	int	i;
+
+	i = 0;
+	if (v1[0] == '"')
+		v1++;
+	if (v2[0] == '"')
+		v2++;
+	while (v1[i] && v2[i])
+	{
+		if (v1[i] != v2[i])
+			return (v1[i] - v2[i]);
+		i++;
+	}
+	if ((v1[i] == '"' && v2[i] == '\0') || (v2[i] == '"' && v1[i] == '\0'))
+		return (0);
+	return (v1[i] - v2[i]);
 }
