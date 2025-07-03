@@ -6,17 +6,17 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 00:28:07 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 09:51:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
 void fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean)
-{         // Cria os arquivos >, >> exceto o último
-	handle_redirection_left_input(cmd);    // Lida com < e <<
-	handle_redirection_right_input(cmd);  // Abre outfd com o redir final
-	import_args_to_clean(cmd, clean);      // Copia só o necessário para execve
+{
+	handle_redirection_left_input(cmd);
+	handle_redirection_right_input(cmd);
+	import_args_to_clean(cmd, clean);
 }
 
 void	remove_last_redir_pair(t_cmd *cmd, int index)

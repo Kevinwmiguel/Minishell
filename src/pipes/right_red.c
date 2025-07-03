@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 00:01:44 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 10:16:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,36 @@ void	import_args_to_clean(t_cmd *cmd, t_cmd_r *clean)
 
 	if (!cmd || !cmd->args || !clean)
 		return ;
-
-	// 1. Conta quantos args válidos existem
 	i = 0;
 	count = 0;
 	while (cmd->args[i])
 	{
 		if (is_redirection_token(cmd->args[i]) && cmd->args[i + 1])
+		{
+			if (!ft_strncmp(cmd->args[0], "ls", 3) && !ft_strncmp(cmd->args[i], "<", 2))
+				count++;
 			i += 2;
+		}
 		else
 		{
 			count++;
 			i++;
 		}
 	}
-
-	// 2. Aloca espaço para clean->args
 	clean->args = malloc(sizeof(char *) * (count + 1));
 	if (!clean->args)
 		return ;
 
-	// 3. Copia os args válidos
 	i = 0;
 	j = 0;
 	while (cmd->args[i])
 	{
 		if (is_redirection_token(cmd->args[i]) && cmd->args[i + 1])
+		{
+			if (!ft_strncmp(cmd->args[0], "ls", 3) && !ft_strncmp(cmd->args[i], "<", 2))
+				clean->args[j++] = ft_strdup(cmd->args[i + 1]);
 			i += 2;
+		}
 		else
 			clean->args[j++] = ft_strdup(cmd->args[i++]);
 	}

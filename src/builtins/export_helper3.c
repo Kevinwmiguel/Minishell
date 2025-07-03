@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:54:54 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:07:24 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:18:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,26 @@ char	*join_export(char *name, char *value)
 	return (full);
 }
 
-void	handle_export(t_shell *shell)
+void	handle_export(t_shell *shell, t_cmd_r *clean)
 {
 	int		i;
+	int		fd;
 
-	i = 0;
-	if (shell->cmd->args[1])
+	fd = STDOUT_FILENO;
+	if (shell->cmd && shell->cmd->redirect && shell->cmd->redirect->outfd > 0)
+		fd = shell->cmd->redirect->outfd;
+
+	if (clean->args[1])
 	{
-		update_env_export(shell);
+		update_env_export(shell, clean->args + 1);
 		return ;
 	}
+
+	i = 0;
 	while (shell->exp[i])
 	{
-		write(1, shell->exp[i], ft_strlen(shell->exp[i]));
-		write(1, "\n", 1);
+		write(fd, shell->exp[i], ft_strlen(shell->exp[i]));
+		write(fd, "\n", 1);
 		i++;
 	}
 }

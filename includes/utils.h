@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 21:33:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:10:00 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,11 @@ char	**add_or_replace_env(char **env, char *new_entry);
 
 //EXPORT
 char	**build_export(t_shell *shell);
-void	handle_export(t_shell *shell);
+void	handle_export(t_shell *shell, t_cmd_r *clean);
 char	**add_or_replace_exp(char **exp, char *new_entry);
-void	update_env_export(t_shell *shell);
+void	update_env_export(t_shell *shell, char **args);
 char	**merge_exp_lists(char **old, char **new, char **env);
 int		find_in_env(char **env, const char *key);
-void	handle_export(t_shell *shell);
 char	*join_export(char *name, char *value);
 
 //UNSET

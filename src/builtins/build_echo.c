@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:58:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/26 00:18:43 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:56:47 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	build_echo(t_shell *shell, char **args)
 {
 	int	i;
 	int	nl;
-	int	fd;
+	//int	fd;
 
 	(void)shell;
 	i = 1;
 	nl = 1;
-	fd = STDOUT_FILENO;
+	//fd = STDOUT_FILENO;
 	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		nl = 0;
@@ -29,11 +29,11 @@ void	build_echo(t_shell *shell, char **args)
 	}
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], fd);
+		ft_putstr_fd(args[i], 1);
 		if (args[i + 1])
-			ft_putstr_fd(" ", fd);
+			ft_putstr_fd(" ", 1);
 		i++;
 	}
 	if (nl)
-		ft_putstr_fd("\n", fd);
+		ft_putstr_fd("\n", 1);
 }

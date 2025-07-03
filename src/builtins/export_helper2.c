@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 22:55:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:10:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,15 @@ static void	update_export_var(t_shell *shell, char *arg)
 	shell->exp = tmp;
 }
 
-void	update_env_export(t_shell *shell)
+void	update_env_export(t_shell *shell, char **args)
 {
 	int		i;
 	char	*arg;
 
-	i = 1;
-	while (shell->cmd->args[i])
+	i = 0;
+	while (args[i])
 	{
-		arg = shell->cmd->args[i];
+		arg = args[i];
 		if (is_valid_identifier(arg))
 		{
 			if (ft_strchr(arg, '='))

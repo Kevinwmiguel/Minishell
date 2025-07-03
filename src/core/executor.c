@@ -6,11 +6,26 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 00:26:21 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 12:58:24 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	export_print(char **argv)
+{
+	int	i;
+
+	i = 0;
+	if (!argv)
+		return ;
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], 1);
+		write(1, "\n", 1);
+		i++;
+	}
+}
 
 void	executor(t_shell *shell, char **argv)
 {
@@ -22,7 +37,10 @@ void	executor(t_shell *shell, char **argv)
 	flag = builtins(argv[0]);
 	if (flag > 0)
 	{
-		builtins_analyzer(shell, flag);
+		if (!ft_strncmp(argv[0], "export", 7) && shell->count > 1 && !argv[1])
+			export_print(shell->exp);
+		else
+			builtins_analyzer(shell, flag);
 		exit(1);
 	}
 	else
@@ -69,6 +87,7 @@ static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 		}
 		line_helper2(info);
 		info->fd_in = info->fd[0];
+		clean = clean->next;
 		cmd = cmd->next;
 	}
 	while (wait(NULL) != -1)
@@ -125,7 +144,7 @@ void	execute_all_cmds(t_shell *shell)
 		builtins_dealer(shell, &info, clean);
 		free_cmdr(clean);
 		shell->cmd_ready = NULL;
-		return;
+		return ;
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 23:16:45 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:06:32 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,9 @@ void	builtins_dealer(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 {
 	if (shell->count == 1)
 	{
-		if (ft_strncmp(shell->cmd->args[0], "export", 6) == 0 && \
-			shell->cmd->redirect == NULL)
+		if (ft_strncmp(shell->cmd->args[0], "export", 6) == 0)
 		{
-			handle_export(shell);
+			handle_export(shell, clean);
 			return ;
 		}
 		else if ((ft_strncmp(shell->cmd->args[0], "cd", 2) == 0) || \
