@@ -6,31 +6,27 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 23:27:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:33:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
 
-// void	free_redirections(t_red *red)
-// {
-// 	t_red	*tmp;
-
-// 	while (red)
-// 	{
-// 		tmp = red->next;
-// 		if (red->piped)
-// 			free(red->piped);
-// 		free(red);
-// 		red = tmp;
-// 	}
-// }
+void	exec_clean(t_shell *shell, t_cmd *head)
+{
+	execute_all_cmds(shell);
+	close_redirections(head);
+	free_token_list(shell);
+	free_cmds(head);
+	shell->cmd = NULL;
+}
 
 int	run(t_shell *shell)
 {
 	char	*input;
 	t_cmd	*head;
 
+	head = NULL;
 	while (1)
 	{
 		signal_search(ROOT);
@@ -47,12 +43,8 @@ int	run(t_shell *shell)
 		{
 			shell->cmd = parse_cmd(shell, shell->begin);
 			head = shell->cmd;
-			execute_all_cmds(shell);
-			close_redirections(head);
-			free_token_list(shell);
-			free_cmds(head);
+			exec_clean(shell, head);
 		}
-		free_token_list(shell);
 		free(input);
 	}
 	return (1);
@@ -119,21 +111,4 @@ void	update_shlvl(t_shell *shell)
 	if (!new_lvl)
 		return ;
 	update_shlvl_helper(shell, i, new_lvl);
-}
-
-void	init(t_shell *shell, char **env)
-{
-	shell->env = NULL;
-	shell->exp = NULL;
-	shell->cmd = NULL;
-	shell->cmd_ready = NULL;
-	shell->env = dptr_dup(env);
-	if (!shell->env)
-	{
-		perror("Failed to duplicate env");
-		exit(EXIT_FAILURE);
-	}
-	update_shlvl(shell);
-	shell->exp = build_export(shell);
-	shell->count = 0;
 }

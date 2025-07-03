@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 17:09:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:44:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ typedef struct s_cmd
 
 typedef struct s_cmd_r
 {
-	char	**args;
-	struct s_cmd_r *next;
+	char			**args;
+	struct s_cmd_r	*next;
 }	t_cmd_r;
 
 typedef struct s_shell
@@ -118,7 +118,7 @@ typedef struct s_shell
 	int				is_child;
 	t_clist			*list;
 	t_cmd			*cmd;
-	t_cmd_r		*cmd_ready;
+	t_cmd_r			*cmd_ready;
 }	t_shell;
 
 void	print_cmd(t_cmd *cmd);

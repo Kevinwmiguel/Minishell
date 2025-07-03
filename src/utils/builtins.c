@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 13:06:32 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:41:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@ void	builtins_analyzer(t_shell *shell, int flag)
 
 int	builtins(char *str)
 {
-	if (ft_strncmp(str, "echo", 4) == 0)
+	if (ft_strncmp(str, "echo", 5) == 0)
 		return (1);
-	if (ft_strncmp(str, "cd", 2) == 0)
+	if (ft_strncmp(str, "cd", 3) == 0)
 		return (2);
-	if (ft_strncmp(str, "pwd", 3) == 0)
+	if (ft_strncmp(str, "pwd", 4) == 0)
 		return (3);
-	if (ft_strncmp(str, "export", 6) == 0)
+	if (ft_strncmp(str, "export", 7) == 0)
 		return (4);
-	if (ft_strncmp(str, "unset", 5) == 0)
+	if (ft_strncmp(str, "unset", 6) == 0)
 		return (5);
-	if (ft_strncmp(str, "env", 3) == 0)
+	if (ft_strncmp(str, "env", 4) == 0)
 		return (6);
-	if (ft_strncmp(str, "exit", 4) == 0)
+	if (ft_strncmp(str, "exit", 5) == 0)
 		return (7);
 	return (0);
 }

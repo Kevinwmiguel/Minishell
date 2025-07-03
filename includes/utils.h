@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 13:10:00 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:44:15 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_next_line(int fd);
 
 //UTILS
 void	free_cmdr(t_cmd_r *cmd);
-void prepare_all_output_files(t_cmd *cmd);
+void	prepare_all_output_files(t_cmd *cmd);
 void	import_args_to_clean(t_cmd *cmd, t_cmd_r *clean);
 char	*special_cleaner(const char *s1, const char *s2, t_shell *shell);
 void	builtins_dealer(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean);
@@ -62,18 +62,24 @@ void	remove_redir_pair(t_cmd *cmd, int index);
 int		create_empty_output_file(char *type, char *filename);
 int		find_input_file_index(char **content, int i);
 int		find_next_double_left_index(t_cmd *cmd, int start);
+int		is_redirection_token(char *s);
 
 //alocation
 int		mlc_size(int j, char **mlc);
 char	**dptr_dup(char	**dptr);
+t_cmd_r	*alloc_clean_cmd_list(t_cmd *cmd);
 
 //Cleaner
 void	final_cleaner(t_shell *shell);
 void	free_split(char **arr);
 char	*special_cleaner(const char *s1, const char *s2, t_shell *shell);
 
-//ECHO
+//CORE
+void	line_helper2(t_pipexinfo *info);
+void	line_helper(t_pipexinfo *info);
+void	export_print(char **argv);
 
+//ECHO
 void	build_echo(t_shell *shell, char **args);
 
 //CD
@@ -87,6 +93,7 @@ void	update_pwd(t_shell *shell);
 //ENV
 
 void	build_env(t_shell *shell);
+void	update_shlvl(t_shell *shell);
 char	**add_or_replace_env(char **env, char *new_entry);
 
 //EXPORT

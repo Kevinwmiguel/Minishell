@@ -6,11 +6,29 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:08:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 22:09:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:31:16 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
+
+void	init(t_shell *shell, char **env)
+{
+	shell->env = NULL;
+	shell->exp = NULL;
+	shell->cmd = NULL;
+	shell->cmd_ready = NULL;
+	shell->env = dptr_dup(env);
+	shell->begin = NULL;
+	if (!shell->env)
+	{
+		perror("Failed to duplicate env");
+		exit(EXIT_FAILURE);
+	}
+	update_shlvl(shell);
+	shell->exp = build_export(shell);
+	shell->count = 0;
+}
 
 int	main(int argc, char **argv, char **env)
 {

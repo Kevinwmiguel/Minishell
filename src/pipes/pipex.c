@@ -6,13 +6,13 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 09:51:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:48:27 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean)
+void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean)
 {
 	handle_redirection_left_input(cmd);
 	handle_redirection_right_input(cmd);

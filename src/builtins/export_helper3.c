@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:54:54 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 13:18:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:15:35 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,11 @@ void	handle_export(t_shell *shell, t_cmd_r *clean)
 	fd = STDOUT_FILENO;
 	if (shell->cmd && shell->cmd->redirect && shell->cmd->redirect->outfd > 0)
 		fd = shell->cmd->redirect->outfd;
-
 	if (clean->args[1])
 	{
 		update_env_export(shell, clean->args + 1);
 		return ;
 	}
-
 	i = 0;
 	while (shell->exp[i])
 	{

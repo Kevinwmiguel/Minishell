@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:28:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 11:29:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:30:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_getpid(void)
 		return (NULL);
 	pid = get_next_line(fd);
 	if (!pid)
-		return (NULL); 
+		return (NULL);
 	temp = ft_split(pid, ' ');
 	free(pid);
 	if (!temp)

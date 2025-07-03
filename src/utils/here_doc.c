@@ -6,11 +6,27 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 01:14:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 13:28:48 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	free_cmds(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	while (cmd)
+	{
+		tmp = cmd->next;
+		if (cmd->args)
+			free_split(cmd->args);
+		if (cmd->redirect)
+			free_redirections(cmd->redirect);
+		free(cmd);
+		cmd = tmp;
+	}
+}
 
 void	here_signal(int signal, siginfo_t *info, void *context)
 {
@@ -32,9 +48,8 @@ int	here_doc(char *limiter)
 		exit(1);
 	while (1)
 	{
-		write(1, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
-		//line = ft_strjoin(line, "\n");
+		line = readline("> ");
+		line = ft_strjoin(line, "\n");
 		if (!line)
 			break ;
 		if (ft_strlen(line) == ft_strlen(limiter) + 1 && \

@@ -6,26 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 12:58:24 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:41:19 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
-
-void	export_print(char **argv)
-{
-	int	i;
-
-	i = 0;
-	if (!argv)
-		return ;
-	while (argv[i])
-	{
-		ft_putstr_fd(argv[i], 1);
-		write(1, "\n", 1);
-		i++;
-	}
-}
 
 void	executor(t_shell *shell, char **argv)
 {
@@ -50,20 +35,6 @@ void	executor(t_shell *shell, char **argv)
 		perror("execve: ");
 		exit(1);
 	}
-}
-
-void	line_helper(t_pipexinfo *info)
-{
-	info->fd[0] = -1;
-	info->fd[1] = -1;
-}
-
-void	line_helper2(t_pipexinfo *info)
-{
-	if (info->fd[1] != -1)
-		close(info->fd[1]);
-	if (info->fd_in != STDIN_FILENO)
-		close(info->fd_in);
 }
 
 static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
@@ -94,42 +65,30 @@ static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 		;
 }
 
-t_cmd_r *alloc_clean_cmd_list(t_cmd *cmd)
+void	execute_or_fork(t_shell *shell, t_pipexinfo *info)
 {
-	t_cmd_r *head = NULL;
-	t_cmd_r *curr = NULL;
-	t_cmd_r *new;
+	t_cmd_r	*clean;
 
-	while (cmd)
+	clean = shell->cmd_ready;
+	if (shell->count == 1)
 	{
-		new = malloc(sizeof(t_cmd_r));
-		if (!new)
-			return (NULL); // você pode adicionar um free depois se quiser
-		new->args = NULL;
-		new->next = NULL;
-		if (!head)
-			head = new;
-		else
-			curr->next = new;
-		curr = new;
-		cmd = cmd->next;
+		builtins_dealer(shell, info, clean);
+		free_cmdr(clean);
+		shell->cmd_ready = NULL;
+		return ;
 	}
-	return (head);
+	fork_loop(shell, info, clean);
+	free_cmdr(clean);
+	shell->cmd_ready = NULL;
 }
 
-void	execute_all_cmds(t_shell *shell)
+void	count_and_fix_cmds(t_shell *shell)
 {
-	t_pipexinfo	info;
-	t_cmd		*cmd;
-	t_cmd_r		*clean;
+	t_cmd	*cmd;
+	t_cmd_r	*clean;
 
-	shell->cmd_ready = alloc_clean_cmd_list(shell->cmd);
-	if (!shell->cmd_ready)
-		return ;
-	clean = shell->cmd_ready;
 	cmd = shell->cmd;
-	ft_bzero(&info, sizeof(t_pipexinfo));
-	info.fd_in = STDIN_FILENO;
+	clean = shell->cmd_ready;
 	shell->count = 0;
 	while (cmd)
 	{
@@ -138,18 +97,17 @@ void	execute_all_cmds(t_shell *shell)
 		cmd = cmd->next;
 		clean = clean->next;
 	}
-	clean = shell->cmd_ready;
-	if (shell->count == 1)
-	{
-		builtins_dealer(shell, &info, clean);
-		free_cmdr(clean);
-		shell->cmd_ready = NULL;
+}
+
+void	execute_all_cmds(t_shell *shell)
+{
+	t_pipexinfo	info;
+
+	shell->cmd_ready = alloc_clean_cmd_list(shell->cmd);
+	if (!shell->cmd_ready)
 		return ;
-	}
-	else
-	{
-		fork_loop(shell, &info, clean);
-		free_cmdr(clean);
-		shell->cmd_ready = NULL;
-	}
+	ft_bzero(&info, sizeof(t_pipexinfo));
+	info.fd_in = STDIN_FILENO;
+	count_and_fix_cmds(shell);
+	execute_or_fork(shell, &info);
 }

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 01:12:04 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:47:19 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 
 void	handle_double_left(t_cmd *cmd)
 {
-	int idx = 0;
-	int idx_limiter;
+	int	idx;
+	int	idx_limiter;
 
-	while ((idx = find_next_double_left_index(cmd, idx)) != -1)
+	idx = 0;
+	idx = find_next_double_left_index(cmd, idx);
+	while (idx != -1)
 	{
 		idx_limiter = idx + 1;
 		if (!cmd->args[idx_limiter])
@@ -66,7 +68,8 @@ void	handle_double_left(t_cmd *cmd)
 			exit(1);
 		}
 		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter]);
-		idx = idx_limiter + 1; // Avança além do limiter para não repetir
+		idx = idx_limiter + 1;
+		idx = find_next_double_left_index(cmd, idx);
 	}
 }
 
@@ -86,20 +89,19 @@ void	handle_single_left(t_cmd *cmd)
 		perror("open");
 		exit(1);
 	}
-	//remove_one_left_tokens(cmd, file_index);
 }
 
 void	handle_redirection_left_input(t_cmd *cmd)
 {
-	// chama uma única vez para processar todos os heredocs
+	int	i;
+
 	if (find_next_double_left_index(cmd, 0) != -1)
 		handle_double_left(cmd);
-
-	int i = 0;
+	i = 0;
 	while (cmd->args[i])
 	{
-		// só trata os < simples aqui
-		if (ft_strncmp(cmd->args[i], "<", 2) == 0 && ft_strlen(cmd->args[i]) == 1)
+		if (ft_strncmp(cmd->args[i], "<", 2) == 0 && \
+		ft_strlen(cmd->args[i]) == 1)
 			handle_single_left(cmd);
 		i++;
 	}

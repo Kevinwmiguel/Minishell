@@ -1,39 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_echo.c                                       :+:      :+:    :+:   */
+/*   l_helpers.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 01:58:50 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:14:12 by kwillian         ###   ########.fr       */
+/*   Created: 2025/07/03 16:33:29 by kwillian          #+#    #+#             */
+/*   Updated: 2025/07/03 16:35:53 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	build_echo(t_shell *shell, char **args)
+void	line_helper(t_pipexinfo *info)
+{
+	info->fd[0] = -1;
+	info->fd[1] = -1;
+}
+
+void	line_helper2(t_pipexinfo *info)
+{
+	if (info->fd[1] != -1)
+		close(info->fd[1]);
+	if (info->fd_in != STDIN_FILENO)
+		close(info->fd_in);
+}
+
+void	export_print(char **argv)
 {
 	int	i;
-	int	nl;
-	int	fd;
 
-	(void)shell;
-	i = 1;
-	nl = 1;
-	fd = STDOUT_FILENO;
-	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
+	i = 0;
+	if (!argv)
+		return ;
+	while (argv[i])
 	{
-		nl = 0;
+		ft_putstr_fd(argv[i], 1);
+		write(1, "\n", 1);
 		i++;
 	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], fd);
-		if (args[i + 1])
-			ft_putstr_fd(" ", fd);
-		i++;
-	}
-	if (nl)
-		ft_putstr_fd("\n", fd);
 }

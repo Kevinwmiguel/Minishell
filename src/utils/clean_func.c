@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 18:48:20 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 21:03:49 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:32:55 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_cmdr(t_cmd_r *list)
 {
-	t_cmd_r *tmp;
-	int i;
+	t_cmd_r		*tmp;
+	int			i;
 
 	while (list)
 	{
@@ -47,23 +47,8 @@ void	free_split(char **split)
 		free(split[i]);
 		i++;
 	}
-	free(split);
-}
-
-void	free_cmds(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	while (cmd)
-	{
-		tmp = cmd->next;
-		if (cmd->args)
-			free_split(cmd->args);
-		if (cmd->redirect)
-			free_redirections(cmd->redirect);
-		free(cmd);
-		cmd = tmp;
-	}
+	if (split)
+		free(split);
 }
 
 void	final_cleaner(t_shell *shell)
@@ -78,6 +63,7 @@ void	final_cleaner(t_shell *shell)
 		free_split(shell->exp);
 	if (shell->cmd_ready)
 		free_cmdr(shell->cmd_ready);
+	free_token_list(shell);
 	free(shell);
 }
 
