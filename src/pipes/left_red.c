@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 15:47:19 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/04 10:40:02 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ void	remove_all_double_left_tokens(t_cmd *cmd)
 {
 	int	i;
 	int	j;
-	int	k;
 
-	k = 0;
 	i = 0;
 	while (cmd->args[i])
 	{
@@ -35,7 +33,6 @@ void	remove_all_double_left_tokens(t_cmd *cmd)
 			continue ;
 		}
 		i++;
-		k++;
 	}
 }
 
