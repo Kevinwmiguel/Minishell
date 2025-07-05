@@ -27,6 +27,8 @@ void	init(t_shell *shell, char **env)
 	}
 	update_shlvl(shell);
 	shell->exp = build_export(shell);
+	free_split(shell->exp);
+	shell->exp = NULL;
 	shell->count = 0;
 }
 
