@@ -59,6 +59,12 @@ t_cmd	*parse_cmd(t_shell *data, t_token *token)
 	lst_cmd = NULL;
 	while (token)
 	{
+		if (token->type == PIPE && (!token->prev || token->prev->type == PIPE))
+		{
+    			printf("invalid use of pipe '|'\n");
+    			data->exit_code = 1;
+    			return NULL;
+		}
 		if (!token->prev || token->prev->type == PIPE)
 		{
 			new_cmd = create_cmd(data, token);
