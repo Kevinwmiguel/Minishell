@@ -41,15 +41,15 @@ void	get_type(t_token *token)
 {
 	if (token->type == DOLLAR)
 		return ;
-	else if (ft_strncmp(token->str, "<", 1) == 0)
+	else if (ft_strncmp(token->str, "<", 2) == 0)
 		token->type = INPUT;
-	else if (ft_strncmp(token->str, "<<", 2) == 0)
+	else if (ft_strncmp(token->str, "<<", 3) == 0)
 		token->type = HEREDOC;
-	else if (ft_strncmp(token->str, ">", 1) == 0)
+	else if (ft_strncmp(token->str, ">", 2) == 0)
 		token->type = TRUNC;
-	else if (ft_strncmp(token->str, ">>", 2) == 0)
+	else if (ft_strncmp(token->str, ">>", 3) == 0)
 		token->type = APPEND;
-	else if (ft_strncmp(token->str, "|", 1) == 0)
+	else if (ft_strncmp(token->str, "|", 2) == 0)
 		token->type = PIPE;
 	else
 		token->type = ARG;
