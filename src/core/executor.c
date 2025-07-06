@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 15:39:11 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:48:35 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,9 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 			export_print(shell->exp);
 		else
 			builtins_analyzer(shell, flag, clean->args);
-		free_split(shell->exp);
-		free_split(shell->env);
 		free_token_list(shell);
 		close_redirections(shell->cmd);
-		free_cmdr(clean);
-		free_cmds(shell->cmd);
-		free(shell);
+		final_cleaner(shell);
 		exit(1);
 	}
 	else
