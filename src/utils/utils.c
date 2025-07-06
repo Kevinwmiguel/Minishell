@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 19:13:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/01 09:45:15 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:52:13 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**dptr_dup(char **arr)
 	i = 0;
 	while (i < len)
 	{
-		copy[i] = strdup(arr[i]);
+		copy[i] = ft_strdup(arr[i]);
 		if (!copy[i])
 		{
 			while (--i >= 0)

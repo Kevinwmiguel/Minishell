@@ -6,33 +6,42 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 17:21:14 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:28:21 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	executor(t_shell *shell, char **argv)
+void	executor(t_shell *shell, t_cmd_r *clean)
 {
 	int		flag;
 	char	*fullpath;
 
-	if (!argv || !argv[0])
+	if (!clean->args || !clean->args[0])
 		exit(1);
-	flag = builtins(argv[0]);
+	flag = builtins(clean->args[0]);
 	if (flag > 0)
 	{
-		if (!ft_strncmp(argv[0], "export", 7) && shell->count > 1 && !argv[1])
+		if (!ft_strncmp(clean->args[0], "export", 7) && shell->count > 1 && !clean->args[1])
 			export_print(shell->exp);
 		else
-			builtins_analyzer(shell, flag, argv);
+			builtins_analyzer(shell, flag, clean->args);
+		free_split(shell->exp);
+		free_split(shell->env);
+		free_token_list(shell);
+		close_redirections(shell->cmd);
+		free_cmds(shell->cmd);
+		free_cmdr(clean);
+		free(shell);
 		exit(1);
 	}
 	else
 	{
-		fullpath = get_path(argv[0], shell->env);
-		execve(fullpath, argv, shell->env);
+		fullpath = get_path(clean->args[0], shell->env);
+		execve(fullpath, clean->args, shell->env);
 		perror("execve: ");
+		free(fullpath);
+		final_cleaner(shell);
 		exit(1);
 	}
 }
@@ -54,7 +63,7 @@ static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 		{
 			if (info->fd[1] != -1)
 				close(info->fd[0]);
-			run_children(shell, clean->args, info);
+			run_children(shell, clean, info);
 		}
 		line_helper2(info);
 		info->fd_in = info->fd[0];

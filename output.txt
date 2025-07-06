@@ -1,0 +1,11 @@
+get_next_line
+includes
+libft
+Makefile
+minishell
+Minishell Stuff.odt
+output.txt
+readline.supp
+README.md
+read.supp
+src

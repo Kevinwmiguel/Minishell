@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 17:20:59 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:00:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,5 @@ void	builtins_dealer(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 			return ;
 		}
 	}
-	run_child(clean->args, shell, info);
+	run_child(clean, shell, info);
 }

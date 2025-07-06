@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:44:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:04:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	print_cmd(t_cmd *cmd);
 // JAS VERSION
 
 char	*ft_getpid(void);
-void	executor(t_shell *shell, char **argv);
+void	executor(t_shell *shell, t_cmd_r *clean);
 int		process_shell_input(t_shell *data, char *str);
 t_cmd	*parse_cmd(t_shell *data, t_token *token);
 t_cmd	*create_cmd(t_shell *data, t_token *token);

@@ -6,13 +6,13 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/02 15:02:05 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:07:07 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	run_children(t_shell *shell, char **argv, t_pipexinfo *info)
+void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info)
 {
 	t_red	*redir;
 
@@ -36,10 +36,10 @@ void	run_children(t_shell *shell, char **argv, t_pipexinfo *info)
 		close(info->fd[1]);
 	if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		close(info->fd_in);
-	executor(shell, argv);
+	executor(shell, clean);
 }
 
-void	run_child(char **argv, t_shell *shell, t_pipexinfo *info)
+void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 {
 	int	processor;
 
@@ -47,8 +47,7 @@ void	run_child(char **argv, t_shell *shell, t_pipexinfo *info)
 	if (processor == 0)
 	{
 		signal_search(CHILD);
-		run_children(shell, argv, info);
-		final_cleaner(shell);
+		run_children(shell, clean, info);
 	}
 	else if (processor > 0)
 		waitpid(processor, NULL, 0);

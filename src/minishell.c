@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 17:14:21 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:26:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exec_clean(t_shell *shell, t_cmd *head)
 {
+	(void)head;
 	execute_all_cmds(shell);
 	close_redirections(head);
 	free_token_list(shell);
@@ -37,7 +38,10 @@ int	run(t_shell *shell)
 			exit(1);
 		}
 		if (input[0] == '\0')
+		{
+			free(input);
 			continue ;
+		}
 		add_history(input);
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{

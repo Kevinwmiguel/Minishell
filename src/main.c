@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:08:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:31:16 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:51:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	init(t_shell *shell, char **env)
 	}
 	update_shlvl(shell);
 	shell->exp = build_export(shell);
-	free_split(shell->exp);
-	shell->exp = NULL;
 	shell->count = 0;
 }
 
