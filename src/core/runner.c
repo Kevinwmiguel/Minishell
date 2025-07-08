@@ -42,6 +42,7 @@ void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info)
 void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 {
 	int	processor;
+	int	status;
 
 	processor = fork();
 	if (processor == 0)
@@ -50,7 +51,13 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 		run_children(shell, clean, info);
 	}
 	else if (processor > 0)
-		waitpid(processor, NULL, 0);
+	{
+		waitpid(processor, &status, 0);
+		if (WIFEXITED(status))
+			shell->exit_code = WEXITSTATUS(status);
+		else
+			shell->exit_code = 1;
+	}
 	else
 	{
 		perror("fork");

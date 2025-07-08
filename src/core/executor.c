@@ -34,11 +34,17 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 	else
 	{
 		fullpath = get_path(clean->args[0], shell->env);
+		if (!fullpath)
+		{
+			perror("command not found");
+			final_cleaner(shell);
+			exit(127);
+		}
 		execve(fullpath, clean->args, shell->env);
 		perror("execve: ");
 		free(fullpath);
 		final_cleaner(shell);
-		exit(1);
+		exit(127);
 	}
 }
 
