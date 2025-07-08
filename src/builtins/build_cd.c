@@ -43,6 +43,7 @@ void	build_cd(t_shell *shell)
 		if (!home)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			shell->exit_code = 1;
 			return ;
 		}
 		path = home;
@@ -53,6 +54,5 @@ void	build_cd(t_shell *shell)
 		perror("minishell: cd");
 	else
 		update_pwd(shell);
-	if (shell->cmd->args[1])
-		free(path);
+	free(path);
 }
