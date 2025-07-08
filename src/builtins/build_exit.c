@@ -12,9 +12,12 @@
 
 #include "../../includes/utils.h"
 
-static void	h_lines(int status, char **args, t_shell *shell)
+static void	h_lines(char **args, t_shell *shell)
 {
+	int	status;
+
 	status = ft_atoi(args[1]);
+	shell->exit_code = status;
 	free_token_list(shell);
 	final_cleaner(shell);
 	exit(status);
@@ -23,17 +26,17 @@ static void	h_lines(int status, char **args, t_shell *shell)
 void	build_exit(t_shell *shell)
 {
 	char	**args;
-	int		status;
 	int		i;
+	int		code;
 
 	args = shell->cmd->args;
-	status = 0;
+	code = shell->exit_code;
 	i = 0;
 	if (!args[1])
 	{
 		free_token_list(shell);
 		final_cleaner(shell);
-		exit(0);
+		exit(code);
 	}
 	while (args[1][i])
 	{
@@ -46,5 +49,5 @@ void	build_exit(t_shell *shell)
 		}
 		i++;
 	}
-	h_lines(status, args, shell);
+	h_lines(args, shell);
 }
