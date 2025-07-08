@@ -18,6 +18,7 @@ void	init(t_shell *shell, char **env)
 	shell->exp = NULL;
 	shell->cmd = NULL;
 	shell->cmd_ready = NULL;
+	shell->exit_code = 0;
 	shell->env = dptr_dup(env);
 	shell->begin = NULL;
 	if (!shell->env)
