@@ -35,7 +35,7 @@ int	run(t_shell *shell)
 		if (!input)
 		{
 			final_cleaner(shell);
-			exit(1);
+			exit(0);
 		}
 		if (input[0] == '\0')
 		{
