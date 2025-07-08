@@ -36,4 +36,5 @@ void	build_echo(t_shell *shell, char **args)
 	}
 	if (nl)
 		ft_putstr_fd("\n", fd);
+	shell->exit_code = 0;
 }
