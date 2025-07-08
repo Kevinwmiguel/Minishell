@@ -16,6 +16,7 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 {
 	int		flag;
 	char	*fullpath;
+	int	code;
 
 	if (!clean->args || !clean->args[0])
 		exit(1);
@@ -26,10 +27,11 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 			export_print(shell->exp);
 		else
 			builtins_analyzer(shell, flag, clean->args);
+		code = shell->exit_code;
 		free_token_list(shell);
 		close_redirections(shell->cmd);
 		final_cleaner(shell);
-		exit(1);
+		exit(code);
 	}
 	else
 	{
