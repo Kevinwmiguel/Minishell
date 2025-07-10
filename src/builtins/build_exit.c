@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 12:43:28 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:27:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ static void	h_lines(char **args, t_shell *shell)
 	exit(status);
 }
 
+void	freedom(t_shell *shell)
+{
+	free_token_list(shell);
+	final_cleaner(shell);
+	close_extra_fds();
+}
+
 void	build_exit(t_shell *shell)
 {
 	char	**args;
@@ -34,9 +41,7 @@ void	build_exit(t_shell *shell)
 	i = 0;
 	if (!args[1])
 	{
-		free_token_list(shell);
-		final_cleaner(shell);
-		close_extra_fds();
+		freedom(shell);
 		exit(code);
 	}
 	while (args[1][i])
@@ -44,9 +49,7 @@ void	build_exit(t_shell *shell)
 		if (!ft_isdigit(args[1][i]))
 		{
 			ft_putendl_fd("numeric argument required", STDERR_FILENO);
-			free_token_list(shell);
-			final_cleaner(shell);
-			close_extra_fds();
+			freedom(shell);
 			exit(2);
 		}
 		i++;

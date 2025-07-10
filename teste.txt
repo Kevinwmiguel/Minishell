@@ -1,2 +1,1 @@
-nois
-avua
+/home/kevin/Minishell

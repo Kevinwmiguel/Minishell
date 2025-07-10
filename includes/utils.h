@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 12:19:11 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:30:56 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		run(t_shell *shell);
 
 //CLOSES
 void	close_redirections(t_cmd *cmd);
+void	get_out(t_shell *shell);
 
 //GETNEXTLINE
 char	*get_next_line(int fd);
@@ -37,7 +38,8 @@ void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
 void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info);
-void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info, t_cmd *cmd);
+void	run_children(t_shell *shell, t_cmd_r *clean, \
+	t_pipexinfo *info, t_cmd *cmd);
 void	free_split(char **split);
 int		here_doc(char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd);
@@ -107,7 +109,7 @@ int		find_in_env(char **env, const char *key);
 char	*join_export(char *name, char *value);
 
 //UNSET
-void	build_unset(t_shell *shell);
+void	build_unset(t_shell *shell, char **new_exp);
 void	close_extra_fds(void);
 
 //EXIT

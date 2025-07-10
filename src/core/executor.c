@@ -6,136 +6,57 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 11:33:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:13:24 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	close_extra_fds(void)
+static void	exec_builtin(t_shell *sh, t_cmd_r *cl, int flag)
 {
-	int	i;
+	int	code;
 
-	i = 3;
-	while (i <= 20)
+	if (!ft_strncmp(cl->args[0], "export", 7) && \
+	sh->count > 1 && !cl->args[1])
+		export_print(sh->exp);
+	else
+		builtins_analyzer(sh, flag, cl->args);
+	code = sh->exit_code;
+	free_token_list(sh);
+	close_extra_fds();
+	close_redirections(sh->cmd);
+	final_cleaner(sh);
+	exit(code);
+}
+
+static void	exec_external(t_shell *sh, t_cmd_r *cl)
+{
+	char	*full;
+
+	close_extra_fds();
+	full = get_path(cl->args[0], sh->env);
+	if (!full)
 	{
-		close(i);
-		i++;
+		perror("command not found");
+		final_cleaner(sh);
+		exit(127);
 	}
+	execve(full, cl->args, sh->env);
+	perror("execve: ");
+	free(full);
+	final_cleaner(sh);
+	exit(127);
 }
 
 void	executor(t_shell *shell, t_cmd_r *clean)
 {
-	int		flag;
-	char	*fullpath;
-	int	code;
+	int	flag;
 
 	if (!clean->args || !clean->args[0])
 		exit(1);
 	flag = builtins(clean->args[0]);
 	if (flag > 0)
-	{
-		if (!ft_strncmp(clean->args[0], "export", 7) && shell->count > 1 && !clean->args[1])
-			export_print(shell->exp);
-		else
-			builtins_analyzer(shell, flag, clean->args);
-		code = shell->exit_code;
-		free_token_list(shell);
-		close_extra_fds();
-		close_redirections(shell->cmd);
-		final_cleaner(shell);
-		exit(code);
-	}
+		exec_builtin(shell, clean, flag);
 	else
-	{
-		close_extra_fds();
-		fullpath = get_path(clean->args[0], shell->env);
-		if (!fullpath)
-		{
-			perror("command not found");
-			final_cleaner(shell);
-			exit(127);
-		}
-		execve(fullpath, clean->args, shell->env);
-		perror("execve: ");
-		free(fullpath);
-		final_cleaner(shell);
-		exit(127);
-	}
-}
-
-static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
-{
-	t_cmd	*cmd;
-
-	cmd = shell->cmd;
-    // exit(1);
-	while (cmd)
-	{
-		//shell->cmd = cmd;
-		if (cmd->next && pipe(info->fd) == -1)
-			exit(1);
-		if (!cmd->next)
-			line_helper(info);
-		info->pid = fork();
-		if (info->pid == 0)
-		{
-			if (info->fd[1] != -1)
-				close(info->fd[0]);
-			run_children(shell, clean, info, cmd);
-		}
-		line_helper2(info);
-		info->fd_in = info->fd[0];
-		clean = clean->next;
-		cmd = cmd->next;
-	}
-	while (wait(NULL) != -1)
-		;
-}
-
-void	execute_or_fork(t_shell *shell, t_pipexinfo *info)
-{
-	t_cmd_r	*clean;
-
-	clean = shell->cmd_ready;
-	if (shell->count == 1)
-	{
-		builtins_dealer(shell, info, clean);
-		free_cmdr(clean);
-		shell->cmd_ready = NULL;
-		return ;
-	}
-	fork_loop(shell, info, clean);
-	free_cmdr(clean);
-	shell->cmd_ready = NULL;
-}
-
-void	count_and_fix_cmds(t_shell *shell)
-{
-	t_cmd	*cmd;
-	t_cmd_r	*clean;
-
-	cmd = shell->cmd;
-	clean = shell->cmd_ready;
-	shell->count = 0;
-	while (cmd)
-	{
-		shell->count++;
-		fixing_cmd_red(cmd, clean);
-		cmd = cmd->next;
-		clean = clean->next;
-	}
-}
-
-void	execute_all_cmds(t_shell *shell)
-{
-	t_pipexinfo	info;
-
-	shell->cmd_ready = alloc_clean_cmd_list(shell->cmd);
-	if (!shell->cmd_ready)
-		return ;
-	ft_bzero(&info, sizeof(t_pipexinfo));
-	info.fd_in = STDIN_FILENO;
-	count_and_fix_cmds(shell);
-	execute_or_fork(shell, &info);
+		exec_external(shell, clean);
 }

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 15:59:30 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 11:02:04 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:04:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	open_last_output_file(t_cmd *cmd, int last_index, char *redir_type)
 		exit(1);
 	}
 }
-
 
 void	find_last_output_redir(t_cmd *cmd, int *last_index, char **redir_type)
 {

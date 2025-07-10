@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/07/06 00:31:45 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:02:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,41 @@ int	process_shell_input(t_shell *data, char *str)
 	return (1);
 }
 
+static int	handle_new_cmd(t_shell *data, t_token *token, t_cmd **lst)
+{
+	t_cmd	*new;
+
+	new = create_cmd(data, token);
+	if (!new)
+	{
+		free_cmd(&new);
+		free_cmd(lst);
+		return (0);
+	}
+	if (!*lst)
+		*lst = new;
+	else
+		add_cmd(lst, new);
+	return (1);
+}
+
 t_cmd	*parse_cmd(t_shell *data, t_token *token)
 {
 	t_cmd	*lst_cmd;
-	t_cmd	*new_cmd;
 
 	lst_cmd = NULL;
 	while (token)
 	{
 		if (token->type == PIPE && (!token->prev || token->prev->type == PIPE))
 		{
-    			printf("invalid use of pipe '|'\n");
-    			data->exit_code = 1;
-    			return NULL;
+			printf("invalid use of pipe '|'\n");
+			data->exit_code = 1;
+			return (NULL);
 		}
 		if (!token->prev || token->prev->type == PIPE)
 		{
-			new_cmd = create_cmd(data, token);
-			if (!new_cmd)
-			{
-				free_cmd(&new_cmd);
-				free_cmd(&lst_cmd);
+			if (!handle_new_cmd(data, token, &lst_cmd))
 				return (NULL);
-			}
-			if (!lst_cmd)
-				lst_cmd = new_cmd;
-			else
-				add_cmd(&lst_cmd, new_cmd);
 		}
 		token = token->next;
 	}

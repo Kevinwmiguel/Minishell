@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:45 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 12:38:46 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:32:31 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,9 @@ int	var_not_found(char **env, char **args)
 	return (0);
 }
 
-void	build_unset(t_shell *shell)
+void	build_unset(t_shell *shell, char **new_exp)
 {
 	char	**new_env;
-	char	**new_exp;
 	char	**merged;
 
 	if (!shell->cmd || !shell->cmd->args[1])
@@ -94,7 +93,6 @@ void	build_unset(t_shell *shell)
 	if (var_not_found(shell->env, shell->cmd->args))
 	{
 		write(2, "unset: variable does not exist\n", 32);
-		//final_cleaner(shell);
 		close_extra_fds();
 		return ;
 	}

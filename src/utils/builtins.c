@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 23:38:44 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 11:33:48 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:34:03 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	builtins_analyzer(t_shell *shell, int flag, char **args)
 {
-	(void)shell;
+	char	**new_exp;
+
+	new_exp = NULL;
 	if (flag == 1)
 		build_echo(shell, args);
 	if (flag == 2)
@@ -24,7 +26,7 @@ void	builtins_analyzer(t_shell *shell, int flag, char **args)
 	if (flag == 4)
 		build_export(shell);
 	if (flag == 5)
-		build_unset(shell);
+		build_unset(shell, new_exp);
 	if (flag == 6)
 		build_env(shell);
 	if (flag == 7)
@@ -52,16 +54,17 @@ int	builtins(char *str)
 
 void	handle_special_builtins(char **argv, t_shell *shell)
 {
-	int	ret;
+	int		ret;
+	char	**new_exp;
 
-	(void)argv;
+	new_exp = NULL;
 	ret = builtins(argv[0]);
 	if (ret != 0)
 	{
 		if (ret == 2)
 			build_cd(shell);
 		if (ret == 5)
-			build_unset(shell);
+			build_unset(shell, new_exp);
 		if (ret == 7)
 		{
 			build_exit(shell);

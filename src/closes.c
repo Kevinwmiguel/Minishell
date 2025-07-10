@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:03:11 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 22:03:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:58:22 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,11 @@ void	close_redirections(t_cmd *cmd)
 			close(redir->heredoc);
 		redir = redir->next;
 	}
+}
+
+void	get_out(t_shell *shell)
+{
+	final_cleaner(shell);
+	close_extra_fds();
+	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 11:28:37 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:05:16 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	find_double_right_index(t_cmd *cmd)
 
 int	is_last_redirection(t_cmd *cmd, char *filename)
 {
-	t_cmd	*tmp;
-	int		i;
+	t_cmd		*tmp;
+	int			i;
 	size_t		len;
 
 	len = ft_strlen(filename);

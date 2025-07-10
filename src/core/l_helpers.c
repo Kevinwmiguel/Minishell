@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:33:29 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:35:53 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:14:58 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ void	export_print(char **argv)
 	{
 		ft_putstr_fd(argv[i], 1);
 		write(1, "\n", 1);
+		i++;
+	}
+}
+
+void	close_extra_fds(void)
+{
+	int	i;
+
+	i = 3;
+	while (i <= 20)
+	{
+		close(i);
 		i++;
 	}
 }
