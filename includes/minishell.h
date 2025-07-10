@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 15:04:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:46:52 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_shell
 	int				is_child;
 	t_clist			*list;
 	t_cmd			*cmd;
+	t_cmd			*keeper;
 	t_cmd_r			*cmd_ready;
 }	t_shell;
 

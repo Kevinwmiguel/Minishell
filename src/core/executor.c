@@ -6,11 +6,23 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 20:48:35 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:33:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	close_extra_fds(void)
+{
+	int	i;
+
+	i = 3;
+	while (i <= 20)
+	{
+		close(i);
+		i++;
+	}
+}
 
 void	executor(t_shell *shell, t_cmd_r *clean)
 {
@@ -29,12 +41,14 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 			builtins_analyzer(shell, flag, clean->args);
 		code = shell->exit_code;
 		free_token_list(shell);
+		close_extra_fds();
 		close_redirections(shell->cmd);
 		final_cleaner(shell);
 		exit(code);
 	}
 	else
 	{
+		close_extra_fds();
 		fullpath = get_path(clean->args[0], shell->env);
 		if (!fullpath)
 		{
@@ -55,9 +69,10 @@ static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 	t_cmd	*cmd;
 
 	cmd = shell->cmd;
+    // exit(1);
 	while (cmd)
 	{
-		shell->cmd = cmd;
+		//shell->cmd = cmd;
 		if (cmd->next && pipe(info->fd) == -1)
 			exit(1);
 		if (!cmd->next)
@@ -67,7 +82,7 @@ static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 		{
 			if (info->fd[1] != -1)
 				close(info->fd[0]);
-			run_children(shell, clean, info);
+			run_children(shell, clean, info, cmd);
 		}
 		line_helper2(info);
 		info->fd_in = info->fd[0];

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:03:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:28:37 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,44 @@ int	find_double_right_index(t_cmd *cmd)
 	return (-1);
 }
 
+int	is_last_redirection(t_cmd *cmd, char *filename)
+{
+	t_cmd	*tmp;
+	int		i;
+	size_t		len;
+
+	len = ft_strlen(filename);
+	tmp = cmd->next;
+	while (tmp)
+	{
+		i = 1;
+		while (tmp->args && tmp->args[i])
+		{
+			if ((ft_strncmp(tmp->args[i], ">>", 3) == 0 || \
+				ft_strncmp(tmp->args[i], ">", 2) == 0) && \
+				tmp->args[i + 1] && \
+				ft_strncmp(tmp->args[i + 1], filename, len) == 0 && \
+				ft_strlen(tmp->args[i + 1]) == len)
+				return (0);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 void	handle_redirection_right_input(t_cmd *cmd)
 {
 	int		last_index;
 	char	*redir_type;
+	char	*outfile;
 
-	if (!cmd || !cmd->args)
-		return ;
 	find_last_output_redir(cmd, &last_index, &redir_type);
 	if (last_index == -1)
 		return ;
-	open_last_output_file(cmd, last_index, redir_type);
+	outfile = cmd->args[last_index + 1];
+	if (is_last_redirection(cmd, outfile))
+		open_last_output_file(cmd, last_index, redir_type);
+	else
+		cmd->redirect->outfd = -2;
 }

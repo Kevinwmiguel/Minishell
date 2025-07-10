@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 15:02:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:19:11 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	execute_all_cmds(t_shell *shell);
 int		builtins(char *str);
 char	*checker_path(t_shell *shell, char **paths, char *tmp);
 void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info);
-void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info);
+void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info, t_cmd *cmd);
 void	free_split(char **split);
 int		here_doc(char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd);
@@ -108,6 +108,7 @@ char	*join_export(char *name, char *value);
 
 //UNSET
 void	build_unset(t_shell *shell);
+void	close_extra_fds(void);
 
 //EXIT
 void	build_exit(t_shell *shell);

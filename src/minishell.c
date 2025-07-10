@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 15:26:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:43:08 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	run(t_shell *shell)
 		if (!input)
 		{
 			final_cleaner(shell);
+			close_extra_fds();
 			exit(0);
 		}
 		if (input[0] == '\0')

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:45 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 23:04:23 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:38:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,30 @@ char	**copy_env_without_vars(char **old_env, char **args)
 	return (new_env);
 }
 
+int	var_not_found(char **env, char **args)
+{
+	int	i;
+	int	j;
+	int	len;
+
+	j = 1;
+	while (args[j])
+	{
+		i = 0;
+		len = ft_strlen(args[j]);
+		while (env[i])
+		{
+			if (ft_strncmp(env[i], args[j], len) == 0 && env[i][len] == '=')
+				break ;
+			i++;
+		}
+		if (!env[i])
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
 void	build_unset(t_shell *shell)
 {
 	char	**new_env;
@@ -67,6 +91,13 @@ void	build_unset(t_shell *shell)
 
 	if (!shell->cmd || !shell->cmd->args[1])
 		return ;
+	if (var_not_found(shell->env, shell->cmd->args))
+	{
+		write(2, "unset: variable does not exist\n", 32);
+		//final_cleaner(shell);
+		close_extra_fds();
+		return ;
+	}
 	new_env = copy_env_without_vars(shell->env, shell->cmd->args);
 	if (!new_env)
 		return ;

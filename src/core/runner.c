@@ -6,17 +6,17 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/06 15:07:07 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:35:29 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info)
+void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info, t_cmd *cmd)
 {
 	t_red	*redir;
 
-	redir = shell->cmd->redirect;
+	redir = cmd->redirect;
 	if (redir && redir->heredoc > 0)
 		dup2(redir->heredoc, STDIN_FILENO);
 	else if (redir && redir->infd > 0)
@@ -27,7 +27,10 @@ void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info)
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		dup2(info->fd_in, STDIN_FILENO);
 	if (redir && redir->outfd > 0)
+	{
 		dup2(redir->outfd, STDOUT_FILENO);
+		//close(redir->outfd);
+	}
 	else if (info->fd[1] > 0)
 		dup2(info->fd[1], STDOUT_FILENO);
 	if (info->fd[0] > 0)
@@ -48,7 +51,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	if (processor == 0)
 	{
 		signal_search(CHILD);
-		run_children(shell, clean, info);
+		run_children(shell, clean, info, shell->cmd);
 	}
 	else if (processor > 0)
 	{

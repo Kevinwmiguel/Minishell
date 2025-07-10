@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:25:01 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:43:28 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	build_exit(t_shell *shell)
 	{
 		free_token_list(shell);
 		final_cleaner(shell);
+		close_extra_fds();
 		exit(code);
 	}
 	while (args[1][i])
@@ -45,6 +46,7 @@ void	build_exit(t_shell *shell)
 			ft_putendl_fd("numeric argument required", STDERR_FILENO);
 			free_token_list(shell);
 			final_cleaner(shell);
+			close_extra_fds();
 			exit(2);
 		}
 		i++;
