@@ -30,6 +30,21 @@ void	freedom(t_shell *shell)
 	close_extra_fds();
 }
 
+static 	void validate_exit_args(t_shell *shell, char **args, int *code)
+{
+	if (!args[1])
+	{
+		freedom(shell);
+		exit(*code);
+	}
+	if(args[2])
+	{
+		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
+		shell->exit_code = 1;
+		return ;
+	}
+}
+
 void	build_exit(t_shell *shell)
 {
 	char	**args;
@@ -39,11 +54,11 @@ void	build_exit(t_shell *shell)
 	args = shell->cmd->args;
 	code = shell->exit_code;
 	i = 0;
-	if (!args[1])
-	{
-		freedom(shell);
-		exit(code);
-	}
+	validate_exit_args(shell, args, &code);
+	if(args[2])
+		return ;
+	if(args[1][0] == '+' || args[1][0] == '-')
+		i++;
 	while (args[1][i])
 	{
 		if (!ft_isdigit(args[1][i]))
