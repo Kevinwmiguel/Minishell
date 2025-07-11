@@ -1,31 +1,81 @@
 {
-    readline 1
-
+    leak add_history
     Memcheck:Leak
-
-    match-leak-kinds: reachable
-
     ...
-
-    obj:/usr/lib/aarch64-linux-gnu/libreadline.so.8.1
+    fun:add_history
 }
-
 {
-    readline 1
-
+    leak readline
     Memcheck:Leak
-
-    match-leak-kinds: reachable
-
     ...
-
-    obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+    fun:readline
 }
-
 {
-    readline-leak
+    still_reachable xrealloc
     Memcheck:Leak
-    match-leak-kinds: reachable
     ...
-    obj:/usr/lib/x86_64-linux-gnu/libreadline.so.*
+    fun:realloc
+}
+{
+   readline_and_history_leaks
+   Memcheck:Leak
+   ...
+   fun:readline
+   ...
+}
+{
+   add_history_leaks
+   Memcheck:Leak
+   ...
+   fun:add_history
+   ...
+}
+{
+    still_reachable rl_extend_line_buffer
+    Memcheck:Leak
+    ...
+    fun:rl_extend_line_buffer
+}
+{
+    still_reachable rl_insert_text
+    Memcheck:Leak
+    ...
+    fun:rl_insert_text
+}
+{
+    still_reachable rl_bracketed_paste_begin
+    Memcheck:Leak
+    ...
+    fun:rl_bracketed_paste_begin
+}
+{
+    still_reachable _rl_dispatch_subseq
+    Memcheck:Leak
+    ...
+    fun:_rl_dispatch_subseq
+}
+{
+    still_reachable readline_internal_char
+    Memcheck:Leak
+    ...
+    fun:readline_internal_char
+}
+{
+    ignore_setlocale_reachable
+    Memcheck:Leak
+    ...
+    fun:setlocale
+}
+{
+    ignore_below_main
+    Memcheck:Leak
+    obj:/usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+    fun:__libc_start_main
+    fun: (below main)
+}
+{
+    still_reachable_ls_blocks
+    Memcheck:Leak
+    ...
+    fun:??? (in /usr/bin/ls)
 }
