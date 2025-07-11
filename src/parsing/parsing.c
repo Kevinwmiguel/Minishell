@@ -36,7 +36,8 @@ int	process_shell_input(t_shell *data, char *str)
 		return (0);
 	if (verify_closed_quote(str))
 	{
-		write(1, "Error: Unclosed quote.\n", 24);
+		write(2, "Error: Unclosed quote.\n", 24);
+		data->exit_code = 2;
 		return (0);
 	}
 	str_parse = expand_str(data, str);
