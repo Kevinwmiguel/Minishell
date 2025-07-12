@@ -3,17 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   runner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 18:15:26 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:41:52 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	run_children(t_shell *shell, t_cmd_r *clean, \
-	t_pipexinfo *info, t_cmd *cmd)
+static int	is_heredoc(t_cmd *cmd)
+{
+	t_red	*redir = cmd->redirect;
+
+	while (redir)
+	{
+		if (redir->type == HEREDOC)
+			return (1);
+		redir = redir->next;
+	}
+	return (0);
+}
+
+void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
+		t_cmd *cmd)
 {
 	t_red	*redir;
 
@@ -48,7 +61,10 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	processor = fork();
 	if (processor == 0)
 	{
-		signal_search(CHILD);
+		if (is_heredoc(shell->cmd))
+			signal_search(HEREDOC_CHILD);
+		else
+			signal_search(CHILD);
 		run_children(shell, clean, info, shell->cmd);
 	}
 	else if (processor > 0)

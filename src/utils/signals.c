@@ -12,6 +12,15 @@
 
 #include "../includes/utils.h"
 
+static void	signal_heredoc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		exit(130);
+	}
+}
+
 void	signal_search2(t_sig_t t)
 {
 	static struct sigaction	sa;
@@ -71,6 +80,11 @@ void	signal_search(t_sig_t t)
 	else if (t == IGNORE)
 	{
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if(t == HEREDOC_CHILD)
+	{
+		signal(SIGINT, signal_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else
