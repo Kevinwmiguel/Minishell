@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 18:13:24 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:41:37 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static void	exec_builtin(t_shell *sh, t_cmd_r *cl, int flag)
 {
 	int	code;
 
-	if (!ft_strncmp(cl->args[0], "export", 7) && \
-	sh->count > 1 && !cl->args[1])
+	if (!ft_strncmp(cl->args[0], "export", 7) && sh->count > 1 && !cl->args[1])
 		export_print(sh->exp);
 	else
 		builtins_analyzer(sh, flag, cl->args);
@@ -41,11 +40,26 @@ static void	exec_external(t_shell *sh, t_cmd_r *cl)
 		final_cleaner(sh);
 		exit(127);
 	}
+	if(access(full, F_OK) == 0 && access(full, X_OK) != 0)
+	{
+		perror(full);
+		free(full);
+		final_cleaner(sh);
+		exit(126);
+	} 
+	else if (access(full, F_OK) != 0)
+	{
+		ft_putstr_fd(full, 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
+		free(full);
+		final_cleaner(sh);
+		exit(127);
+	}
 	execve(full, cl->args, sh->env);
 	perror("execve: ");
 	free(full);
 	final_cleaner(sh);
-	exit(127);
+	exit(1);
 }
 
 void	executor(t_shell *shell, t_cmd_r *clean)
