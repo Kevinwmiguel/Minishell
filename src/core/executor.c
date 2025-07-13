@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 17:54:46 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:02:29 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	executor(t_shell *shell, t_cmd_r *clean)
 {
 	int	flag;
 
+	finder_and_update(shell);
 	if (!clean->args || !clean->args[0])
 		exit(1);
 	flag = builtins(clean->args[0]);

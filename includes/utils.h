@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 18:21:56 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:02:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	update_shlvl(t_shell *shell);
 char	**add_or_replace_env(char **env, char *new_entry);
 int		cmp_values(char *v1, char *v2);
 int		cmp_names(char *s1, char *s2);
+void	update_env_var(t_shell *shell, char *arg);
+void	finder_and_update(t_shell *shell);
 
 //EXPORT
 char	**build_export(t_shell *shell);
@@ -109,6 +111,7 @@ void	update_env_export(t_shell *shell, char **args);
 char	**merge_exp_lists(char **old, char **new, char **env);
 int		find_in_env(char **env, const char *key);
 char	*join_export(char *name, char *value);
+void	update_export_var(t_shell *shell, char *arg);
 
 //UNSET
 void	build_unset(t_shell *shell, char **new_exp);
@@ -119,6 +122,7 @@ void	build_exit(t_shell *shell);
 
 //PATHS
 char	*get_directory_path(char *path);
+void	update_dollar_underscore(t_shell *shell);
 char	*get_path(char *cmd, char **envp);
 
 //SIGNALS

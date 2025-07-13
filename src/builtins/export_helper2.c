@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 17:08:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:59:47 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	find_in_env(char **env, const char *key)
 	return (0);
 }
 
-static void	update_env_var(t_shell *shell, char *arg)
+void	update_env_var(t_shell *shell, char *arg)
 {
 	char	**tmp;
 	char	**new_exp;
@@ -64,7 +64,7 @@ static void	update_env_var(t_shell *shell, char *arg)
 	shell->exp = tmp;
 }
 
-static void	update_export_var(t_shell *shell, char *arg)
+void	update_export_var(t_shell *shell, char *arg)
 {
 	char	**tmp;
 
