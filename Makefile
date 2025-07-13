@@ -1,65 +1,61 @@
 NAME 	= minishell
 
 CC 		= cc
+CFLAGS 	= -Wall -Wextra -Werror -g -I../pipex/srcs -Iincludes
 
-CFLAGS 	= -Wall -Wextra -Werror -g -I../pipex/srcs -Iincludes #-fsanitize=address
-
+SRC_DIR = src
 OBJ_DIR = objects
-OBJECTS= $(SRC:sources/%.c=%.o)
+SRCS	= $(shell find $(SRC_DIR) -name '*.c') \
+		  get_next_line/get_next_line.c \
+		  get_next_line/get_next_line_utils.c
+OBJS	= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)/libft.a
 
-SRCS 	=	src/*.c \
-			src/utils/*.c \
-			src/core/*.c \
-			src/parsing/*.c \
-			src/builtins/*.c \
-			src/pipes/*.c \
-			get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-
-Color_Off='\033[0m'       # Text Reset
-
-IGreen='\033[0;92m'       # Green
-IYellow='\033[0;93m'      # Yellow
-ICyan='\033[0;96m'        # Cyan
-
 LINKS = $(LIBFT) -lreadline
 
+# Cores e mensagens
+Color_Off='\033[0m'
+IGreen='\033[0;92m'
+IYellow='\033[0;93m'
+ICyan='\033[0;96m'
 MSG1 = @echo ${IGreen}"Compiled Successfully ✔︎"${Color_Off}
 MSG2 = @echo ${IYellow}"Cleaned Successfully ✔︎"${Color_Off}
 MSG3 = @echo ${ICyan}"Cleaned ${NAME} Successfully ✔︎"${Color_Off}
 
+# Regra padrão
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(SRCS) -o $@ $(LINKS)
-	$(MSG1);
-	clear
+	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(LINKS)
+	$(MSG1)
 
-%.o:%.c
-	@$(CC) $(CFLAGS) -c $^ -o $@
+# Compilação de objetos
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
+# Libft
 $(LIBFT):
 	@make -C $(LIBFT_PATH) all
 
-$(OBJ_DIR)/%.o: sources/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
+# Limpeza
 clean:
-	make -C $(LIBFT_PATH) clean
-	@rm -f *.o
-	$(MSG2);
+	@make -C $(LIBFT_PATH) clean
+	@rm -rf $(OBJ_DIR)
+	$(MSG2)
 
 fclean: clean
-	make -C $(LIBFT_PATH) fclean
-	@rm -f $(NAME) $(OBJECTS)
-	$(MSG3);
+	@make -C $(LIBFT_PATH) fclean
+	@rm -f $(NAME)
+	$(MSG3)
+
+# Atalhos
+re: fclean all
 
 r:
 	make re && clear && ./minishell
 
 v:
-	make re && clear  && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s --track-fds=yes --suppressions=readline.supp ./minishell
-
-re: fclean all
+	make re && clear && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s --track-fds=yes --suppressions=readline.supp ./minishell
