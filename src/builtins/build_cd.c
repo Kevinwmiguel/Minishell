@@ -6,11 +6,23 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:11:16 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/19 19:15:06 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:21:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	check_cwd(void)
+{
+	char	cwd[PATH_MAX];
+
+	if (!getcwd(cwd, sizeof(cwd)))
+	{
+		perror("minishell");
+		write(2, "warning: current directory was deleted\n", 40);
+		chdir("/home");
+	}
+}
 
 char	*get_home(t_shell *shell)
 {

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 17:33:54 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:21:56 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # include "../get_next_line/get_next_line.h"
+# include <limits.h>
 
 //MINISHELL
 void	init(t_shell *shell, char **env);
@@ -86,6 +87,7 @@ void	build_echo(t_shell *shell, char **args);
 
 //CD
 void	build_cd(t_shell *shell);
+void	check_cwd(void);
 
 //PWD
 void	build_pwd(t_shell *shell);

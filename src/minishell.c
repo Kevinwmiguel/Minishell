@@ -6,31 +6,30 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 17:47:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 18:22:04 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
 
-void	exec_clean(t_shell *shell, t_cmd *head)
+void	exec_clean(t_shell *shell)
 {
-	(void)head;
+
 	shell->exit_code = 0;
 	execute_all_cmds(shell);
-	close_redirections(head);
+	close_redirections(shell->cmd);
 	free_token_list(shell);
-	free_cmds(head);
+	free_cmds(shell->cmd);
 	shell->cmd = NULL;
 }
 
 int	run(t_shell *shell)
 {
 	char	*input;
-	t_cmd	*head;
 
-	head = NULL;
 	while (1)
 	{
+		check_cwd();
 		signal_search(ROOT);
 		input = readline("minishell: ");
 		if (!input)
@@ -44,8 +43,7 @@ int	run(t_shell *shell)
 		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
 		{
 			shell->cmd = parse_cmd(shell, shell->begin);
-			head = shell->cmd;
-			exec_clean(shell, head);
+			exec_clean(shell);
 		}
 		free(input);
 	}

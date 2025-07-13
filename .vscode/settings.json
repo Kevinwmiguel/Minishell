@@ -6,6 +6,7 @@
         "cmath": "c",
         "unistd.h": "c",
         "history.h": "c",
-        "utils.h": "c"
+        "utils.h": "c",
+        "types.h": "c"
     }
 }

@@ -1,9 +1,11 @@
 get_next_line
 includes
+Intra Projects minishell Edit.pdf
 libft
 Makefile
 minishell
 Minishell Stuff.odt
+objects
 output.txt
 readline.supp
 README.md
