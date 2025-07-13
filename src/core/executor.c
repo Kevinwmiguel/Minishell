@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/11 12:41:37 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/07/13 17:54:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ static void	exec_builtin(t_shell *sh, t_cmd_r *cl, int flag)
 {
 	int	code;
 
+	if (sh->exit_code == 126 || sh->exit_code == 127)
+	{
+		code = sh->exit_code;
+		free_token_list(sh);
+		close_extra_fds();
+		close_redirections(sh->cmd);
+		final_cleaner(sh);
+		exit(code);
+	}
 	if (!ft_strncmp(cl->args[0], "export", 7) && sh->count > 1 && !cl->args[1])
 		export_print(sh->exp);
 	else
@@ -28,38 +37,41 @@ static void	exec_builtin(t_shell *sh, t_cmd_r *cl, int flag)
 	exit(code);
 }
 
+void	non_path(t_shell *sh, char *full)
+{
+	printf("full %s", full);
+	perror("command not found");
+	final_cleaner(sh);
+	exit(127);
+}
+
 static void	exec_external(t_shell *sh, t_cmd_r *cl)
 {
 	char	*full;
+	int		code;
 
 	close_extra_fds();
 	full = get_path(cl->args[0], sh->env);
 	if (!full)
+		non_path(sh, full);
+	if (sh->exit_code == 126 || sh->exit_code == 127)
 	{
-		perror("command not found");
+		code = sh->exit_code;
+		free(full);
+		free_token_list(sh);
+		close_extra_fds();
+		close_redirections(sh->cmd);
 		final_cleaner(sh);
-		exit(127);
+		exit(code);
 	}
-	if(access(full, F_OK) == 0 && access(full, X_OK) != 0)
+	else
 	{
-		perror(full);
+		execve(full, cl->args, sh->env);
+		perror("execve: ");
 		free(full);
 		final_cleaner(sh);
-		exit(126);
-	} 
-	else if (access(full, F_OK) != 0)
-	{
-		ft_putstr_fd(full, 2);
-		ft_putstr_fd(" : No such file or directory\n", 2);
-		free(full);
-		final_cleaner(sh);
-		exit(127);
+		exit(1);
 	}
-	execve(full, cl->args, sh->env);
-	perror("execve: ");
-	free(full);
-	final_cleaner(sh);
-	exit(1);
 }
 
 void	executor(t_shell *shell, t_cmd_r *clean)

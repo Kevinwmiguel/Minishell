@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 16:30:56 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:33:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	run_children(t_shell *shell, t_cmd_r *clean, \
 	t_pipexinfo *info, t_cmd *cmd);
 void	free_split(char **split);
 int		here_doc(char *limiter);
-void	handle_redirection_left_input(t_cmd *cmd);
-void	handle_redirection_right_input(t_cmd *cmd);
+void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell);
+void	handle_redirection_right_input(t_cmd *cmd,  t_shell *shell);
 int		dptr_len(char **ptr);
 char	**dptr_dup_replace(char **env, char *new_entry, int index);
 char	**dptr_dup_add(char **env, char *new_entry);
@@ -54,11 +54,11 @@ int		is_valid_identifier(char *str);
 void	builtins_analyzer(t_shell *shell, int flag, char **argv);
 
 //PIPES
-void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean);
+void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean, t_shell *shell);
 void	find_last_output_redir(t_cmd *cmd, \
 	int *last_index, char **redir_type);
 void	open_last_output_file(t_cmd *cmd, \
-	int last_index, char *redir_type);
+	int last_index, char *redir_type, t_shell *shell);
 void	remove_last_redir_pair(t_cmd *cmd, int index);
 void	remove_redir_pair(t_cmd *cmd, int index);
 int		create_empty_output_file(char *type, char *filename);

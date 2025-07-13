@@ -6,13 +6,14 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 15:59:30 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 18:04:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:32:39 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	open_last_output_file(t_cmd *cmd, int last_index, char *redir_type)
+void	open_last_output_file(t_cmd *cmd, int last_index, \
+	char *redir_type, t_shell *shell)
 {
 	if (ft_strncmp(redir_type, ">>", 3) == 0)
 	{
@@ -27,7 +28,7 @@ void	open_last_output_file(t_cmd *cmd, int last_index, char *redir_type)
 	if (cmd->redirect->outfd < 0)
 	{
 		perror("open");
-		exit(1);
+		shell->exit_code = 126;
 	}
 }
 

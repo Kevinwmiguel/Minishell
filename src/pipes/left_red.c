@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/04 10:40:02 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:34:57 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	handle_double_left(t_cmd *cmd)
 	}
 }
 
-void	handle_single_left(t_cmd *cmd)
+void	handle_single_left(t_cmd *cmd, t_shell *shell)
 {
 	int	file_index;
 
@@ -78,17 +78,17 @@ void	handle_single_left(t_cmd *cmd)
 	if (file_index == -1)
 	{
 		write(2, "Arquivo não fornecido para redirecionamento\n", 45);
-		exit(1);
+		shell->exit_code = 127;
 	}
 	cmd->redirect->infd = open(cmd->args[file_index], O_RDONLY);
 	if (cmd->redirect->infd < 0)
 	{
+		shell->exit_code = 126;
 		perror("open");
-		exit(1);
 	}
 }
 
-void	handle_redirection_left_input(t_cmd *cmd)
+void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
 {
 	int	i;
 
@@ -99,7 +99,7 @@ void	handle_redirection_left_input(t_cmd *cmd)
 	{
 		if (ft_strncmp(cmd->args[i], "<", 2) == 0 && \
 		ft_strlen(cmd->args[i]) == 1)
-			handle_single_left(cmd);
+			handle_single_left(cmd, shell);
 		i++;
 	}
 }

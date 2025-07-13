@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 18:05:16 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:32:57 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	is_last_redirection(t_cmd *cmd, char *filename)
 	return (1);
 }
 
-void	handle_redirection_right_input(t_cmd *cmd)
+void	handle_redirection_right_input(t_cmd *cmd, t_shell *shell)
 {
 	int		last_index;
 	char	*redir_type;
@@ -95,7 +95,7 @@ void	handle_redirection_right_input(t_cmd *cmd)
 		return ;
 	outfile = cmd->args[last_index + 1];
 	if (is_last_redirection(cmd, outfile))
-		open_last_output_file(cmd, last_index, redir_type);
+		open_last_output_file(cmd, last_index, redir_type, shell);
 	else
 		cmd->redirect->outfd = -2;
 }

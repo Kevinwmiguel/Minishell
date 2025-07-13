@@ -6,16 +6,16 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:36:09 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 10:47:01 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:33:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean)
+void	fixing_cmd_red(t_cmd *cmd, t_cmd_r *clean,  t_shell *shell)
 {
-	handle_redirection_left_input(cmd);
-	handle_redirection_right_input(cmd);
+	handle_redirection_left_input(cmd, shell);
+	handle_redirection_right_input(cmd, shell);
 	import_args_to_clean(cmd, clean);
 }
 

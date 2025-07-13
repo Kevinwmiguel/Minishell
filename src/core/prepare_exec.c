@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:12:13 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 18:13:05 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:33:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	count_and_fix_cmds(t_shell *shell)
 	while (cmd)
 	{
 		shell->count++;
-		fixing_cmd_red(cmd, clean);
+		fixing_cmd_red(cmd, clean, shell);
 		cmd = cmd->next;
 		clean = clean->next;
 	}

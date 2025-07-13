@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 15:58:06 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/13 17:47:41 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exec_clean(t_shell *shell, t_cmd *head)
 {
 	(void)head;
+	shell->exit_code = 0;
 	execute_all_cmds(shell);
 	close_redirections(head);
 	free_token_list(shell);
