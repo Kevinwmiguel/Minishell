@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 19:02:54 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/14 01:24:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int		cmp_values(char *v1, char *v2);
 int		cmp_names(char *s1, char *s2);
 void	update_env_var(t_shell *shell, char *arg);
 void	finder_and_update(t_shell *shell);
+char	*get_path_var(char *home);
+char	*get_pwd_var(void);
 
 //EXPORT
 char	**build_export(t_shell *shell);

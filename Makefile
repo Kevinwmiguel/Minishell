@@ -59,3 +59,5 @@ r:
 
 v:
 	make re && clear && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s --track-fds=yes --suppressions=readline.supp ./minishell
+
+#env -i valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
