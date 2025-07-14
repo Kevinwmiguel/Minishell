@@ -69,6 +69,14 @@ static char	*expand_result(t_shell *data, char **line, bool is_double_quote)
 		expand_value = ft_getpid();
 		str++;
 	}
+	else if (*str == '_')
+	{
+		str++;
+		if (data->last_arg)
+			expand_value = ft_strdup(data->last_arg);
+		else
+			expand_value = ft_strdup("");
+	}
 	else
 		expand_value = get_expand_value(data, get_search(&str));
 	*line = str;

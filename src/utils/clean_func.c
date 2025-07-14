@@ -61,6 +61,10 @@ void	final_cleaner(t_shell *shell)
 		free_split(shell->env);
 	if (shell->exp)
 		free_split(shell->exp);
+	if (shell->last_arg)
+		free(shell->last_arg);
+	if (shell->next_last_arg)
+		free(shell->next_last_arg);
 	if (shell->cmd_ready)
 		free_cmdr(shell->cmd_ready);
 	free_token_list(shell);

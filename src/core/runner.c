@@ -25,6 +25,20 @@ static int	is_heredoc(t_cmd *cmd)
 	return (0);
 }
 
+void save_last_cmd(t_shell *shell, char  **args)
+{
+	int	i;
+
+	i = 0;
+	while(args[i])
+		i++;
+	if( i > 0)
+	{
+		free(shell->next_last_arg);
+		shell->next_last_arg = ft_strdup(args[i - 1]);
+	}
+}
+
 void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
 		t_cmd *cmd)
 {
@@ -74,6 +88,13 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 			shell->exit_code = WEXITSTATUS(status);
 		else
 			shell->exit_code = 1;
+		save_last_cmd(shell, clean->args); 
+		if (shell->last_arg)
+			free(shell->last_arg);
+		if (shell->next_last_arg)
+			shell->last_arg = ft_strdup(shell->next_last_arg);
+		else
+			shell->last_arg = NULL;
 	}
 	else
 	{

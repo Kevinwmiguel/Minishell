@@ -59,6 +59,8 @@ void	init(t_shell *shell, char **env)
 	shell->exp = NULL;
 	shell->cmd = NULL;
 	shell->cmd_ready = NULL;
+	shell->last_arg = NULL;
+	shell->next_last_arg = NULL;
 	shell->exit_code = 0;
 	if (!has_minimum_env(env))
 		prepare_env(shell);
