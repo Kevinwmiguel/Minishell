@@ -113,6 +113,8 @@ typedef struct s_shell
 	char				**exp;
 	char				**exp_list;
 	char				**test;
+	char				*last_arg;
+	char				*next_last_arg;
 	int					count;
 	bool				end;
 	int					exit_code;
@@ -157,5 +159,6 @@ void					free_redirections(t_red *redir);
 void					print_redirects(t_red *red);
 void					debug_tokens(t_token *token);
 void					free_cmds(t_cmd *cmd);
+void					save_last_cmd(t_shell *shell, char  **args);
 
 #endif
