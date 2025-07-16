@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 18:10:03 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:59:10 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_cmd
 	char				**args;
 	t_red				*redirect;
 	struct s_cmd		*next;
+	int					skip;
 }						t_cmd;
 
 typedef struct s_cmd_r

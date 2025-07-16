@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:26:46 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 21:49:04 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:34:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	find_input_file_index(char **content, int i)
 {
 	while (content[i])
 	{
-		if (ft_strncmp(content[i], "<", 1) == 0)
+		if (ft_strncmp(content[i], "<", 2) == 0)
 		{
 			if (content[i + 1])
 				return (i + 1);

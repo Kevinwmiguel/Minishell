@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 19:02:29 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:00:32 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ static void	exec_external(t_shell *sh, t_cmd_r *cl)
 	int		code;
 
 	close_extra_fds();
+	if (ft_strncmp(cl->args[0], "SKIP", 5) == 0)
+	{
+		code = sh->exit_code;
+		free_token_list(sh);
+		close_redirections(sh->cmd);
+		final_cleaner(sh);
+		exit(code);
+	}
 	full = get_path(cl->args[0], sh->env);
 	if (!full)
 		non_path(sh, full);

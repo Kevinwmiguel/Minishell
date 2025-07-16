@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:02:10 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:42:22 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/16 20:59:56 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,20 @@ t_cmd_r	*alloc_clean_cmd_list(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 	return (head);
+}
+
+int	has_heredoc(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	while (tmp)
+	{
+		if (ft_strncmp(cmd->args[0], "<<", 3) == 0)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 void	fill_clean_args(t_cmd *cmd, t_cmd_r *clean)
@@ -91,6 +105,16 @@ void	import_args_to_clean(t_cmd *cmd, t_cmd_r *clean)
 	if (!cmd || !cmd->args || !clean)
 		return ;
 	count = count_clean_args(cmd);
+	if (count == 0 && has_heredoc(cmd))
+	{
+		cmd->skip = 1;
+		clean->args = malloc(sizeof(char *) * 2);
+		if (!clean->args)
+			return ;
+		clean->args[0] = ft_strdup("SKIP");
+		clean->args[1] = NULL;
+		return ;
+	}
 	clean->args = malloc(sizeof(char *) * (count + 1));
 	if (!clean->args)
 		return ;

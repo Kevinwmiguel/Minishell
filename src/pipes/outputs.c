@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 15:59:30 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 17:32:39 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:32:29 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	open_last_output_file(t_cmd *cmd, int last_index, \
 	}
 	if (cmd->redirect->outfd < 0)
 	{
-		perror("open");
+		perror("open 2");
 		shell->exit_code = 126;
 	}
 }
