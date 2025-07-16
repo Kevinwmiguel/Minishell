@@ -70,6 +70,11 @@ static int	fill_export_array(char **formatted, char **env)
 	j = 0;
 	while (env[i])
 	{
+		if(!is_valid_identifier(env[i]))
+		{
+			i++;
+			continue;
+		}
 		formatted[j] = create_export_line(env[i]);
 		if (!formatted[j])
 			break ;
