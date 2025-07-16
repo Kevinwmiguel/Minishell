@@ -12,6 +12,22 @@
 
 #include "../../includes/utils.h"
 
+int	check_duplicate_var_exist(char **env, const char *str)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = ft_strlen(str);
+	while(env[i])
+	{
+		if(ft_strncmp(env[i], str, len) == 0 && env[i][len] == '=')
+			return(1);
+		i++;
+	}
+	return (0);
+}
+
 void	line_helper(t_pipexinfo *info)
 {
 	info->fd[0] = -1;
