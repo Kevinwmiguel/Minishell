@@ -1,4 +1,4 @@
-# 🐚 Minishell
+# 🐚Minishell
 
 > A Unix shell recreation project developed at School 42.
 
