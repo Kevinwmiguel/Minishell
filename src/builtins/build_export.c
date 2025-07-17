@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:48:21 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/05 20:51:53 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:38:14 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ static int	fill_export_array(char **formatted, char **env)
 	j = 0;
 	while (env[i])
 	{
-		if(!is_valid_identifier(env[i]))
+		if (!is_valid_identifier(env[i]))
 		{
 			i++;
-			continue;
-		}
+			continue ;
+		};
 		formatted[j] = create_export_line(env[i]);
 		if (!formatted[j])
 			break ;

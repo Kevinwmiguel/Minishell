@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/14 01:24:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:45:08 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ char	**merge_exp_lists(char **old, char **new, char **env);
 int		find_in_env(char **env, const char *key);
 char	*join_export(char *name, char *value);
 void	update_export_var(t_shell *shell, char *arg);
+int		check_duplicate_var_exist(char **env, const char *str);
 
 //UNSET
 void	build_unset(t_shell *shell, char **new_exp);
