@@ -6,17 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/16 22:55:23 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:37:50 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
-
-int	is_redirection_token(char *s)
-{
-	return (!ft_strncmp(s, ">", 2) || !ft_strncmp(s, ">>", 3)
-		|| !ft_strncmp(s, "<", 2) || !ft_strncmp(s, "<<", 3));
-}
 
 void	remove_all_output_redirs(t_cmd *cmd, int *last_index, char **last_type)
 {
@@ -37,25 +31,6 @@ void	remove_all_output_redirs(t_cmd *cmd, int *last_index, char **last_type)
 		}
 		i++;
 	}
-}
-
-int	find_double_right_index(t_cmd *cmd)
-{
-	int			i;
-	t_cmd		*temp;
-
-	temp = cmd;
-	if (!temp->args)
-		return (-1);
-	i = 0;
-	while (temp->args[i])
-	{
-		i++;
-		if (ft_strncmp(temp->args[i], ">>", 2) == 0 && \
-			ft_strlen(temp->args[i]) == 2)
-			return (i);
-	}
-	return (-1);
 }
 
 int	is_last_redirection(t_cmd *cmd, char *filename)
@@ -89,24 +64,8 @@ int	is_output_redirection(char *s)
 	return (ft_strncmp(s, ">", 2) == 0 || ft_strncmp(s, ">>", 3) == 0);
 }
 
-// int	is_directory(const char *path)
-// {
-// 	struct stat st;
-
-// 	if (stat(path, &st) == -1)
-// 		return (0);
-// 	return (S_ISDIR(st.st_mode));
-// }
-
 int	open_redir_file(char *file, char *type)
 {
-	// if (is_directory(file))
-	// {
-	// 	ft_putstr_fd("bash: ", 2);
-	// 	ft_putstr_fd(file, 2);
-	// 	ft_putstr_fd(": Is a directory\n", 2);
-	// 	exit(1);
-	// }
 	if (ft_strncmp(type, ">>", 3) == 0)
 		return (open(file, O_WRONLY | O_CREAT | O_APPEND, 0644));
 	return (open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644));
@@ -127,4 +86,3 @@ void	handle_redirection_right_input(t_cmd *cmd, t_shell *shell)
 	else
 		cmd->redirect->outfd = -2;
 }
-

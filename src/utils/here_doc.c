@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/11 12:43:48 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/07/17 23:38:16 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,22 @@ int	here_doc(char *limiter)
 		exit(1);
 	while (1)
 	{
-		write(1, ">", 1);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("> ");
 		if (!line)
-		{
-			write(1, "\n", 1);
-			continue ;
-		}
-		if (ft_strlen(line) == ft_strlen(limiter) + 1 && ft_strncmp(line,
-				limiter, ft_strlen(limiter)) == 0
+			break ;
+		line = ft_strjoin(line, "\n");
+		if (ft_strlen(line) == ft_strlen(limiter) + 1
+			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
 			&& line[ft_strlen(limiter)] == '\n')
 		{
 			free(line);
 			break ;
 		}
 		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
 		free(line);
 	}
 	close(fd[1]);
 	return (fd[0]);
 }
+

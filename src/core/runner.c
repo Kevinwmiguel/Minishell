@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   runner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/11 12:41:52 by jmehmy           ###   ########.fr       */
+/*   Updated: 2025/07/17 23:21:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	is_heredoc(t_cmd *cmd)
 	return (0);
 }
 
-void save_last_cmd(t_shell *shell, char  **args)
+void	save_last_cmd(t_shell *shell, char **args)
 {
 	int	i;
 
 	i = 0;
-	while(args[i])
+	while (args[i])
 		i++;
-	if( i > 0)
+	if ( i > 0)
 	{
 		free(shell->next_last_arg);
 		shell->next_last_arg = ft_strdup(args[i - 1]);
@@ -46,7 +46,11 @@ void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
 
 	redir = cmd->redirect;
 	if (redir && redir->heredoc > 0)
+	{
 		dup2(redir->heredoc, STDIN_FILENO);
+		close(redir->heredoc);
+	}
+		
 	else if (redir && redir->infd > 0)
 	{
 		dup2(redir->infd, STDIN_FILENO);

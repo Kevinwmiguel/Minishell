@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:26:46 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/16 21:34:25 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:37:55 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,29 @@ int	find_next_double_left_index(t_cmd *cmd, int start)
 		i++;
 	}
 	return (-1);
+}
+
+int	find_double_right_index(t_cmd *cmd)
+{
+	int			i;
+	t_cmd		*temp;
+
+	temp = cmd;
+	if (!temp->args)
+		return (-1);
+	i = 0;
+	while (temp->args[i])
+	{
+		i++;
+		if (ft_strncmp(temp->args[i], ">>", 2) == 0 && \
+			ft_strlen(temp->args[i]) == 2)
+			return (i);
+	}
+	return (-1);
+}
+
+int	is_redirection_token(char *s)
+{
+	return (!ft_strncmp(s, ">", 2) || !ft_strncmp(s, ">>", 3)
+		|| !ft_strncmp(s, "<", 2) || !ft_strncmp(s, "<<", 3));
 }
