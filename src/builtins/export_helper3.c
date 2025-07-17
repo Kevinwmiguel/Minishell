@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:54:54 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 16:15:35 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:17:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,9 @@ char	**merge_exp_lists(char **old, char **new, char **env)
 
 char	*join_export(char *name, char *value)
 {
-	char	*prefix;
 	char	*full;
 
-	prefix = ft_strjoin("declare -x ", name);
-	if (!prefix)
-		return (NULL);
-	full = ft_strjoin(prefix, value);
-	free(prefix);
+	full = ft_strjoin(name, value);
 	if (!full)
 		return (NULL);
 	return (full);
@@ -98,6 +93,7 @@ void	handle_export(t_shell *shell, t_cmd_r *clean)
 	i = 0;
 	while (shell->exp[i])
 	{
+		write(fd, "declare -x ", 11);
 		write(fd, shell->exp[i], ft_strlen(shell->exp[i]));
 		write(fd, "\n", 1);
 		i++;

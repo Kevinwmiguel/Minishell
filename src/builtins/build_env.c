@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:36:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/03 17:09:11 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:23:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	compare_exp_env(t_shell *shell, int i, int j)
 {
 	while (shell->env[i])
 	{
-		if (ft_strcmp_ignore_quotes(shell->exp[j] + 11, shell->env[i]) == 0)
+		if (ft_strcmp_ignore_quotes(shell->exp[j], shell->env[i]) == 0)
 			return (0);
 		i++;
 	}
@@ -57,7 +57,7 @@ void	write_exp_to_env(t_shell *shell, int j, int i)
 		{
 			if (shell->exp[j][i] == '=' && compare_exp_env(shell, 0, j) == 1)
 			{
-				ft_putstr_fd(shell->exp[j] + 11, 1);
+				ft_putstr_fd(shell->exp[j], 1);
 				ft_putstr_fd("\n", 1);
 				break ;
 			}

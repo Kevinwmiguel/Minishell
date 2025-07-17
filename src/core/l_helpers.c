@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:33:29 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 15:22:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:14:44 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ int	check_duplicate_var_exist(char **env, const char *str)
 	len = ft_strlen(str);
 	while (env[i])
 	{
-		printf("TESTE temp %s\n\n", str);
-		printf("TESTE current %s\n\n", env[i]);
-		if(ft_strncmp(env[i], str, len) == 0) //  && env[i][len] == '='
+		if (ft_strncmp(env[i], str, len) == 0)
 			return(1);
 		i++;
 	}

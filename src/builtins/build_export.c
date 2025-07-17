@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:48:21 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 15:38:14 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:18:43 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ char	*create_export_line(const char *env_entry)
 
 	equal = ft_strchr(env_entry, '=');
 	if (!equal)
-		return (ft_strjoin("declare -x ", env_entry));
+	{
+		equal = ft_strjoin("", env_entry);
+		return (equal);
+	}
 	name = ft_substr(env_entry, 0, equal - env_entry + 1);
 	if (!name)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:27 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 16:36:53 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 19:19:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,23 @@ void	update_env_export(t_shell *shell, char **args)
 {
 	int		i;
 	char	*arg;
-	char	*temp;
 
-	temp = NULL;
 	i = 0;
 	while (args[i])
 	{
 		arg = args[i];
 		if (is_valid_identifier(arg))
 		{
-			if (ft_strchr(arg, '=') && (check_duplicate_var_exist(shell->exp, arg) == 0))
+			if (ft_strchr(arg, '='))
 				update_env_var(shell, arg);
 			else
 			{
-				temp = ft_strjoin("declare -x ", arg);
-				if (check_duplicate_var_exist(shell->exp, temp) == 0)
-					update_export_var(shell, temp);
+				if (check_duplicate_var_exist(shell->exp, arg) == 0)
+					update_export_var(shell, arg);
 			}
 		}
 		else
 			ft_putstr_fd("export: not a valid identifier\n", 2);
 		i++;
 	}
-	free(temp);
 }
