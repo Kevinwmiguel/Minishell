@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 18:29:42 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 18:42:52 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:19:11 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static void	free_old_var(char **arr, const char *var_name)
 {
-	int i;
-	size_t len;
+	int		i;
+	size_t	len;
 
 	if (!arr || !var_name)
-		return;
+		return ;
 	len = ft_strlen(var_name);
 	i = 0;
 	while (arr[i])
@@ -26,10 +26,8 @@ static void	free_old_var(char **arr, const char *var_name)
 		if (ft_strncmp(arr[i], var_name, len) == 0 && arr[i][len] == '=')
 		{
 			free(arr[i]);
-			arr[i] = NULL; // opcional: limpar ponteiro para evitar uso indevido
-			// Se quiser, pode mover as strings subsequentes para manter arr contínuo,
-			// mas depende da sua implementação
-			return;
+			arr[i] = NULL;
+			return ;
 		}
 		i++;
 	}

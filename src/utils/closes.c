@@ -6,11 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:03:11 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 18:00:50 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 19:02:13 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/utils.h"
+#include "../../includes/utils.h"
 
 void	close_redirections(t_cmd *cmd)
 {

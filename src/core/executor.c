@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/16 21:00:32 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:44:52 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,32 +45,32 @@ void	non_path(t_shell *sh, char *full)
 	exit(127);
 }
 
+void	again_helper_lines(t_shell *sh)
+{
+	int	code;
+
+	code = sh->exit_code;
+	free_token_list(sh);
+	close_extra_fds();
+	close_redirections(sh->cmd);
+	final_cleaner(sh);
+	exit(code);
+}
+
 static void	exec_external(t_shell *sh, t_cmd_r *cl)
 {
 	char	*full;
-	int		code;
 
 	close_extra_fds();
 	if (ft_strncmp(cl->args[0], "SKIP", 5) == 0)
-	{
-		code = sh->exit_code;
-		free_token_list(sh);
-		close_redirections(sh->cmd);
-		final_cleaner(sh);
-		exit(code);
-	}
+		again_helper_lines(sh);
 	full = get_path(cl->args[0], sh->env);
 	if (!full)
 		non_path(sh, full);
 	if (sh->exit_code == 126 || sh->exit_code == 127)
 	{
-		code = sh->exit_code;
 		free(full);
-		free_token_list(sh);
-		close_extra_fds();
-		close_redirections(sh->cmd);
-		final_cleaner(sh);
-		exit(code);
+		again_helper_lines(sh);
 	}
 	else
 	{

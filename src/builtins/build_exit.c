@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/10 16:27:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:17:55 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	freedom(t_shell *shell)
 	close_extra_fds();
 }
 
-static 	void validate_exit_args(t_shell *shell, char **args, int *code)
+static void	validate_exit_args(t_shell *shell, char **args, int *code)
 {
 	if (!args[1])
 	{
 		freedom(shell);
 		exit(*code);
 	}
-	if(args[2])
+	if (args[2])
 	{
 		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 		shell->exit_code = 1;
@@ -55,9 +55,9 @@ void	build_exit(t_shell *shell)
 	code = shell->exit_code;
 	i = 0;
 	validate_exit_args(shell, args, &code);
-	if(args[2])
+	if (args[2])
 		return ;
-	if(args[1][0] == '+' || args[1][0] == '-')
+	if (args[1][0] == '+' || args[1][0] == '-')
 		i++;
 	while (args[1][i])
 	{

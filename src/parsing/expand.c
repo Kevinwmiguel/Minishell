@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:37:35 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/07/01 11:34:01 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 19:05:44 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,34 @@ static char	*get_expand_value(t_shell *data, char *get_search)
 	return (expand_value);
 }
 
-static char	*expand_result(t_shell *data, char **line, bool is_double_quote)
+static char	*expand_special(t_shell *data, char **str)
+{
+	char	*val;
+
+	if (**str == '?')
+	{
+		val = ft_itoa(data->exit_code);
+		(*str)++;
+	}
+	else if (**str == '$')
+	{
+		val = ft_getpid();
+		(*str)++;
+	}
+	else if (**str == '_')
+	{
+		(*str)++;
+		if (data->last_arg)
+			val = ft_strdup(data->last_arg);
+		else
+			val = ft_strdup("");
+	}
+	else
+		val = get_expand_value(data, get_search(str));
+	return (val);
+}
+
+char	*expand_result(t_shell *data, char **line, bool is_double_quote)
 {
 	char	*expand_value;
 	char	*str;
@@ -59,42 +86,9 @@ static char	*expand_result(t_shell *data, char **line, bool is_double_quote)
 		*line = str;
 		return ("");
 	}
-	if (*str == '?')
-	{
-		expand_value = ft_itoa(data->exit_code);
-		str++;
-	}
-	else if (*str == '$')
-	{
-		expand_value = ft_getpid();
-		str++;
-	}
-	else if (*str == '_')
-	{
-		str++;
-		if (data->last_arg)
-			expand_value = ft_strdup(data->last_arg);
-		else
-			expand_value = ft_strdup("");
-	}
-	else
-		expand_value = get_expand_value(data, get_search(&str));
+	expand_value = expand_special(data, &str);
 	*line = str;
 	return (expand_value);
-}
-
-void	join_expand(t_shell *data, char **result, char **str,
-		bool is_double_quote)
-{
-	char	*tmp[2];
-
-	tmp[0] = expand_result(data, str, is_double_quote);
-	tmp[1] = ft_strjoin(*result, tmp[0]);
-	if (*result)
-		free(*result);
-	if (tmp[0])
-		free(tmp[0]);
-	*result = tmp[1];
 }
 
 char	*expand_str(t_shell *data, char *str)
