@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 23:38:16 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/17 23:47:24 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	here_signal(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGINT)
 	{
+		
 		write(STDOUT_FILENO, "\n", 1);
 		exit(130);
 	}
@@ -51,6 +52,8 @@ int	here_doc(char *limiter)
 		line = readline("> ");
 		if (!line)
 			break ;
+		if (line[0] == '\0')
+			printf("CTRL C AQUI");
 		line = ft_strjoin(line, "\n");
 		if (ft_strlen(line) == ft_strlen(limiter) + 1
 			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
@@ -60,7 +63,6 @@ int	here_doc(char *limiter)
 			break ;
 		}
 		write(fd[1], line, ft_strlen(line));
-		write(fd[1], "\n", 1);
 		free(line);
 	}
 	close(fd[1]);

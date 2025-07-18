@@ -1,0 +1,15 @@
+total 340
+drwxrwxr-x 2 kevin kevin   4096 jul 17 19:14 get_next_line
+drwxrwxr-x 2 kevin kevin   4096 jul 17 19:14 includes
+-rw-rw-r-- 1 kevin kevin 100562 jul 17 19:14 Intra Projects minishell Edit.pdf
+drwxrwxr-x 2 kevin kevin   4096 jul 18 17:13 libft
+-rw-rw-r-- 1 kevin kevin   1388 jul 17 19:14 Makefile
+-rwxrwxr-x 1 kevin kevin 173424 jul 18 17:13 minishell
+-rw-rw-r-- 1 kevin kevin  25627 jul 17 19:13 Minishell Stuff.odt
+-rw-r--r-- 1 kevin kevin   1388 jul 18 16:13 o3
+-rw-r--r-- 1 kevin kevin      0 jul 18 17:18 o4
+drwxrwxr-x 4 kevin kevin   4096 jul 18 17:13 objects
+-rw-rw-r-- 1 kevin kevin   1191 jul 17 19:14 readline.supp
+-rw-rw-r-- 1 kevin kevin   1094 jul 17 19:14 README.md
+-rw-rw-r-- 1 kevin kevin     95 jul 17 19:14 read.supp
+drwxrwxr-x 7 kevin kevin   4096 jul 17 19:14 src
