@@ -63,7 +63,7 @@ void	build_exit(t_shell *shell)
 	{
 		if (!ft_isdigit(args[1][i]))
 		{
-			ft_putendl_fd("numeric argument required", STDERR_FILENO);
+			ft_putendl_fd(" numeric argument required", STDERR_FILENO);
 			freedom(shell);
 			exit(2);
 		}

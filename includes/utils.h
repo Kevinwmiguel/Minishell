@@ -53,6 +53,8 @@ char	**dptr_dup_replace(char **env, char *new_entry, int index);
 char	**dptr_dup_add(char **env, char *new_entry);
 char	*strjoin_free(char *s1, char *s2);
 int		is_valid_identifier(char *str);
+int		check_is_dir(const char *path);
+int		ft_strcmp2(char *s1, char *s2);
 
 //builtins
 void	builtins_analyzer(t_shell *shell, int flag, char **argv);

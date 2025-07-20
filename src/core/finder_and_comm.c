@@ -41,3 +41,12 @@ void	finder_and_update(t_shell *shell)
 	l_comander(shell, tmp);
 	free (tmp);
 }
+
+int	check_is_dir(const char *path)
+{
+	struct stat statbuf;
+
+	if (stat(path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+		return (1);
+	return (0);
+}
