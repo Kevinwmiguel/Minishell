@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:42:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/06/29 22:01:07 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 19:00:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,6 @@ void	signal_search2(t_sig_t t)
 		if (sigemptyset(&sa.sa_mask) != 0)
 			return ;
 		sigaction(SIGINT, &sa, NULL);
-	}
-}
-
-void	root_signal(int signal, siginfo_t *info, void *context)
-{
-	(void)info;
-	(void)context;
-	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
 	}
 }
 
@@ -82,7 +69,7 @@ void	signal_search(t_sig_t t)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if(t == HEREDOC_CHILD)
+	else if (t == HEREDOC_CHILD)
 	{
 		signal(SIGINT, signal_heredoc);
 		signal(SIGQUIT, SIG_IGN);

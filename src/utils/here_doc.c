@@ -6,11 +6,25 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 23:47:24 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:58:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+int	is_heredoc(t_cmd *cmd)
+{
+	t_red	*redir;
+
+	redir = cmd->redirect;
+	while (redir)
+	{
+		if (redir->type == HEREDOC)
+			return (1);
+		redir = redir->next;
+	}
+	return (0);
+}
 
 void	free_cmds(t_cmd *cmd)
 {
@@ -34,7 +48,6 @@ void	here_signal(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGINT)
 	{
-		
 		write(STDOUT_FILENO, "\n", 1);
 		exit(130);
 	}
@@ -68,4 +81,3 @@ int	here_doc(char *limiter)
 	close(fd[1]);
 	return (fd[0]);
 }
-

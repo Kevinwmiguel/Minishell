@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:11:16 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 18:21:46 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:20:34 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,27 @@ char	*get_home(t_shell *shell)
 	return (home);
 }
 
+char	*get_cd_path(t_shell *shell)
+{
+	char	*home;
+
+	if (!shell->cmd->args[1] || shell->cmd->args[1][0] == '\0')
+	{
+		home = get_home(shell);
+		if (!home)
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			shell->exit_code = 1;
+			return (NULL);
+		}
+		return (home);
+	}
+	return (ft_strdup(shell->cmd->args[1]));
+}
+
 void	build_cd(t_shell *shell)
 {
 	char	*path;
-	char	*home;
 
 	path = NULL;
 	if (shell->cmd->args[2])
@@ -55,19 +72,9 @@ void	build_cd(t_shell *shell)
 		shell->exit_code = 1;
 		return ;
 	}
-	if (!shell->cmd->args[1] || shell->cmd->args[1][0] == '\0')
-	{
-		home = get_home(shell);
-		if (!home)
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			shell->exit_code = 1;
-			return ;
-		}
-		path = home;
-	}
-	else
-		path = ft_strdup(shell->cmd->args[1]);
+	path = get_cd_path(shell);
+	if (!path)
+		return ;
 	if (chdir(path) != 0)
 	{
 		perror("cd");

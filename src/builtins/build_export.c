@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:48:21 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 19:18:43 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:18:23 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	fill_export_array(char **formatted, char **env)
 		{
 			i++;
 			continue ;
-		};
+		}
 		formatted[j] = create_export_line(env[i]);
 		if (!formatted[j])
 			break ;

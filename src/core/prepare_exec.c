@@ -6,11 +6,25 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:12:13 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/13 17:33:40 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:52:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	save_last_cmd(t_shell *shell, char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i > 0)
+	{
+		free(shell->next_last_arg);
+		shell->next_last_arg = ft_strdup(args[i - 1]);
+	}
+}
 
 static void	fork_loop(t_shell *shell, t_pipexinfo *info, t_cmd_r *clean)
 {

@@ -6,38 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 17:17:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/18 18:52:49 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
-
-static int	is_heredoc(t_cmd *cmd)
-{
-	t_red	*redir = cmd->redirect;
-
-	while (redir)
-	{
-		if (redir->type == HEREDOC)
-			return (1);
-		redir = redir->next;
-	}
-	return (0);
-}
-
-void	save_last_cmd(t_shell *shell, char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	if ( i > 0)
-	{
-		free(shell->next_last_arg);
-		shell->next_last_arg = ft_strdup(args[i - 1]);
-	}
-}
 
 int	ft_find_last(char **args)
 {
@@ -46,7 +19,7 @@ int	ft_find_last(char **args)
 	count = 0;
 	while (args[count])
 		count++;
-	count--; // <- CORREÇÃO AQUI
+	count--;
 	while (count >= 0)
 	{
 		if (ft_strncmp(args[count], "<<", 3) == 0)
@@ -58,14 +31,8 @@ int	ft_find_last(char **args)
 	return (-1);
 }
 
-void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
-		t_cmd *cmd)
+void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 {
-	t_red	*redir;
-	int		last_cmd;
-
-	redir = cmd->redirect;
-	last_cmd = ft_find_last(cmd->args);
 	if (last_cmd == 0 && redir && redir->heredoc > 0)
 	{
 		dup2(redir->heredoc, STDIN_FILENO);
@@ -87,9 +54,18 @@ void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
 		close(redir->infd);
 	}
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
-	{
 		dup2(info->fd_in, STDIN_FILENO);
-	}
+}
+
+void	run_children(t_shell *shell, t_cmd_r *clean \
+	, t_pipexinfo *info, t_cmd *cmd)
+{
+	t_red	*redir;
+	int		last_cmd;
+
+	redir = cmd->redirect;
+	last_cmd = ft_find_last(cmd->args);
+	redirect_io(redir, info, last_cmd);
 	if (redir && redir->outfd > 0)
 		dup2(redir->outfd, STDOUT_FILENO);
 	else if (info->fd[1] > 0)
@@ -101,6 +77,21 @@ void	run_children(t_shell *shell, t_cmd_r *clean, t_pipexinfo *info,
 	if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
 		close(info->fd_in);
 	executor(shell, clean);
+}
+
+void	store_exit_and_args(t_shell *shell, t_cmd_r *clean, int status)
+{
+	if (WIFEXITED(status))
+		shell->exit_code = WEXITSTATUS(status);
+	else
+		shell->exit_code = 1;
+	save_last_cmd(shell, clean->args);
+	if (shell->last_arg)
+		free(shell->last_arg);
+	if (shell->next_last_arg)
+		shell->last_arg = ft_strdup(shell->next_last_arg);
+	else
+		shell->last_arg = NULL;
 }
 
 void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
@@ -120,17 +111,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	else if (processor > 0)
 	{
 		waitpid(processor, &status, 0);
-		if (WIFEXITED(status))
-			shell->exit_code = WEXITSTATUS(status);
-		else
-			shell->exit_code = 1;
-		save_last_cmd(shell, clean->args); 
-		if (shell->last_arg)
-			free(shell->last_arg);
-		if (shell->next_last_arg)
-			shell->last_arg = ft_strdup(shell->next_last_arg);
-		else
-			shell->last_arg = NULL;
+		store_exit_and_args(shell, clean, status);
 	}
 	else
 	{
