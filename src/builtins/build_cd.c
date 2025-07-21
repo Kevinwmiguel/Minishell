@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 00:11:16 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:20:34 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:32:01 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	build_cd(t_shell *shell)
 	path = NULL;
 	if (shell->cmd->args[2])
 	{
-		ft_putstr_fd(" too many arguments\n", 2);
+		ft_putstr_fd("too many arguments\n", 2);
 		shell->exit_code = 1;
 		return ;
 	}

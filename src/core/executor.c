@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:44:52 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:51:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	exec_external(t_shell *sh, t_cmd_r *cl)
 	else
 	{
 		execve(full, cl->args, sh->env);
-		perror("execve: ");
+		perror("execve: No command or ");
 		free(full);
 		final_cleaner(sh);
 		exit(1);

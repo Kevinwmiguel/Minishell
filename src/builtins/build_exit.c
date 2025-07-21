@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 02:31:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:17:55 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:36:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	validate_exit_args(t_shell *shell, char **args, int *code)
 	{
 		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 		shell->exit_code = 1;
-		return ;
+		freedom(shell);
+		exit(*code);
 	}
 }
 
