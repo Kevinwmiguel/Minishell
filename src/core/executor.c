@@ -71,7 +71,6 @@ static void	exec_external(t_shell *sh, t_cmd_r *cl)
 	char	*full;
 
 	close_extra_fds();
-
 	if (!ft_strchr(cl->args[0], '/'))
 	{
 		full = get_path(cl->args[0], sh->env);
