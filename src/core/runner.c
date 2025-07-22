@@ -39,10 +39,7 @@ void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 		close(redir->heredoc);
 	}
 	else if (last_cmd == 1 && redir && redir->infd > 0)
-	{
 		dup2(redir->infd, STDIN_FILENO);
-		close(redir->infd);
-	}
 	else if (redir && redir->heredoc > 0)
 	{
 		dup2(redir->heredoc, STDIN_FILENO);
