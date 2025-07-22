@@ -40,9 +40,8 @@ static void	validate_exit_args(t_shell *shell, char **args, int *code)
 	if (args[2])
 	{
 		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
-		shell->exit_code = 1;
 		freedom(shell);
-		exit(*code);
+		exit(1);
 	}
 }
 
