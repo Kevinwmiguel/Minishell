@@ -6,11 +6,13 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 15:22:38 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 21:03:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+volatile sig_atomic_t g_heredoc_interrupted = 0;
 
 int	is_heredoc(t_cmd *cmd)
 {
@@ -48,68 +50,66 @@ void	here_signal(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGINT)
 	{
-		write(STDOUT_FILENO, "ssssss\n", 5);
+		write(STDOUT_FILENO, "\n", 1);
 		exit(130);
 	}
 }
 
-void	heredoc_sigint_handler(int sig)
+void	sigint_handler_here(int sig)
 {
-	if (sig == SIGINT)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		close(STDIN_FILENO);
-	}
+	(void)sig;
+	write(1, "\n", 1);
+	g_heredoc_interrupted = 1;
+	// não usa _exit aqui, queremos apenas marcar a flag
 }
 
-void	heredoc_child(char *limiter, int write_fd, t_shell *shell)
+void	set_heredoc_signal(void)
+{
+	struct sigaction sa;
+
+	sa.sa_handler = sigint_handler_here;
+	sa.sa_flags = 0; // <---- IMPORTANTE: NÃO usa SA_RESTART!
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+}
+
+int	here_doc(char *limiter)
 {
 	char	*line;
+	int		fd[2];
 
-	signal(SIGINT, heredoc_sigint_handler);
+	if (pipe(fd) == -1)
+		exit(1);
+
+	set_heredoc_signal();
+
 	while (1)
 	{
-		line = readline("> ");
+		if (g_heredoc_interrupted)
+			break;
+
+		write(1, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
-			break ;
-		if (strcmp(line, limiter) == 0)
+			break;
+		if (strncmp(line, limiter, strlen(limiter)) == 0
+			&& line[strlen(limiter)] == '\n'
+			&& line[strlen(limiter) + 1] == '\0')
 		{
 			free(line);
-			break ;
+			break;
 		}
-		write(write_fd, line, strlen(line));
-		write(write_fd, "\n", 1);
+		write(fd[1], line, strlen(line));
 		free(line);
 	}
-	close(write_fd);
-	close_extra_fds();
-	final_cleaner(shell);
-	exit(130);
-}
 
-int	here_doc(char *limiter, t_shell *shell)
-{
-	int		fd[2];
-	pid_t	pid;
-	int		status;
+	close(fd[1]);
 
-	status = 0;
-	if (pipe(fd) == -1)
-		return (-1);
-
-	pid = fork();
-	if (pid == 0)
+	if (g_heredoc_interrupted)
 	{
 		close(fd[0]);
-		heredoc_child(limiter, fd[1], shell);
+		return (-2); // <- você pode usar essa condição no pai
+	}
 
-	}
-	close(fd[1]);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		close_extra_fds();
-		return (-2);
-	}
 	return (fd[0]);
 }

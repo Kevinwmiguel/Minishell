@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 14:46:14 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:54:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 	cmd->args[i] = NULL;
 }
 
-void	handle_double_left(t_cmd *cmd, t_shell *shell)
+void	handle_double_left(t_cmd *cmd)
 {
 	int	idx;
 	int	idx_limiter;
@@ -64,7 +64,7 @@ void	handle_double_left(t_cmd *cmd, t_shell *shell)
 			write(2, "Limite ausente para heredoc\n", 29);
 			exit(1);
 		}
-		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter], shell);
+		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter]);
 		idx = idx_limiter + 1;
 		idx = find_next_double_left_index(cmd, idx);
 	}
@@ -93,7 +93,7 @@ void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
 	int	i;
 
 	if (find_next_double_left_index(cmd, 0) != -1)
-		handle_double_left(cmd, shell);
+		handle_double_left(cmd);
 	i = 0;
 	while (cmd->args[i])
 	{

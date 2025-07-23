@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 11:02:03 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 21:10:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,16 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	int	processor;
 	int	status;
 
+	status = 0;
 	processor = fork();
 	if (processor == 0)
 	{
+		if (g_heredoc_interrupted == 1)
+		{
+			close_extra_fds();
+			freedom(shell);
+			exit(130);
+		}
 		if (is_heredoc(shell->cmd))
 			signal_search(HEREDOC_CHILD);
 		else

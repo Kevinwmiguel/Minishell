@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 10:20:47 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 21:05:33 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	run(t_shell *shell)
 
 	while (1)
 	{
+		g_heredoc_interrupted = 0;
 		check_cwd();
 		signal_search(ROOT);
 		input = readline("minishell: ");
