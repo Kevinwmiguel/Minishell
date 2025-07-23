@@ -49,7 +49,7 @@ void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 	cmd->args[i] = NULL;
 }
 
-void	handle_double_left(t_cmd *cmd)
+void	handle_double_left(t_cmd *cmd, t_shell *shell)
 {
 	int	idx;
 	int	idx_limiter;
@@ -64,7 +64,14 @@ void	handle_double_left(t_cmd *cmd)
 			write(2, "Limite ausente para heredoc\n", 29);
 			exit(1);
 		}
-		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter]);
+		int fd = here_doc(shell, cmd->args[idx_limiter]);
+		if(fd == -1)
+		{
+			shell->exit_code = 130;
+			shell->flag = 1;
+			return ;
+		}
+		cmd->redirect->heredoc = fd;
 		idx = idx_limiter + 1;
 		idx = find_next_double_left_index(cmd, idx);
 	}
@@ -94,7 +101,14 @@ void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
 	int	i;
 
 	if (find_next_double_left_index(cmd, 0) != -1)
-		handle_double_left(cmd);
+	{
+		handle_double_left(cmd, shell);
+		if(shell->flag)
+		{
+			shell->exit_code = 130;
+			return ;
+		}
+	}
 	i = 0;
 	while (cmd->args[i])
 	{

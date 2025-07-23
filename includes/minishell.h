@@ -121,6 +121,7 @@ typedef struct s_shell
 	bool				end;
 	int					exit_code;
 	int					is_child;
+	int					flag;
 	t_clist				*list;
 	t_cmd				*cmd;
 	t_cmd				*keeper;

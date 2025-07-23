@@ -62,6 +62,7 @@ void	init(t_shell *shell, char **env)
 	shell->last_arg = NULL;
 	shell->next_last_arg = NULL;
 	shell->exit_code = 0;
+	shell->flag = 0;
 	if (!has_minimum_env(env))
 		prepare_env(shell);
 	else
@@ -80,10 +81,10 @@ void	init(t_shell *shell, char **env)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell		*shell;
-	t_signal	signal;
+	// t_signal	signal;
 
-	signal = (t_signal){};
-	handle_sigint(0, &signal);
+	// signal = (t_signal){};
+	// handle_sigint(0, &signal);
 	(void) argc;
 	(void) argv;
 	shell = malloc(sizeof(t_shell));

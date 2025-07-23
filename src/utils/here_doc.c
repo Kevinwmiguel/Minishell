@@ -42,42 +42,70 @@ void	free_cmds(t_cmd *cmd)
 	}
 }
 
-void	here_signal(int signal, siginfo_t *info, void *context)
+static int	handle_heredoc_input(t_shell *shell, char *limiter, int write_fd)
 {
-	(void)info;
-	(void)context;
-	if (signal == SIGINT)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		exit(130);
-	}
-}
+	char *line;
+	char *tmp;
+	char *str;
 
-int	here_doc(char *limiter)
-{
-	char	*line;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		exit(1);
 	while (1)
 	{
+		tmp = NULL;
 		line = readline("> ");
 		if (!line)
+		{
+			write(1, "\n", 1);
+			freedom(shell);
 			break ;
-		if (line[0] == '\0')
-			printf("CTRL C AQUI");
-		line = ft_strjoin(line, "\n");
-		if (ft_strlen(line) == ft_strlen(limiter) + 1
-			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
-			&& line[ft_strlen(limiter)] == '\n')
+		}
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& ft_strlen(line) == ft_strlen(limiter))
 		{
 			free(line);
 			break ;
 		}
-		write(fd[1], line, ft_strlen(line));
+		tmp = expand_str(shell, line);
+		str = ft_strjoin(tmp, "\n");
+		if (!str)
+		{
+			free(line);
+			free(tmp);
+			break ;
+		}
+		write(write_fd, str, ft_strlen(str));
+		free(str);
 		free(line);
+		free(tmp);
 	}
-	close(fd[1]);
-	return (fd[0]);
+	close(write_fd);
+	return (0);
+}
+
+int here_doc(t_shell *shell, char *limiter)
+{
+	int fd[2];
+	pid_t pid;
+	int status;
+
+	if (pipe(fd) == -1)
+		return (-1);
+	pid = fork();
+	if (pid == -1)
+		return (-1);
+	if (pid == 0)
+		handle_heredoc_child(shell, limiter, fd);
+	else
+	{
+		signal_search(IGNORE);
+		close(fd[1]);
+		waitpid(pid, &status, 0);
+
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			shell->exit_code = 130;
+			close(fd[0]);
+			return (-1);
+		}
+		return fd[0];
+	}
 }

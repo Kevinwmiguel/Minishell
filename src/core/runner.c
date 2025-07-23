@@ -39,7 +39,10 @@ void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 		close(redir->heredoc);
 	}
 	else if (last_cmd == 1 && redir && redir->infd > 0)
+	{
 		dup2(redir->infd, STDIN_FILENO);
+		close(redir->infd);
+	}
 	else if (redir && redir->heredoc > 0)
 	{
 		dup2(redir->heredoc, STDIN_FILENO);
@@ -99,10 +102,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	processor = fork();
 	if (processor == 0)
 	{
-		if (is_heredoc(shell->cmd))
-			signal_search(HEREDOC_CHILD);
-		else
-			signal_search(CHILD);
+		signal_search(CHILD);
 		run_children(shell, clean, info, shell->cmd);
 	}
 	else if (processor > 0)

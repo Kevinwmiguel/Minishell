@@ -17,12 +17,14 @@
 # include "../get_next_line/get_next_line.h"
 # include <limits.h>
 
+
 //MINISHELL
 void	init(t_shell *shell, char **env);
 int		run(t_shell *shell);
 
 //HEREDOC
 int		is_heredoc(t_cmd *cmd);
+void	handle_heredoc_child(t_shell *shell, char *limiter, int *fd);
 
 //CLOSES
 void	close_redirections(t_cmd *cmd);
@@ -45,7 +47,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info);
 void	run_children(t_shell *shell, t_cmd_r *clean, \
 	t_pipexinfo *info, t_cmd *cmd);
 void	free_split(char **split);
-int		here_doc(char *limiter);
+int		here_doc(t_shell *shell, char *limiter);
 void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell);
 void	handle_redirection_right_input(t_cmd *cmd, t_shell *shell);
 int		dptr_len(char **ptr);
@@ -82,6 +84,7 @@ t_cmd_r	*alloc_clean_cmd_list(t_cmd *cmd);
 void	final_cleaner(t_shell *shell);
 void	free_split(char **arr);
 char	*special_cleaner(const char *s1, const char *s2, t_shell *shell);
+void	freedom(t_shell *shell);
 
 //CORE
 void	line_helper2(t_pipexinfo *info);
@@ -141,7 +144,6 @@ char	*get_path(char *cmd, char **envp);
 
 //SIGNALS
 void	signal_search(t_sig_t t);
-void	here_signal(int signal, siginfo_t *info, void *context);
 void	root_signal(int signal, siginfo_t *info, void *context);
 
 #endif
