@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:58:05 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:41:51 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ int	here_doc(char *limiter)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (line[0] == '\0')
-			printf("CTRL C AQUI");
 		line = ft_strjoin(line, "\n");
 		if (ft_strlen(line) == ft_strlen(limiter) + 1
 			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0

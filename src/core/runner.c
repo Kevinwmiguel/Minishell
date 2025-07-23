@@ -6,11 +6,29 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:52:49 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:54:12 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+int	is_illegal_file_read(t_cmd *cmd, t_pipexinfo *info)
+{
+	int	i;
+
+	if (!cmd || !cmd->args || info->fd_in == 0)
+		return (0);
+	if (ft_strncmp(cmd->args[0], "cat", 4) != 0)
+		return (0);
+	i = 1;
+	while (cmd->args[i])
+	{
+		if (cmd->args[i][0] != '<' && cmd->args[i][0] != '-')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	ft_find_last(char **args)
 {
@@ -33,6 +51,7 @@ int	ft_find_last(char **args)
 
 void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 {
+	(void)info;
 	if (last_cmd == 0 && redir && redir->heredoc > 0)
 	{
 		dup2(redir->heredoc, STDIN_FILENO);
@@ -54,7 +73,10 @@ void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 		close(redir->infd);
 	}
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
+	{
 		dup2(info->fd_in, STDIN_FILENO);
+		close(redir->infd);
+	}
 }
 
 void	run_children(t_shell *shell, t_cmd_r *clean \
@@ -64,6 +86,12 @@ void	run_children(t_shell *shell, t_cmd_r *clean \
 	int		last_cmd;
 
 	redir = cmd->redirect;
+	if (is_illegal_file_read(cmd, info))
+	{
+		close_extra_fds();
+		freedom(shell);
+		exit(1);
+	}
 	last_cmd = ft_find_last(cmd->args);
 	redirect_io(redir, info, last_cmd);
 	if (redir && redir->outfd > 0)

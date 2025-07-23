@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:16:41 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:13:28 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_pipexinfo
 	int					fd_in;
 	int					fd_out;
 	int					i;
+	int					has_pipe;
 	pid_t				pid;
 	int					pipe_counts;
 }						t_pipexinfo;

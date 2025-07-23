@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:02:10 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/16 20:59:56 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/22 23:30:52 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	import_args_to_clean(t_cmd *cmd, t_cmd_r *clean)
 		clean->args = malloc(sizeof(char *) * 2);
 		if (!clean->args)
 			return ;
-		clean->args[0] = ft_strdup("SKIP");
+		clean->args[0] = ft_strdup("cat");
 		clean->args[1] = NULL;
 		return ;
 	}

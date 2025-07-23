@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 19:06:13 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:22:45 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		is_heredoc(t_cmd *cmd);
 //CLOSES
 void	close_redirections(t_cmd *cmd);
 void	get_out(t_shell *shell);
+void	freedom(t_shell *shell);
 
 //GETNEXTLINE
 char	*get_next_line(int fd);
