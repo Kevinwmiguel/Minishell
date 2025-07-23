@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 00:41:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:22:38 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,68 @@ void	here_signal(int signal, siginfo_t *info, void *context)
 	(void)context;
 	if (signal == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "ssssss\n", 5);
 		exit(130);
 	}
 }
 
-int	here_doc(char *limiter)
+void	heredoc_sigint_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		close(STDIN_FILENO);
+	}
+}
+
+void	heredoc_child(char *limiter, int write_fd, t_shell *shell)
 {
 	char	*line;
-	int		fd[2];
 
-	if (pipe(fd) == -1)
-		exit(1);
+	signal(SIGINT, heredoc_sigint_handler);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		line = ft_strjoin(line, "\n");
-		if (ft_strlen(line) == ft_strlen(limiter) + 1
-			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
-			&& line[ft_strlen(limiter)] == '\n')
+		if (strcmp(line, limiter) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(fd[1], line, ft_strlen(line));
+		write(write_fd, line, strlen(line));
+		write(write_fd, "\n", 1);
 		free(line);
 	}
+	close(write_fd);
+	close_extra_fds();
+	final_cleaner(shell);
+	exit(130);
+}
+
+int	here_doc(char *limiter, t_shell *shell)
+{
+	int		fd[2];
+	pid_t	pid;
+	int		status;
+
+	status = 0;
+	if (pipe(fd) == -1)
+		return (-1);
+
+	pid = fork();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		heredoc_child(limiter, fd[1], shell);
+
+	}
 	close(fd[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		close_extra_fds();
+		return (-2);
+	}
 	return (fd[0]);
 }

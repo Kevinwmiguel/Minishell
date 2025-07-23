@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 00:22:45 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:45:59 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info);
 void	run_children(t_shell *shell, t_cmd_r *clean, \
 	t_pipexinfo *info, t_cmd *cmd);
 void	free_split(char **split);
-int		here_doc(char *limiter);
+int		here_doc(char *limiter, t_shell *shell);
 void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell);
 void	handle_redirection_right_input(t_cmd *cmd, t_shell *shell);
 int		dptr_len(char **ptr);
@@ -142,5 +142,6 @@ char	*get_path(char *cmd, char **envp);
 void	signal_search(t_sig_t t);
 void	here_signal(int signal, siginfo_t *info, void *context);
 void	root_signal(int signal, siginfo_t *info, void *context);
+void	signal_heredoc(int sig);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 00:54:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:02:03 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,7 @@ void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 		close(redir->infd);
 	}
 	else if (info->fd_in > 0 && info->fd_in != STDIN_FILENO)
-	{
 		dup2(info->fd_in, STDIN_FILENO);
-		close(redir->infd);
-	}
 }
 
 void	run_children(t_shell *shell, t_cmd_r *clean \

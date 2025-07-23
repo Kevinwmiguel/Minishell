@@ -6,17 +6,18 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 01:42:18 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 01:01:07 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:39:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utils.h"
 
-static void	signal_heredoc(int sig)
+void	signal_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
+		close_extra_fds();
 		exit(130);
 	}
 }
