@@ -42,7 +42,7 @@ void	free_cmds(t_cmd *cmd)
 	}
 }
 
-static int	handle_heredoc_input(t_shell *shell, char *limiter, int write_fd)
+int	handle_heredoc_input(t_shell *shell, char *limiter, int write_fd)
 {
 	char *line;
 	char *tmp;
@@ -93,7 +93,10 @@ int here_doc(t_shell *shell, char *limiter)
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
+	{
 		handle_heredoc_child(shell, limiter, fd);
+		exit(130);
+	}	
 	else
 	{
 		signal_search(IGNORE);
@@ -105,7 +108,7 @@ int here_doc(t_shell *shell, char *limiter)
 			shell->exit_code = 130;
 			close(fd[0]);
 			return (-1);
-		}
-		return fd[0];
+		}		
 	}
+	return fd[0];
 }
