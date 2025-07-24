@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/21 21:51:40 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:05:29 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	exec_builtin(t_shell *sh, t_cmd_r *cl, int flag)
 
 void	non_path(t_shell *sh, char *full)
 {
-	printf("full %s", full);
+	ft_printf("full %s", full);
 	perror("command not found");
 	final_cleaner(sh);
 	exit(127);

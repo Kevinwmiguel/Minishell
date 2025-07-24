@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 20:58:36 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:57:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../get_next_line/get_next_line.h"
 # include <limits.h>
 
-extern volatile sig_atomic_t g_heredoc_interrupted;
+extern volatile sig_atomic_t	g_heredoc_interrupted;
 
 //MINISHELL
 void	init(t_shell *shell, char **env);
@@ -25,6 +25,7 @@ int		run(t_shell *shell);
 
 //HEREDOC
 int		is_heredoc(t_cmd *cmd);
+void	heredoc_ctrl_c(t_shell *shell);
 
 //CLOSES
 void	close_redirections(t_cmd *cmd);
@@ -56,6 +57,7 @@ char	**dptr_dup_replace(char **env, char *new_entry, int index);
 char	**dptr_dup_add(char **env, char *new_entry);
 char	*strjoin_free(char *s1, char *s2);
 int		is_valid_identifier(char *str);
+int		is_illegal_file_read(t_cmd *cmd, t_pipexinfo *info);
 
 //builtins
 void	builtins_analyzer(t_shell *shell, int flag, char **argv);

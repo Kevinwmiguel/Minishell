@@ -6,29 +6,11 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 21:10:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:56:17 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
-
-int	is_illegal_file_read(t_cmd *cmd, t_pipexinfo *info)
-{
-	int	i;
-
-	if (!cmd || !cmd->args || info->fd_in == 0)
-		return (0);
-	if (ft_strncmp(cmd->args[0], "cat", 4) != 0)
-		return (0);
-	i = 1;
-	while (cmd->args[i])
-	{
-		if (cmd->args[i][0] != '<' && cmd->args[i][0] != '-')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 int	ft_find_last(char **args)
 {
@@ -128,12 +110,7 @@ void	run_child(t_cmd_r *clean, t_shell *shell, t_pipexinfo *info)
 	processor = fork();
 	if (processor == 0)
 	{
-		if (g_heredoc_interrupted == 1)
-		{
-			close_extra_fds();
-			freedom(shell);
-			exit(130);
-		}
+		heredoc_ctrl_c(shell);
 		if (is_heredoc(shell->cmd))
 			signal_search(HEREDOC_CHILD);
 		else

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:03:11 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 19:02:13 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:52:52 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,14 @@ void	get_out(t_shell *shell)
 	final_cleaner(shell);
 	close_extra_fds();
 	exit(0);
+}
+
+void	heredoc_ctrl_c(t_shell *shell)
+{
+	if (g_heredoc_interrupted == 1)
+	{
+		close_extra_fds();
+		freedom(shell);
+		exit(130);
+	}
 }
