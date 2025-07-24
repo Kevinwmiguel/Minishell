@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   expand_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 15:09:09 by thguimar          #+#    #+#             */
-/*   Updated: 2025/07/01 00:45:30 by kwillian         ###   ########.fr       */
+/*   Created: 2025/07/18 18:56:16 by kwillian          #+#    #+#             */
+/*   Updated: 2025/07/18 18:56:44 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/utils.h"
 
-// void	ft_lstclear(t_list **lst, void (*del)(void*))
-// {
-// 	t_list	*ptr;
+void	join_expand(t_shell *data, char **result, char **str,
+		bool is_double_quote)
+{
+	char	*tmp[2];
 
-// 	if (lst)
-// 	{
-// 		while (*lst)
-// 		{
-// 			ptr = (*lst)->next;
-// 			ft_lstdelone(*lst, del);
-// 			*lst = ptr;
-// 		}
-// 	}
-// }
+	tmp[0] = expand_result(data, str, is_double_quote);
+	tmp[1] = ft_strjoin(*result, tmp[0]);
+	if (*result)
+		free(*result);
+	if (tmp[0])
+		free(tmp[0]);
+	*result = tmp[1];
+}

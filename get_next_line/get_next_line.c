@@ -3,62 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thguimar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 11:25:24 by thguimar          #+#    #+#             */
-/*   Updated: 2023/11/17 11:25:36 by thguimar         ###   ########.fr       */
+/*   Created: 2024/05/01 23:40:23 by kwillian          #+#    #+#             */
+/*   Updated: 2025/02/03 21:50:54 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
+
+int	freefunc(char *buffer)
+{
+	int	i;
+	int	j;
+	int	n;
+
+	i = 0;
+	j = 0;
+	n = 0;
+	while (buffer[j] != '\0')
+	{
+		if (n)
+			buffer[i++] = buffer[j];
+		if (buffer[j] == '\n')
+			n = 1;
+		buffer[j++] = '\0';
+	}
+	return (n);
+}
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
-	int			flag;
-	int			read_l;
+	static char	buffer[BUFFER_SIZE + 1];
 
 	line = NULL;
-	if (fd < 0 || fd >= FOPEN_MAX)
-		return (buffer_full_clear(fd, (char **)buffer, line));
-	while (1)
+	while (buffer[0] || (read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		if (buffer[0] == '\0')
-		{
-			read_l = read(fd, buffer, BUFFER_SIZE);
-			if (read_l == -1)
-				return (buffer_full_clear(fd, NULL, line));
-			if (read_l == 0)
-				return (line);
-		}
-		flag = next_line(&line, buffer);
-		buffer_clear(buffer);
-		if (flag == 1)
-			return (line);
-		if (flag == -1)
-			return (NULL);
+		line = ft_strjoin2(line, buffer);
+		if (freefunc(buffer))
+			break ;
 	}
+	return (line);
 }
 
-/*
-int	main(void)
-{
-	char *line;
-	int fd;
+// int	main()
+// {
+// 	int		fd;
+// 	char	*line;
 
-	fd = open("texto1", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error");
-		return (1);
-	}
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("line: %s", line);
-		free(line);
-	}
-	close(fd);
-	return (0);
-}*/
+// 	fd = open("archive.txt", O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		write(1, "error", 5);
+// 		return (1);
+// 	}
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return 0;
+// }
