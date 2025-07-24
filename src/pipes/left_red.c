@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 00:54:25 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:58:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 	cmd->args[i] = NULL;
 }
 
-void	handle_double_left(t_cmd *cmd)
+void	handle_double_left(t_shell *shell, t_cmd *cmd)
 {
 	int	idx;
 	int	idx_limiter;
@@ -61,10 +61,16 @@ void	handle_double_left(t_cmd *cmd)
 		idx_limiter = idx + 1;
 		if (!cmd->args[idx_limiter])
 		{
-			write(2, "Limite ausente para heredoc\n", 29);
+			write(2, "Without limiter\n", 17);
 			exit(1);
 		}
-		cmd->redirect->heredoc = here_doc(cmd->args[idx_limiter]);
+		if (ft_strncmp(cmd->args[0], "<<", 3) == 0)
+		{
+			shell->mistake = 1;
+			if (cmd->args[2] && ft_strncmp(cmd->args[2], ">", 2) == 0)
+				truncate_file(cmd->args[3]);
+		}
+		cmd->redirect->heredoc = here_doc(shell, cmd->args[idx_limiter]);
 		idx = idx_limiter + 1;
 		idx = find_next_double_left_index(cmd, idx);
 	}
@@ -74,18 +80,13 @@ void	handle_single_left(t_cmd *cmd, t_shell *shell)
 {
 	int	file_index;
 
+	(void)shell;
 	file_index = find_input_file_index(cmd->args, 0);
 	if (file_index == -1)
-	{
-		write(2, "Arquivo não fornecido para redirecionamento\n", 45);
-		shell->exit_code = 127;
-	}
+		write(2, "file was not provided to redirection\n", 38);
 	cmd->redirect->infd = open(cmd->args[file_index], O_RDONLY);
 	if (cmd->redirect->infd < 0)
-	{
-		shell->exit_code = 126;
-		perror("open 1");
-	}
+		shell->mistake = 1;
 }
 
 void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
@@ -93,12 +94,12 @@ void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
 	int	i;
 
 	if (find_next_double_left_index(cmd, 0) != -1)
-		handle_double_left(cmd);
+		handle_double_left(shell, cmd);
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (ft_strncmp(cmd->args[i], "<", 2) == 0 && \
-		ft_strlen(cmd->args[i]) == 1)
+		if (ft_strncmp(cmd->args[i], "<", 2) == 0
+			&& ft_strlen(cmd->args[i]) == 1)
 			handle_single_left(cmd, shell);
 		i++;
 	}

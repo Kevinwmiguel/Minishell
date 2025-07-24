@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 00:41:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 10:56:17 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:21:38 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	redirect_io(t_red *redir, t_pipexinfo *info, int last_cmd)
 		dup2(info->fd_in, STDIN_FILENO);
 }
 
-void	run_children(t_shell *shell, t_cmd_r *clean \
-	, t_pipexinfo *info, t_cmd *cmd)
+void	run_children(t_shell *shell, t_cmd_r *clean\
+, t_pipexinfo *info, t_cmd *cmd)
 {
 	t_red	*redir;
 	int		last_cmd;

@@ -1,4 +1,4 @@
-# 🐚 Minishell
+# 🐚Minishell
 
 > A Unix shell recreation project developed at School 42.
 
@@ -36,8 +36,8 @@ The **Minishell** project is designed to build a simple shell from scratch, gain
 ## 🛠️ How to Compile
 
 ```bash
-- make
-- make v (To use valgrind)
-- env -i ./minishell (To use without enviroment VARS)
-- make re (To recompile)
-- make fclean (To clean everything)
+  - make
+  - make v (To use valgrind)
+  - env -i ./minishell (To use without enviroment VARS)
+  - make re (To recompile)
+  - make fclean (To clean everything)

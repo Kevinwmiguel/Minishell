@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 01:23:06 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/14 01:34:06 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:56:53 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,13 @@ char	*get_path_var(char *home)
 				"/usr/sbin:/usr/bin:/sbin:/bin");
 	}
 	return (res);
+}
+
+void	truncate_file(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd >= 0)
+		close(fd);
 }

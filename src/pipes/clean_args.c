@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:02:10 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/22 23:30:52 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:32:16 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	fill_clean_args(t_cmd *cmd, t_cmd_r *clean)
 	{
 		if (is_redirection_token(cmd->args[i]) && cmd->args[i + 1])
 		{
-			if (!ft_strncmp(cmd->args[0], "ls", 3) && \
-				!ft_strncmp(cmd->args[i], "<", 2))
+			if (!ft_strncmp(cmd->args[0], "ls", 3) && !ft_strncmp(cmd->args[i],
+					"<", 2))
 				clean->args[j++] = ft_strdup(cmd->args[i + 1]);
 			i += 2;
 		}
@@ -84,8 +84,8 @@ int	count_clean_args(t_cmd *cmd)
 	{
 		if (is_redirection_token(cmd->args[i]) && cmd->args[i + 1])
 		{
-			if (!ft_strncmp(cmd->args[0], "ls", 3) && \
-				!ft_strncmp(cmd->args[i], "<", 2))
+			if (!ft_strncmp(cmd->args[0], "ls", 3) && !ft_strncmp(cmd->args[i],
+					"<", 2))
 				count++;
 			i += 2;
 		}

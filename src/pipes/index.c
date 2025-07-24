@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:26:46 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:57:16 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:34:47 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	find_next_double_left_index(t_cmd *cmd, int start)
 	i = start;
 	while (cmd->args[i])
 	{
-		if (ft_strncmp(cmd->args[i], "<<", 3) == 0 && \
-			ft_strlen(cmd->args[i]) == 2)
+		if (ft_strncmp(cmd->args[i], "<<", 3) == 0
+			&& ft_strlen(cmd->args[i]) == 2)
 			return (i);
 		i++;
 	}
@@ -45,8 +45,8 @@ int	find_next_double_left_index(t_cmd *cmd, int start)
 
 int	find_double_right_index(t_cmd *cmd)
 {
-	int			i;
-	t_cmd		*temp;
+	int		i;
+	t_cmd	*temp;
 
 	temp = cmd;
 	if (!temp->args)
@@ -55,8 +55,8 @@ int	find_double_right_index(t_cmd *cmd)
 	while (temp->args[i])
 	{
 		i++;
-		if (ft_strncmp(temp->args[i], ">>", 2) == 0 && \
-			ft_strlen(temp->args[i]) == 2)
+		if (ft_strncmp(temp->args[i], ">>", 2) == 0
+			&& ft_strlen(temp->args[i]) == 2)
 			return (i);
 	}
 	return (-1);
@@ -64,6 +64,6 @@ int	find_double_right_index(t_cmd *cmd)
 
 int	is_redirection_token(char *s)
 {
-	return (!ft_strncmp(s, ">", 2) || !ft_strncmp(s, ">>", 3)
-		|| !ft_strncmp(s, "<", 2) || !ft_strncmp(s, "<<", 3));
+	return (!ft_strncmp(s, ">", 2) || !ft_strncmp(s, ">>", 3) || !ft_strncmp(s,
+			"<", 2) || !ft_strncmp(s, "<<", 3));
 }

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:38:08 by jmehmy            #+#    #+#             */
-/*   Updated: 2025/07/24 11:05:39 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:27:08 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_cmd	*parse_cmd(t_shell *data, t_token *token)
 	{
 		if (token->type == PIPE && (!token->prev || token->prev->type == PIPE))
 		{
-			ft_printf("invalid use of pipe '|'\n");
+			printf("invalid use of pipe '|'\n");
 			data->exit_code = 1;
 			return (NULL);
 		}

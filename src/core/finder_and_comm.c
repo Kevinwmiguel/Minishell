@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:03:59 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 19:04:38 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 12:05:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,14 @@ void	finder_and_update(t_shell *shell)
 	tmp = ft_strjoin("_=", full);
 	free(full);
 	l_comander(shell, tmp);
-	free (tmp);
+	free(tmp);
+}
+
+int	check_is_dir(const char *path)
+{
+	struct stat	statbuf;
+
+	if (stat(path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 21:05:33 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 22:35:03 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	exec_clean(t_shell *shell)
 {
+	shell->mistake = 0;
+	shell->mistake2 = 0;
 	shell->exit_code = 0;
 	execute_all_cmds(shell);
 	close_redirections(shell->cmd);
@@ -22,12 +24,23 @@ void	exec_clean(t_shell *shell)
 	shell->cmd = NULL;
 }
 
+int	is_valid_input(char *str)
+{
+	int	i;
+
+	i = ft_strlen(str);
+	if (str[i - 1] == '>' || str[i - 1] == '<')
+		return (1);
+	return (0);
+}
+
 int	run(t_shell *shell)
 {
 	char	*input;
 
 	while (1)
 	{
+		shell->mistake = 0;
 		g_heredoc_interrupted = 0;
 		check_cwd();
 		signal_search(ROOT);
@@ -35,6 +48,12 @@ int	run(t_shell *shell)
 		if (!input)
 			get_out(shell);
 		if (input[0] == '\0')
+		{
+			free(input);
+			continue ;
+		}
+		shell->mistake = is_valid_input(input);
+		if (shell->mistake)
 		{
 			free(input);
 			continue ;

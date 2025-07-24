@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:54:54 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 19:17:42 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:36:11 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ char	*join_export(char *name, char *value)
 
 void	handle_export(t_shell *shell, t_cmd_r *clean)
 {
-	int		i;
-	int		fd;
+	int	i;
+	int	fd;
 
 	fd = STDOUT_FILENO;
 	if (shell->cmd && shell->cmd->redirect && shell->cmd->redirect->outfd > 0)

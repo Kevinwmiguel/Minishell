@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:13:23 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 19:37:50 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:53:37 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ void	remove_all_output_redirs(t_cmd *cmd, int *last_index, char **last_type)
 	*last_type = NULL;
 	while (cmd->args[i])
 	{
-		if ((ft_strncmp(cmd->args[i], ">", 2) == 0 || \
-		ft_strncmp(cmd->args[i], ">>", 3) == 0)
-			&& cmd->args[i + 1])
+		if ((ft_strncmp(cmd->args[i], ">", 2) == 0 || ft_strncmp(cmd->args[i],
+					">>", 3) == 0) && cmd->args[i + 1])
 		{
 			create_empty_output_file(cmd->args[i], cmd->args[i + 2]);
 			*last_index = i;
@@ -35,9 +34,9 @@ void	remove_all_output_redirs(t_cmd *cmd, int *last_index, char **last_type)
 
 int	is_last_redirection(t_cmd *cmd, char *filename)
 {
-	t_cmd		*tmp;
-	int			i;
-	size_t		len;
+	t_cmd	*tmp;
+	int		i;
+	size_t	len;
 
 	len = ft_strlen(filename);
 	tmp = cmd->next;
@@ -46,11 +45,10 @@ int	is_last_redirection(t_cmd *cmd, char *filename)
 		i = 1;
 		while (tmp->args && tmp->args[i])
 		{
-			if ((ft_strncmp(tmp->args[i], ">>", 3) == 0 || \
-				ft_strncmp(tmp->args[i], ">", 2) == 0) && \
-				tmp->args[i + 1] && \
-				ft_strncmp(tmp->args[i + 1], filename, len) == 0 && \
-				ft_strlen(tmp->args[i + 1]) == len)
+			if ((ft_strncmp(tmp->args[i], ">>", 3) == 0
+					|| ft_strncmp(tmp->args[i], ">", 2) == 0) && tmp->args[i
+					+ 1] && ft_strncmp(tmp->args[i + 1], filename, len) == 0
+				&& ft_strlen(tmp->args[i + 1]) == len)
 				return (0);
 			i++;
 		}

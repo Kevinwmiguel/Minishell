@@ -3,46 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmehmy <jmehmy@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 11:03:32 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:21:55 by jmehmy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
 volatile sig_atomic_t	g_heredoc_interrupted;
-
-int	is_heredoc(t_cmd *cmd)
-{
-	t_red	*redir;
-
-	redir = cmd->redirect;
-	while (redir)
-	{
-		if (redir->type == HEREDOC)
-			return (1);
-		redir = redir->next;
-	}
-	return (0);
-}
-
-void	free_cmds(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	while (cmd)
-	{
-		tmp = cmd->next;
-		if (cmd->args)
-			free_split(cmd->args);
-		if (cmd->redirect)
-			free_redirections(cmd->redirect);
-		free(cmd);
-		cmd = tmp;
-	}
-}
 
 void	here_signal(int signal, siginfo_t *info, void *context)
 {
@@ -64,7 +34,7 @@ void	sigint_handler_here(int sig)
 
 void	set_heredoc_signal(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sa.sa_handler = sigint_handler_here;
 	sa.sa_flags = 0;
@@ -72,32 +42,38 @@ void	set_heredoc_signal(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
-int	here_doc(char *limiter)
+static void	write_limiter_lines(t_shell *shell, int *fd, char *limiter)
 {
 	char	*line;
+	char	*tmp;
+
+	while (!g_heredoc_interrupted)
+	{
+		write(1, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& line[ft_strlen(limiter)] == '\n')
+		{
+			free(line);
+			break ;
+		}
+		tmp = expand_str(shell, line);
+		write(fd[1], tmp, strlen(tmp));
+		free(line);
+		free(tmp);
+	}
+}
+
+int	here_doc(t_shell *shell, char *limiter)
+{
 	int		fd[2];
 
 	if (pipe(fd) == -1)
 		exit(1);
 	set_heredoc_signal();
-	while (1)
-	{
-		if (g_heredoc_interrupted)
-			break ;
-		write(1, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
-		if (!line)
-			break ;
-		if (strncmp(line, limiter, strlen(limiter)) == 0
-			&& line[strlen(limiter)] == '\n'
-			&& line[strlen(limiter) + 1] == '\0')
-		{
-			free(line);
-			break ;
-		}
-		write(fd[1], line, strlen(line));
-		free(line);
-	}
+	write_limiter_lines(shell, fd, limiter);
 	close(fd[1]);
 	if (g_heredoc_interrupted)
 	{

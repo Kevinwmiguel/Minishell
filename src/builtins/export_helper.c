@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:35:38 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/17 12:45:51 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:36:32 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ char	**add_or_replace_exp(char **exp, char *new_entry)
 	i = 0;
 	while (exp && exp[i])
 	{
-		if (ft_strncmp(exp[i], new_entry, key_len) == 0 \
-		&& exp[i][key_len] == '=')
+		if (ft_strncmp(exp[i], new_entry, key_len) == 0
+			&& exp[i][key_len] == '=')
 			return (dptr_dup_replace(exp, new_entry, i));
 		i++;
 	}
@@ -46,8 +46,8 @@ char	**add_or_replace_env(char **env, char *new_entry)
 		len++;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], new_entry, \
-			ft_strchr(new_entry, '=') - new_entry + 1) == 0)
+		if (ft_strncmp(env[i], new_entry, ft_strchr(new_entry, '=') - new_entry
+				+ 1) == 0)
 		{
 			new_env = dptr_dup_replace(env, new_entry, i);
 			return (new_env);

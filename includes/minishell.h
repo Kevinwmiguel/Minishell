@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/23 00:13:28 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:47:48 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ typedef struct s_shell
 	bool				end;
 	int					exit_code;
 	int					is_child;
+	int					mistake;
+	int					mistake2;
 	t_clist				*list;
 	t_cmd				*cmd;
 	t_cmd				*keeper;
