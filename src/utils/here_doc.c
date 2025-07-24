@@ -6,11 +6,13 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 21:49:40 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/18 18:58:05 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 21:03:40 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+volatile sig_atomic_t g_heredoc_interrupted = 0;
 
 int	is_heredoc(t_cmd *cmd)
 {
@@ -42,73 +44,72 @@ void	free_cmds(t_cmd *cmd)
 	}
 }
 
-int	handle_heredoc_input(t_shell *shell, char *limiter, int write_fd)
+void	here_signal(int signal, siginfo_t *info, void *context)
 {
-	char *line;
-	char *tmp;
-	char *str;
+	(void)info;
+	(void)context;
+	if (signal == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		exit(130);
+	}
+}
 
+void	sigint_handler_here(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	g_heredoc_interrupted = 1;
+	// não usa _exit aqui, queremos apenas marcar a flag
+}
+
+void	set_heredoc_signal(void)
+{
+	struct sigaction sa;
+
+	sa.sa_handler = sigint_handler_here;
+	sa.sa_flags = 0; // <---- IMPORTANTE: NÃO usa SA_RESTART!
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+}
+
+int	here_doc(t_shell *shell, char *limiter)
+{
+	char	*line;
+	int		fd[2];
+	char	*tmp;
+
+	if (pipe(fd) == -1)
+		exit(1);
+	set_heredoc_signal();
 	while (1)
 	{
-		tmp = NULL;
-		line = readline("> ");
+		if (g_heredoc_interrupted)
+			break;
+		write(1, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
-		{
-			write(1, "\n", 1);
-			freedom(shell);
-			break ;
-		}
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
-			&& ft_strlen(line) == ft_strlen(limiter))
+			break;
+		if (strncmp(line, limiter, strlen(limiter)) == 0
+			&& line[strlen(limiter)] == '\n'
+			&& line[strlen(limiter) + 1] == '\0')
 		{
 			free(line);
-			break ;
+			break;
 		}
 		tmp = expand_str(shell, line);
-		str = ft_strjoin(tmp, "\n");
-		if (!str)
-		{
-			free(line);
-			free(tmp);
-			break ;
-		}
-		write(write_fd, str, ft_strlen(str));
-		free(str);
+		write(fd[1], tmp, strlen(tmp));
 		free(line);
 		free(tmp);
 	}
-	close(write_fd);
-	return (0);
-}
 
-int here_doc(t_shell *shell, char *limiter)
-{
-	int fd[2];
-	pid_t pid;
-	int status;
+	close(fd[1]);
 
-	if (pipe(fd) == -1)
-		return (-1);
-	pid = fork();
-	if (pid == -1)
-		return (-1);
-	if (pid == 0)
+	if (g_heredoc_interrupted)
 	{
-		handle_heredoc_child(shell, limiter, fd);
-		exit(130);
-	}	
-	else
-	{
-		signal_search(IGNORE);
-		close(fd[1]);
-		waitpid(pid, &status, 0);
-
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			shell->exit_code = 130;
-			close(fd[0]);
-			return (-1);
-		}		
+		close(fd[0]);
+		return (-2); // <- você pode usar essa condição no pai
 	}
-	return fd[0];
+
+	return (fd[0]);
 }

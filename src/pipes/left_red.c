@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 20:18:49 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/16 21:34:18 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/23 00:54:25 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	remove_one_left_tokens(t_cmd *cmd, int file_idx)
 	cmd->args[i] = NULL;
 }
 
-void	handle_double_left(t_cmd *cmd, t_shell *shell)
+void	handle_double_left(t_shell *shell, t_cmd *cmd)
 {
 	int	idx;
 	int	idx_limiter;
@@ -64,14 +64,7 @@ void	handle_double_left(t_cmd *cmd, t_shell *shell)
 			write(2, "Limite ausente para heredoc\n", 29);
 			exit(1);
 		}
-		int fd = here_doc(shell, cmd->args[idx_limiter]);
-		if(fd == -1)
-		{
-			shell->exit_code = 130;
-			shell->flag = 1;
-			return ;
-		}
-		cmd->redirect->heredoc = fd;
+		cmd->redirect->heredoc = here_doc(shell, cmd->args[idx_limiter]);
 		idx = idx_limiter + 1;
 		idx = find_next_double_left_index(cmd, idx);
 	}
@@ -80,7 +73,6 @@ void	handle_double_left(t_cmd *cmd, t_shell *shell)
 void	handle_single_left(t_cmd *cmd, t_shell *shell)
 {
 	int	file_index;
-
 	(void)shell;
 	file_index = find_input_file_index(cmd->args, 0);
 	if (file_index == -1)
@@ -101,14 +93,7 @@ void	handle_redirection_left_input(t_cmd *cmd, t_shell *shell)
 	int	i;
 
 	if (find_next_double_left_index(cmd, 0) != -1)
-	{
-		handle_double_left(cmd, shell);
-		if(shell->flag)
-		{
-			shell->exit_code = 130;
-			return ;
-		}
-	}
+		handle_double_left(shell, cmd);
 	i = 0;
 	while (cmd->args[i])
 	{
