@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 01:34:28 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/25 01:39:31 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:42:05 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_valid_input(char *str)
 	return (0);
 }
 
-void    validator(char *input, t_shell *shell)
+void	validator(char *input, t_shell *shell)
 {
 	shell->mistake = is_valid_input(input);
 	if (shell->mistake)
