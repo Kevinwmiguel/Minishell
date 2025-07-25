@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:28:02 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 21:01:25 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:33:03 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	check_access_and_errors(t_shell *sh, char *full)
 	{
 		free(full);
 		final_cleaner(sh);
-		//ft_putstr_fd("file not provided\n", 2);
 		exit(1);
 	}
 	file_checker(sh, full);

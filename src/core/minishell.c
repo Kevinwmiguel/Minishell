@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:39:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 22:35:03 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:39:27 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ void	exec_clean(t_shell *shell)
 	free_token_list(shell);
 	free_cmds(shell->cmd);
 	shell->cmd = NULL;
-}
-
-int	is_valid_input(char *str)
-{
-	int	i;
-
-	i = ft_strlen(str);
-	if (str[i - 1] == '>' || str[i - 1] == '<')
-		return (1);
-	return (0);
 }
 
 int	run(t_shell *shell)
@@ -52,18 +42,7 @@ int	run(t_shell *shell)
 			free(input);
 			continue ;
 		}
-		shell->mistake = is_valid_input(input);
-		if (shell->mistake)
-		{
-			free(input);
-			continue ;
-		}
-		add_history(input);
-		if (ft_strlen(input) != 0 && process_shell_input(shell, input))
-		{
-			shell->cmd = parse_cmd(shell, shell->begin);
-			exec_clean(shell);
-		}
+		validator(input, shell);
 		free(input);
 	}
 	return (1);

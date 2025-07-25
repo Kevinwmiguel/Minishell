@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 20:40:04 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 13:56:12 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:39:46 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ extern volatile sig_atomic_t	g_heredoc_interrupted;
 void							init(t_shell *shell, char **env);
 int								run(t_shell *shell);
 int								check_is_dir(const char *path);
-
+void							validator(char *input, t_shell *shell);
+int								is_valid_input(char *str);
+void							exec_clean(t_shell *shell);
 // HEREDOC
 int								is_heredoc(t_cmd *cmd);
 void							heredoc_ctrl_c(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: kwillian <kwillian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:08:41 by kwillian          #+#    #+#             */
-/*   Updated: 2025/07/24 16:27:06 by kwillian         ###   ########.fr       */
+/*   Updated: 2025/07/25 01:31:42 by kwillian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	main(int argc, char **argv, char **env)
 
 	signal = (t_signal){};
 	handle_sigint(0, &signal);
-	(void) argc;
-	(void) argv;
+	(void)argc;
+	(void)argv;
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 	{
